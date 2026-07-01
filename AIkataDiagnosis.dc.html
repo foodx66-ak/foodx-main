@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="./diagnosis-themes.js"></script>
+<style>
+*{box-sizing:border-box;}
+body{margin:0;}
+.ak-opt:hover{border-color:#1A1A1A!important;}
+input::placeholder{color:#aaa;}
+input:focus{outline:none;border-color:#1A1A1A!important;box-shadow:0 0 0 3px rgba(250,204,21,0.4);}
+@keyframes akFade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+@keyframes akBar{from{transform:scaleX(0);}}
+</style>
+</helmet>
+
+<div style="font-family:'Noto Sans JP',sans-serif;color:#1A1A1A;background:var(--ak-bg,#FAFAF7);min-height:100%;display:flex;align-items:center;justify-content:center;padding:32px 18px;transition:background .3s ease;">
+  <div style="width:100%;max-width:560px;">
+
+    <!-- brand -->
+    <div style="display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:22px;">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:var(--ak-accent,#FACC15);border-radius:999px;font-family:'Inter',sans-serif;font-weight:700;font-size:13px;color:#1A1A1A;">AI</span>
+      <span style="font-weight:900;font-size:20px;letter-spacing:-0.01em;color:var(--ak-on-bg,#1A1A1A);transition:color .3s ease;">AIkata</span>
+      <span style="font-family:'Inter',sans-serif;font-size:11px;letter-spacing:0.1em;color:#999;">無料診断</span>
+    </div>
+
+    <div style="background:#fff;border-radius:var(--ak-radius,24px);box-shadow:0 6px 30px rgba(0,0,0,0.07);padding:36px 30px;min-height:420px;display:flex;flex-direction:column;">
+
+      <!-- progress (hidden on intro/result) -->
+      <sc-if value="{{ showProgress }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-bottom:26px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#999;letter-spacing:0.04em;">{{ progressLabel }}</span>
+            <span style="font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:#1A1A1A;">{{ progressPct }}%</span>
+          </div>
+          <div style="height:6px;background:#eee;border-radius:999px;overflow:hidden;">
+            <div style="height:100%;border-radius:999px;background:var(--ak-accent,#FACC15);width:{{ progressPct }}%;transition:width .4s cubic-bezier(0.16,1,0.3,1);"></div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== INTRO ===== -->
+      <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;animation:akFade .4s ease;">
+          <span style="display:inline-block;background:var(--ak-accent,#FACC15);color:#1A1A1A;font-family:'Inter',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.16em;padding:7px 15px;border-radius:999px;margin:0 auto 22px;">30秒・無料</span>
+          <h1 style="font-weight:900;font-size:28px;line-height:1.4;letter-spacing:-0.02em;margin:0 0 16px;">あなたの店の<br>“最初の一手”がわかります</h1>
+          <p style="font-size:14.5px;line-height:1.95;color:#666;margin:0 0 30px;max-width:400px;margin-left:auto;margin-right:auto;text-wrap:pretty;">7つの質問に答えるだけ。いま取り組むべき1テーマを、AIkataがご提案します。煽りも売り込みもありません。</p>
+          <button type="button" onClick="{{ start }}" style="background:#1A1A1A;color:var(--ak-accent,#FACC15);border:none;padding:16px 34px;border-radius:999px;font-weight:700;font-size:16px;cursor:pointer;font-family:inherit;align-self:center;display:inline-flex;align-items:center;gap:10px;">診断をはじめる<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ak-accent,#FACC15)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <p style="font-size:12px;color:#aaa;margin:18px 0 0;">所要時間 約30秒 ・ 登録不要で結果表示</p>
+        </div>
+      </sc-if>
+
+      <!-- ===== QUESTION ===== -->
+      <sc-if value="{{ isQuestion }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;display:flex;flex-direction:column;animation:akFade .35s ease;">
+          <h2 style="font-weight:900;font-size:21px;line-height:1.45;letter-spacing:-0.01em;margin:0 0 6px;">{{ q.title }}</h2>
+          <p style="font-size:13px;color:#999;margin:0 0 22px;">{{ q.hint }}</p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ q.options }}" as="opt" hint-placeholder-count="4">
+              <button type="button" class="ak-opt" onClick="{{ opt.toggle }}" style="{{ opt.style }}">
+                <span style="display:flex;flex-direction:column;gap:3px;min-width:0;">
+                  <span style="font-weight:700;">{{ opt.label }}</span>
+                  <sc-if value="{{ opt.hasDesc }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:500;color:#999;line-height:1.4;">{{ opt.desc }}</span></sc-if>
+                </span>
+                <sc-if value="{{ opt.checked }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M20 6 9 17l-5-5"/></svg></sc-if>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:26px;">
+            <button type="button" onClick="{{ back }}" style="background:none;border:none;color:#999;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>戻る</button>
+            <button type="button" onClick="{{ next }}" style="{{ nextStyle }}">{{ nextLabel }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{ nextArrow }}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== RESULT PREVIEW ===== -->
+      <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;display:flex;flex-direction:column;animation:akFade .4s ease;">
+          <span style="display:inline-block;background:var(--ak-accent,#FACC15);color:#1A1A1A;font-family:'Inter',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.16em;padding:7px 14px;border-radius:999px;align-self:flex-start;">あなたの最初の一手</span>
+          <h2 style="font-weight:900;font-size:27px;line-height:1.3;letter-spacing:-0.02em;margin:16px 0 10px;">{{ top.name }}</h2>
+          <p style="font-size:15px;line-height:1.85;color:#555;margin:0 0 22px;">{{ top.summary }}</p>
+
+          <!-- mini scores -->
+          <div style="background:#FAFAF7;border-radius:16px;padding:20px 22px;margin-bottom:22px;">
+            <p style="font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#999;margin:0 0 14px;">領域別の課題スコア</p>
+            <div style="display:flex;flex-direction:column;gap:11px;">
+              <sc-for list="{{ areaScores }}" as="row" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <span style="font-size:13px;font-weight:700;width:64px;flex-shrink:0;">{{ row.area }}</span>
+                  <div style="flex:1;height:8px;background:#eee;border-radius:999px;overflow:hidden;"><div style="height:100%;border-radius:999px;background:{{ row.color }};width:{{ row.pct }}%;"></div></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <sc-if value="{{ notGated }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#1A1A1A;border-radius:18px;padding:24px;">
+              <p style="font-size:14.5px;line-height:1.7;color:#fff;font-weight:700;margin:0 0 4px;">詳しい診断レポートを受け取る</p>
+              <p style="font-size:12.5px;line-height:1.7;color:#aaa;margin:0 0 16px;">推奨理由・想定の進め方・期待できる変化を、あなたの回答に合わせてお届けします。</p>
+              <input type="email" value="{{ email }}" onInput="{{ onEmail }}" placeholder="you@example.com" style="width:100%;padding:13px 15px;font-size:15px;border:1.5px solid #444;border-radius:12px;font-family:inherit;background:#262626;color:#fff;margin-bottom:12px;transition:border-color .15s,box-shadow .15s;">
+              <label style="display:flex;gap:10px;align-items:flex-start;font-size:12px;line-height:1.6;color:#bbb;cursor:pointer;margin-bottom:16px;"><input type="checkbox" checked="{{ consent }}" onChange="{{ onConsent }}" style="margin-top:2px;width:16px;height:16px;flex-shrink:0;accent-color:var(--ak-accent,#FACC15);"><span>診断レポートの送付と、ご相談のご連絡に利用することに同意します。</span></label>
+              <button type="button" onClick="{{ requestReport }}" style="{{ reportBtnStyle }}">{{ reportBtnLabel }}</button>
+            </div>
+          </sc-if>
+
+          <!-- detailed report -->
+          <sc-if value="{{ gated }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#FFFDF0;border:1px solid #f0e4a8;border-radius:18px;padding:24px;animation:akFade .4s ease;">
+              <p style="font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#BA7517;margin:0 0 12px;">DIAGNOSIS REPORT</p>
+              <div style="font-size:14.5px;line-height:1.95;color:#333;white-space:pre-wrap;">{{ reportText }}</div>
+            </div>
+            <a href="Contact.dc.html" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--ak-accent,#FACC15);color:#1A1A1A;padding:16px;border-radius:999px;font-weight:700;font-size:15.5px;text-decoration:none;margin-top:16px;">この一手を一緒に設計しましょう（30分・無料）<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </sc-if>
+
+          <!-- next candidates -->
+          <div style="margin-top:22px;padding-top:20px;border-top:1px solid #eee;">
+            <p style="font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.1em;color:#bbb;margin:0 0 12px;">次の一手の候補</p>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <sc-for list="{{ runnerUps }}" as="r" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:#666;"><span style="width:6px;height:6px;border-radius:999px;background:var(--ak-accent,#FACC15);flex-shrink:0;"></span><strong style="font-weight:700;color:#444;">{{ r.name }}</strong><span style="color:#aaa;">／ {{ r.area }}</span></div>
+              </sc-for>
+            </div>
+          </div>
+
+          <button type="button" onClick="{{ restart }}" style="background:none;border:none;color:#999;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:20px;align-self:center;">もう一度診断する</button>
+        </div>
+      </sc-if>
+
+    </div>
+    <p style="text-align:center;font-size:11px;color:#bbb;margin:16px 0 0;">© FooDX, LLC. ／ AIkata 簡易診断</p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:600,&quot;height&quot;:760},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FFE100&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FFE100&quot;,&quot;#FACC15&quot;,&quot;#F59E0B&quot;,&quot;#34C759&quot;,&quot;#2D7DD2&quot;]},&quot;backdrop&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;クリーム&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;クリーム&quot;,&quot;モノクロ&quot;,&quot;イエローウォッシュ&quot;,&quot;ナイト&quot;]},&quot;cornerStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;標準&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;やわらか&quot;,&quot;標準&quot;,&quot;かっちり&quot;]}}">
+class Component extends DCLogic {
+  state = {
+    step: -1,            // -1 intro, 0..N-1 questions, N result
+    answers: {},         // qid -> array of option values
+    email: '',
+    consent: false,
+    gated: false,
+    loading: false,
+    reportText: '',
+  };
+
+  QUESTIONS() {
+    return [
+      { id:'q1', title:'業態を教えてください', hint:'1つ選択', multi:false,
+        options:['居酒屋・焼き鳥','カフェ・喫茶','和食・寿司','レストラン・洋食','ラーメン・中華','複合・多業態','ファストフード・テイクアウト専門','ホテル・宴会・ケータリング','その他'] },
+      { id:'q2', title:'店舗数は？', hint:'1つ選択', multi:false,
+        options:['1店舗','2〜4店舗','5〜10店舗','11〜50店舗','51〜99店舗','100店舗以上'] },
+      { id:'q3', title:'スタッフ規模は？', hint:'1つ選択', multi:false,
+        options:['〜10名','11〜30名','31〜99名','100〜299名','300名以上'] },
+      { id:'q4', title:'いま最も「時間と手間」を奪われている業務は？', hint:'複数選択できます', multi:true,
+        options:['売上','原価','人件費','集客','仕入れ','評価制度'] },
+      { id:'q5', title:'その中で、一番「なんとかしたい」のは？', hint:'1つ選択', multi:false, dynamicFromQ4:true,
+        options:['売上','原価','人件費','集客','仕入れ','評価制度'] },
+      { id:'q6', title:'普段の店舗運営で、すでに使っているシステムは？', hint:'使っているものを複数選択できます', multi:true,
+        options:['POS・レジ','予約管理','勤怠・シフト管理','会計・経理','在庫・発注管理','特に使っていない'] },
+      { id:'q7', title:'AI・IT導入の経験は？', hint:'1つ選択', multi:false,
+        options:['未経験','試したが定着せず','一部活用中','積極活用中'] },
+    ];
+  }
+
+  // 表示用の補足説明（キーはスコア計算の領域キーと一致させる）
+  AREA_DESC() {
+    return {
+      '売上': '売上分析・需要予測・客単価アップ',
+      '原価': '原価率・FL管理・メニュー別収益',
+      '人件費': 'シフト・勤怠・採用・労働分配',
+      '集客': '新規・リピート・クチコミ・予約',
+      '仕入れ': '発注・在庫・棚卸し・仕入価格',
+      '評価制度': 'KPI設計・スタッフ評価・教育',
+    };
+  }
+
+  EXP_DESC() {
+    return {
+      '未経験': 'まだ導入したことがない',
+      '試したが定着せず': '導入したが現場で使われなくなった',
+      '一部活用中': '一部の業務でツールを活用している',
+      '積極活用中': '複数の業務でデータ・AIを活用中',
+    };
+  }
+
+  DATA_DESC() {
+    return {
+      'POS・レジ': '日々の売上・会計を自動で記録',
+      '予約管理': 'ネット予約・予約台帳をデジタル管理',
+      '勤怠・シフト管理': '出退勤・シフトをアプリ等で管理',
+      '会計・経理': '会計ソフトで経理処理している',
+      '在庫・発注管理': '在庫・発注をシステムで管理',
+      '特に使っていない': '紙・手書き中心、または未導入',
+    };
+  }
+  // 使用システム → データが整っている領域
+  SYS_AREA() {
+    return {
+      'POS・レジ': ['売上','原価'],
+      '予約管理': ['集客'],
+      '勤怠・シフト管理': ['人件費'],
+      '会計・経理': ['原価'],
+      '在庫・発注管理': ['仕入れ'],
+    };
+  }
+
+  themes() { return (typeof window !== 'undefined' && window.AIKATA_THEMES) || []; }
+
+  componentDidMount() { this._applyTheme(); }
+  componentDidUpdate() { this._applyTheme(); }
+  _applyTheme() {
+    if (typeof document === 'undefined') return;
+    const root = document.documentElement;
+    root.style.setProperty('--ak-accent', this.props.accentColor || '#FFE100');
+    const backdrops = { 'クリーム':'#FAFAF7', 'モノクロ':'#E7E7E3', 'イエローウォッシュ':'#FFF4C2', 'ナイト':'#161616' };
+    const onbg = { 'ナイト':'#FFFFFF' };
+    const bd = this.props.backdrop || 'クリーム';
+    root.style.setProperty('--ak-bg', backdrops[bd] || '#FAFAF7');
+    root.style.setProperty('--ak-on-bg', onbg[bd] || '#1A1A1A');
+    const radius = { 'やわらか':['28px','16px'], '標準':['18px','12px'], 'かっちり':['8px','6px'] };
+    const r = radius[this.props.cornerStyle] || ['24px','14px'];
+    root.style.setProperty('--ak-radius', r[0]);
+    root.style.setProperty('--ak-radius-sm', r[1]);
+  }
+
+  // ---- scoring ----
+  compute() {
+    const a = this.state.answers;
+    const q4 = a.q4 || [];
+    const q5 = (a.q5 || [])[0];
+    const q6 = a.q6 || [];
+    const sysMap = this.SYS_AREA();
+    const readyAreas = new Set();
+    q6.forEach((s) => (sysMap[s] || []).forEach((ar) => readyAreas.add(ar)));
+    const usesSystems = q6.filter((s) => s !== '特に使っていない').length;
+    const lowData = usesSystems === 0;               // システム未導入＝着手しやすいテーマ優先
+    const scored = this.themes().map((t) => {
+      let painMult = 1;
+      if (q4.includes(t.area)) painMult += 0.8;
+      if (q5 === t.area) painMult += 1.2;            // 最優先領域を最大化
+      let ease = t.ease;
+      if (readyAreas.has(t.area)) ease += 1.2;        // 既に該当システムあり＝データが揃い着手容易
+      const easeNorm = lowData ? (t.ease / 5) * 1.3 : Math.min(ease, 5) / 5;
+      const effectNorm = t.effect / 5;
+      const score = (t.pain * painMult) * easeNorm * (0.6 + effectNorm);
+      return { t, score };
+    }).sort((x, y) => y.score - x.score || y.t.effect - x.t.effect);
+    return { scored, q4 };
+  }
+
+  renderVals() {
+    const qs = this.QUESTIONS();
+    const step = this.state.step;
+    const N = qs.length;
+    const a = this.state.answers;
+
+    const base = {
+      isIntro: step === -1,
+      isQuestion: step >= 0 && step < N,
+      isResult: step >= N,
+      showProgress: step >= 0 && step < N,
+      start: () => this.setState({ step: 0 }),
+      restart: () => this.setState({ step: -1, answers: {}, email:'', consent:false, gated:false, reportText:'', loading:false }),
+    };
+
+    if (base.isQuestion) {
+      const q = qs[step];
+      let optionLabels = q.options;
+      if (q.dynamicFromQ4) {
+        const q4 = a.q4 || [];
+        optionLabels = q4.length ? q4 : q.options;
+      }
+      const selected = a[q.id] || [];
+      const optStyle = (checked) => 'display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;width:100%;padding:15px 18px;font-size:15px;font-weight:600;font-family:inherit;border-radius:var(--ak-radius-sm,14px);cursor:pointer;transition:all .15s;border:1.5px solid ' + (checked ? '#1A1A1A' : '#e2e2dc') + ';background:' + (checked ? '#FFFBE6' : '#fff') + ';color:#1A1A1A;';
+      const toggle = (val) => {
+        const cur = (this.state.answers[q.id] || []).slice();
+        let nextArr;
+        if (q.multi) {
+          nextArr = cur.includes(val) ? cur.filter((v) => v !== val) : cur.concat(val);
+        } else {
+          nextArr = [val];
+        }
+        const answers = Object.assign({}, this.state.answers, { [q.id]: nextArr });
+        // if Q4 changed, prune Q5 selections no longer valid
+        if (q.id === 'q4') {
+          const q5 = (answers.q5 || []).filter((v) => nextArr.includes(v));
+          answers.q5 = q5;
+        }
+        this.setState({ answers });
+      };
+      const canNext = selected.length > 0;
+      const isLast = step === N - 1;
+      return Object.assign(base, {
+        q: {
+          title: q.title, hint: q.hint,
+          options: optionLabels.map((label) => {
+            let desc = '';
+            if (q.id === 'q4' || q.id === 'q5') desc = this.AREA_DESC()[label] || '';
+            else if (q.id === 'q6') desc = this.DATA_DESC()[label] || '';
+            else if (q.id === 'q7') desc = this.EXP_DESC()[label] || '';
+            return {
+              label,
+              desc,
+              hasDesc: !!desc,
+              checked: selected.includes(label),
+              style: optStyle(selected.includes(label)),
+              toggle: () => toggle(label),
+            };
+          }),
+        },
+        progressLabel: 'STEP ' + (step + 1) + ' / ' + N,
+        progressPct: Math.round(((step) / N) * 100) + Math.round((1 / N) * 100),
+        back: () => this.setState({ step: step - 1 < -1 ? -1 : step - 1 }),
+        next: () => { if (canNext) this.setState({ step: step + 1 }); },
+        nextLabel: isLast ? '結果を見る' : '次へ',
+        nextArrow: canNext ? '#1A1A1A' : '#ccc',
+        nextStyle: 'display:inline-flex;align-items:center;gap:8px;border:none;padding:13px 26px;border-radius:999px;font-weight:700;font-size:15px;font-family:inherit;cursor:' + (canNext ? 'pointer' : 'not-allowed') + ';background:' + (canNext ? '#FACC15' : '#f0f0ea') + ';color:' + (canNext ? '#1A1A1A' : '#bbb') + ';transition:all .15s;',
+      });
+    }
+
+    if (base.isResult) {
+      const { scored, q4 } = this.compute();
+      const top = scored[0] ? scored[0].t : { name:'—', summary:'', area:'' };
+      const runnerUps = scored.slice(1, 4).map((s) => ({ name: s.t.name, area: s.t.area }));
+      // area scores for mini chart (based on Q4 pains + theme weight)
+      const areas = ['売上','原価','人件費','集客','仕入れ','評価制度'];
+      const maxScoreByArea = {};
+      scored.forEach((s) => { maxScoreByArea[s.t.area] = Math.max(maxScoreByArea[s.t.area] || 0, s.score); });
+      const maxAll = Math.max.apply(null, Object.values(maxScoreByArea).concat([1]));
+      const areaScores = areas
+        .map((area) => ({ area, raw: (q4.includes(area) ? 1 : 0.25) * (maxScoreByArea[area] || 0) }))
+        .sort((x, y) => y.raw - x.raw)
+        .slice(0, 4)
+        .map((r) => ({ area: r.area, pct: Math.max(8, Math.round((r.raw / maxAll) * 100)), color: r.area === top.area ? '#FACC15' : '#1A1A1A' }));
+
+      const emailValid = /.+@.+\..+/.test(this.state.email);
+      const canReport = emailValid && this.state.consent && !this.state.loading;
+      return Object.assign(base, {
+        top, runnerUps, areaScores,
+        notGated: !this.state.gated,
+        gated: this.state.gated,
+        email: this.state.email,
+        consent: this.state.consent,
+        reportText: this.state.reportText,
+        onEmail: (e) => this.setState({ email: e.target.value }),
+        onConsent: (e) => this.setState({ consent: e.target.checked }),
+        reportBtnLabel: this.state.loading ? 'レポートを作成中…' : '無料レポートを受け取る',
+        reportBtnStyle: 'width:100%;border:none;padding:15px;border-radius:999px;font-weight:700;font-size:15px;font-family:inherit;cursor:' + (canReport ? 'pointer' : 'not-allowed') + ';background:' + (canReport ? '#FACC15' : '#3a3a3a') + ';color:' + (canReport ? '#1A1A1A' : '#888') + ';transition:all .15s;',
+        requestReport: () => { if (canReport) this._generate(top, scored); },
+      });
+    }
+
+    return base;
+  }
+
+  async _generate(top, scored) {
+    this.setState({ loading: true });
+    // ---- lead POST (placeholder endpoint) ----
+    const LEAD_ENDPOINT = '{{LEAD_ENDPOINT}}';
+    const payload = {
+      answers: this.state.answers,
+      recommendedTheme: top.name,
+      summary: top.summary,
+      email: this.state.email,
+      timestamp: new Date().toISOString(),
+    };
+    try {
+      if (LEAD_ENDPOINT && LEAD_ENDPOINT.indexOf('{{') === -1) {
+        fetch(LEAD_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) }).catch(()=>{});
+      }
+    } catch (_) {}
+
+    const a = this.state.answers;
+    const get = (k) => (a[k] || []).join('・') || '未回答';
+    const userMsg = '以下は飲食店経営者の簡易診断の回答です。JSONで渡します。\n' + JSON.stringify({
+      業態: get('q1'), 店舗数: get('q2'), スタッフ規模: get('q3'),
+      手間を奪う業務: get('q4'), 最優先: get('q5'), データ環境: get('q6'), IT経験: get('q7'),
+      推奨テーマ: top.name, テーマ概要: top.summary,
+    }, null, 0);
+    const sys = 'あなたはAIkataの「相方」として、飲食店経営者に診断結果を伝えます。落ち着いた伴走者のトーンで、煽らず・誇張せず・断定しすぎず。回答内容を必ず本文に具体的に織り込み、(1)なぜこのテーマを最初の一手に推すか、(2)想定の進め方（約3ヶ月／提案→確認→修正のループ）、(3)期待できる変化、を日本語で200〜300字でまとめてください。最後は「まずは一緒に設計しましょう」と相談へ自然につなぐこと。見出しや箇条書きは使わず、自然な文章で。';
+    let text = '';
+    try {
+      text = await window.claude.complete({ messages: [
+        { role:'user', content: sys + '\n\n' + userMsg },
+      ]});
+    } catch (e) { text = ''; }
+    if (!text || !text.trim()) {
+      text = '「' + top.name + '」を最初の一手としておすすめします。' + top.summary + ' まずは現状を一緒に整理し、約3ヶ月かけて提案→確認→修正のループで無理なく定着させていきます。まずは一緒に設計しましょう。';
+    }
+    this.setState({ loading: false, gated: true, reportText: text.trim() });
+  }
+}
+</script>
+</body>
+</html>

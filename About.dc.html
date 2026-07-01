@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+JP:wght@400;500;700;900&amp;display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;}
+:root{--accent:#FFE100;--accent-deep:#BA7517;}
+/* ===== Responsive (tablet) ===== */
+@media (max-width: 900px){
+  div[style*="grid-template-columns:repeat(5"]{grid-template-columns:repeat(2,1fr) !important;}
+  div[style*="grid-template-columns:repeat(3"]{grid-template-columns:repeat(2,1fr) !important;}
+  div[style*="grid-template-columns:1.05fr 0.95fr"],
+  div[style*="grid-template-columns:0.85fr 1.15fr"],
+  div[style*="grid-template-columns:0.8fr 1.2fr"],
+  div[style*="grid-template-columns:1.5fr 0.9fr"]{grid-template-columns:1fr !important;gap:36px !important;}
+}
+/* ===== Responsive (mobile) ===== */
+@media (max-width: 600px){
+  section{padding-left:18px !important;padding-right:18px !important;padding-top:64px !important;padding-bottom:64px !important;}
+  div[style*="grid-template-columns:repeat(2"],
+  div[style*="grid-template-columns:repeat(3"],
+  div[style*="grid-template-columns:repeat(4"],
+  div[style*="grid-template-columns:repeat(5"],
+  div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important;}
+  header > div{height:auto !important;padding-top:12px !important;padding-bottom:12px !important;flex-wrap:wrap !important;gap:10px 0 !important;}
+  header nav{gap:14px !important;flex-wrap:wrap !important;justify-content:flex-start !important;}
+  header nav a{font-size:13px !important;}
+  footer > div > div{flex-direction:column !important;gap:28px !important;}
+}
+
+</style>
+</helmet>
+
+<div style="font-family:'Noto Sans JP',sans-serif;color:#1A1A1A;background:#FAFAFA;-webkit-font-smoothing:antialiased;overflow-x:hidden;">
+
+  <!-- HEADER -->
+  <header style="position:sticky;top:0;z-index:50;background:rgba(250,250,250,0.85);backdrop-filter:blur(12px);border-bottom:1px solid #eee;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between;">
+      <a href="AIkata.dc.html" style="display:flex;align-items:baseline;gap:8px;text-decoration:none;color:#1A1A1A;"><img src="assets/foodx-logo.png" alt="FooDX" style="height:30px;width:auto;display:block;"><span style="font-family:'Inter',sans-serif;font-size:11px;letter-spacing:0.1em;color:#999;">食業AX</span></a>
+      <nav style="display:flex;align-items:center;gap:24px;">
+        <a href="AIkata.dc.html" style="font-size:14px;font-weight:500;color:#444;text-decoration:none;">AIkata</a>
+        <a href="GoogleProfile.dc.html" style="font-size:14px;font-weight:500;color:#444;text-decoration:none;">Googleプロフィール</a>
+        <a href="REO.dc.html" style="font-size:14px;font-weight:500;color:#444;text-decoration:none;">REO</a>
+        <a href="GreaseOzonizer.dc.html" style="font-size:14px;font-weight:500;color:#444;text-decoration:none;">グリストラップ</a>
+        <a href="Contact.dc.html" style="display:inline-flex;align-items:center;gap:8px;background:#1A1A1A;color:var(--accent,#FFE100);padding:10px 20px;border-radius:999px;font-size:14px;font-weight:700;text-decoration:none;" style-hover="background:#333;">お問い合わせ</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section data-screen-label="About Hero" style="position:relative;padding:96px 24px 80px;background:radial-gradient(1100px 520px at 50% -8%, #FFFBE0 0%, #FAFAFA 60%);overflow:hidden;">
+    <div data-reveal="" style="max-width:900px;margin:0 auto;text-align:center;">
+      <span style="display:inline-flex;align-items:center;gap:9px;background:var(--accent,#FFE100);color:#1A1A1A;font-family:'Inter',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;padding:8px 16px;border-radius:999px;">About FooDX</span>
+      <h1 style="font-weight:900;font-size:clamp(40px,6.6vw,72px);line-height:1.1;letter-spacing:-0.03em;margin:24px 0 0;">食と<span style="position:relative;white-space:nowrap;">IT<span style="position:absolute;left:-3px;right:-3px;bottom:5px;height:24%;background:var(--accent,#FFE100);z-index:-1;border-radius:3px;"></span></span>を、つなぐ。</h1>
+      <p style="font-size:clamp(17px,2.2vw,22px);font-weight:700;line-height:1.6;margin:26px 0 0;">つくる・食する人々に、共通の笑顔を。</p>
+      <p style="font-size:16px;line-height:2;color:#555;max-width:680px;margin:20px auto 0;text-wrap:pretty;">わたしたちFooDXは、食産業の多様な問題と課題に真摯に向き合い、AIトランスフォーメーション（AX）を通じて、食に関わる全ての人々とともに、より良い社会を築くことに貢献します。</p>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section data-screen-label="Mission" style="padding:96px 24px;background:#1A1A1A;color:#fff;">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div data-reveal="" style="text-align:center;max-width:760px;margin:0 auto 56px;">
+        <span style="display:inline-block;color:var(--accent,#FFE100);font-family:'Inter',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Our Mission</span>
+        <h2 style="font-weight:900;font-size:clamp(28px,4.2vw,44px);line-height:1.2;letter-spacing:-0.02em;margin:18px 0 0;color:#fff;">食産業の課題に、ITで応える。</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+        <div data-reveal="" style="background:#262626;border:1px solid #333;border-radius:18px;padding:36px 30px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:var(--accent,#FFE100);border-radius:14px;"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></span><h3 style="font-weight:700;font-size:19px;margin:18px 0 10px;color:#fff;">向き合う</h3><p style="font-size:14.5px;line-height:1.9;color:#b5b5b5;margin:0;">食産業の多様な問題と課題に、現場目線で真摯に向き合います。</p></div>
+        <div data-reveal="" style="background:#262626;border:1px solid #333;border-radius:18px;padding:36px 30px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:var(--accent,#FFE100);border-radius:14px;"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M15 2v2M9 2v2M15 20v2M9 20v2M2 15h2M2 9h2M20 15h2M20 9h2"></path></svg></span><h3 style="font-weight:700;font-size:19px;margin:18px 0 10px;color:#fff;">AXで変える</h3><p style="font-size:14.5px;line-height:1.9;color:#b5b5b5;margin:0;">AI × IT × 仕組み化で、経営から現場までを着実に変革します。</p></div>
+        <div data-reveal="" style="background:#262626;border:1px solid #333;border-radius:18px;padding:36px 30px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;background:var(--accent,#FFE100);border-radius:14px;"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v12"></path><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"></path></svg></span><h3 style="font-weight:700;font-size:19px;margin:18px 0 10px;color:#fff;">笑顔を増やす</h3><p style="font-size:14.5px;line-height:1.9;color:#b5b5b5;margin:0;">つくる人・食する人の双方に、共通の笑顔が生まれる社会を目指します。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section data-screen-label="Story" style="padding:96px 24px;background:#FFFDF0;">
+    <div style="max-width:900px;margin:0 auto;">
+      <div data-reveal="">
+        <span style="display:inline-block;background:var(--accent,#FFE100);color:#1A1A1A;font-family:'Inter',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.16em;padding:7px 15px;border-radius:999px;">OUR STORY</span>
+        <h2 style="font-weight:900;font-size:clamp(26px,3.8vw,40px);line-height:1.3;letter-spacing:-0.02em;margin:22px 0 18px;">「食とITをつなぐ」という、原点。</h2>
+        <p style="font-size:15.5px;line-height:2.05;color:#555;margin:0 0 16px;">代表の鈴木は、2000年にWebコンサルティング会社を創業し、業界黎明期を牽引。その後、国内のDX・SaaS導入の先駆者として220社以上の支援を重ねてきました。</p>
+        <p style="font-size:15.5px;line-height:2.05;color:#555;margin:0 0 16px;">一方で、自ら飲食事業の経営にも携わり、事業承継後の再成長を実体験。ITの可能性と、飲食の現場のリアルな両方を知る立場から、2022年「食とITをつなぐ」をテーマにFooDXを設立しました。</p>
+        <p style="font-size:15.5px;line-height:2.05;color:#555;margin:0;">わたしたちは、ツールを売るのではなく、経営者の<strong style="color:var(--accent-deep,#BA7517);">「相方」</strong>として現場に並走します。AIと共に店を動かし、食産業に共通の笑顔を増やしていきます。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPANY PROFILE -->
+  <section data-screen-label="Company Profile" style="padding:96px 24px;background:#F5F5F0;">
+    <div style="max-width:920px;margin:0 auto;">
+      <div data-reveal="" style="text-align:center;margin-bottom:48px;">
+        <span style="display:inline-block;background:var(--accent,#FFE100);color:#1A1A1A;font-family:'Inter',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.16em;padding:7px 15px;border-radius:999px;">COMPANY PROFILE</span>
+        <h2 style="font-weight:900;font-size:clamp(28px,4.2vw,44px);line-height:1.2;letter-spacing:-0.02em;margin:22px 0 0;">会社概要</h2>
+      </div>
+      <div data-reveal="" style="background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+        <dl style="margin:0;">
+          <div style="display:grid;grid-template-columns:200px 1fr;border-bottom:1px solid #eee;"><dt style="padding:22px 28px;background:#FAFAF5;font-size:14px;font-weight:700;color:#555;">会社名</dt><dd style="padding:22px 28px;margin:0;font-size:15px;">FooDX合同会社（FooDX, LLC.）</dd></div>
+          <div style="display:grid;grid-template-columns:200px 1fr;border-bottom:1px solid #eee;"><dt style="padding:22px 28px;background:#FAFAF5;font-size:14px;font-weight:700;color:#555;">代表者</dt><dd style="padding:22px 28px;margin:0;font-size:15px;">代表社員　鈴木 昭彦</dd></div>
+          <div style="display:grid;grid-template-columns:200px 1fr;border-bottom:1px solid #eee;"><dt style="padding:22px 28px;background:#FAFAF5;font-size:14px;font-weight:700;color:#555;">設立</dt><dd style="padding:22px 28px;margin:0;font-size:15px;">2022年</dd></div>
+          <div style="display:grid;grid-template-columns:200px 1fr;border-bottom:1px solid #eee;"><dt style="padding:22px 28px;background:#FAFAF5;font-size:14px;font-weight:700;color:#555;">事業内容</dt><dd style="padding:22px 28px;margin:0;font-size:15px;line-height:1.9;">飲食店向け経営OS型AXサービス「AIkata」の提供<br>Googleビジネスプロフィール代行（MEO対策）<br>予約体験最適化（REO）／ グリストラップ清掃自動化装置</dd></div>
+          <div style="display:grid;grid-template-columns:200px 1fr;border-bottom:1px solid #eee;"><dt style="padding:22px 28px;background:#FAFAF5;font-size:14px;font-weight:700;color:#555;">本社所在地</dt><dd style="padding:22px 28px;margin:0;font-size:15px;line-height:1.8;">〒150-0043<br>東京都渋谷区道玄坂1-10-8 渋谷道玄坂東急ビル2F-C</dd></div>
+          <div style="display:grid;grid-template-columns:200px 1fr;"><dt style="padding:22px 28px;background:#FAFAF5;font-size:14px;font-weight:700;color:#555;">お問い合わせ</dt><dd style="padding:22px 28px;margin:0;font-size:15px;"><a href="Contact.dc.html" style="color:var(--accent-deep,#BA7517);font-weight:700;text-decoration:none;">お問い合わせフォームより受付けています →</a></dd></div>
+        </dl>
+      </div>
+      
+    </div>
+  </section>
+
+  <!-- FOUNDER -->
+  <section data-screen-label="Founder" style="padding:96px 24px;background:#FAFAFA;">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div data-reveal="" style="text-align:center;max-width:760px;margin:0 auto 52px;">
+        <span style="display:inline-block;background:var(--accent,#FFE100);color:#1A1A1A;font-family:'Inter',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.16em;padding:7px 15px;border-radius:999px;">FOUNDER</span>
+        <h2 style="font-weight:900;font-size:clamp(28px,4.2vw,44px);line-height:1.2;letter-spacing:-0.02em;margin:22px 0 0;">代表プロフィール</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:0.8fr 1.2fr;gap:48px;align-items:start;">
+        <div data-reveal="">
+          <div style="background:var(--accent,#FFE100);border-radius:22px;aspect-ratio:1/1;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;position:relative;"><svg width="60%" height="60%" viewBox="0 0 24 24" fill="#1A1A1A" opacity="0.18" style="position:absolute;bottom:-4%;"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 6v2h18v-2c0-3.5-4-6-9-6Z"></path></svg></div>
+          <h3 style="font-weight:900;font-size:22px;margin:22px 0 4px;">鈴木 昭彦</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:13px;color:#999;margin:0 0 8px;letter-spacing:0.04em;">SUZUKI Akihiko</p>
+          <p style="font-size:14px;color:#555;margin:0;">FooDX合同会社 代表社員</p>
+        </div>
+        <div data-reveal="" style="display:flex;flex-direction:column;gap:18px;">
+          <div style="background:#fff;border-radius:16px;padding:28px 30px;box-shadow:0 1px 3px rgba(0,0,0,0.04);"><h4 style="font-weight:700;font-size:18px;margin:0 0 10px;">Web黎明期から第一線を走る連続起業家</h4><p style="font-size:14.5px;line-height:1.85;color:#666;margin:0;">2000年にWebコンサルティング会社を創業し、日本のWebマーケティング黎明期を牽引。以来20年以上、500社を超える企業の成長を支援してきた連続起業家。</p></div>
+          <div style="background:#fff;border-radius:16px;padding:28px 30px;box-shadow:0 1px 3px rgba(0,0,0,0.04);"><h4 style="font-weight:700;font-size:18px;margin:0 0 10px;">国内DX・SaaS導入の先駆者</h4><p style="font-size:14.5px;line-height:1.85;color:#666;margin:0;">Zendesk国内初パートナーとして220社以上の導入を支援。チャットボット・AI活用の国内市場を2012年から開拓。</p></div>
+          <div style="background:#fff;border-radius:16px;padding:28px 30px;box-shadow:0 1px 3px rgba(0,0,0,0.04);"><h4 style="font-weight:700;font-size:18px;margin:0 0 10px;">飲食事業の経営・再成長の実績</h4><p style="font-size:14.5px;line-height:1.85;color:#666;margin:0;">飲食店の事業承継後、マーケティングを再構築し客足を取り戻して再成長を実現。「食とITをつなぐ」をテーマにFooDXを2022年設立。</p></div>
+          <blockquote style="margin:8px 0 0;border-left:4px solid var(--accent,#FFE100);padding:6px 0 6px 22px;font-size:17px;font-weight:700;line-height:1.7;color:#1A1A1A;">「ITで何ができるかを知り、飲食の現場も経営した人間が、あなたの経営の相方になります。」</blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section data-screen-label="CTA" style="padding:104px 24px;background:#1A1A1A;color:#fff;text-align:center;">
+    <div data-reveal="" style="max-width:720px;margin:0 auto;">
+      <h2 style="font-weight:900;font-size:clamp(30px,5vw,52px);line-height:1.2;letter-spacing:-0.02em;margin:0;">食産業のAXを、<br><span style="color:var(--accent,#FFE100);">一緒に</span>進めませんか。</h2>
+      <p style="font-size:16px;line-height:1.9;color:#cfcfcf;margin:24px 0 0;">サービスのご相談・取材・協業のお問い合わせはこちらから。</p>
+      <a href="Contact.dc.html" style="display:inline-flex;align-items:center;gap:10px;background:var(--accent,#FFE100);color:#1A1A1A;padding:18px 42px;border-radius:999px;font-weight:700;font-size:17px;text-decoration:none;margin-top:32px;box-shadow:0 12px 32px rgba(255,225,0,0.22);" style-hover="background:#ffea4d;">お問い合わせする<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#111;color:#888;padding:48px 24px 36px;">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:40px;padding-bottom:32px;border-bottom:1px solid #262626;">
+        <div style="max-width:300px;"><a href="AIkata.dc.html" style="display:inline-block;text-decoration:none;"><img src="assets/foodx-logo-white.png" alt="FooDX" style="height:28px;width:auto;display:block;"></a><p style="margin:14px 0 0;font-size:13px;line-height:1.8;color:#777;">食業界のAX推進支援カンパニー。</p></div>
+        <div style="display:flex;gap:56px;flex-wrap:wrap;">
+          <div><h4 style="font-family:'Inter',sans-serif;font-size:11px;letter-spacing:0.12em;color:#666;text-transform:uppercase;margin:0 0 14px;font-weight:600;">サービス</h4><ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px;"><li><a href="AIkata.dc.html" style="font-size:13.5px;color:#aaa;text-decoration:none;" style-hover="color:var(--accent,#FFE100);">AIkata（経営OS）</a></li><li><a href="GoogleProfile.dc.html" style="font-size:13.5px;color:#aaa;text-decoration:none;" style-hover="color:var(--accent,#FFE100);">Googleプロフィール代行</a></li><li><a href="REO.dc.html" style="font-size:13.5px;color:#aaa;text-decoration:none;" style-hover="color:var(--accent,#FFE100);">予約体験最適化（REO）</a></li><li><a href="GreaseOzonizer.dc.html" style="font-size:13.5px;color:#aaa;text-decoration:none;" style-hover="color:var(--accent,#FFE100);">グリストラップ自動化</a></li></ul></div>
+          <div><h4 style="font-family:'Inter',sans-serif;font-size:11px;letter-spacing:0.12em;color:#666;text-transform:uppercase;margin:0 0 14px;font-weight:600;">会社情報</h4><ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px;"><li><a href="About.dc.html" style="font-size:13.5px;color:#aaa;text-decoration:none;" style-hover="color:var(--accent,#FFE100);">会社概要</a></li><li><a href="Contact.dc.html" style="font-size:13.5px;color:#aaa;text-decoration:none;" style-hover="color:var(--accent,#FFE100);">お問い合わせ</a></li></ul></div>
+        </div>
+      </div>
+      <p style="margin:24px 0 0;font-size:12px;color:#555;">©FooDX, LLC. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FFE100&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FFE100&quot;,&quot;#FFC400&quot;,&quot;#F5A623&quot;,&quot;#4CAF50&quot;]},&quot;revealAnimations&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() { this._applyAccent(); this._setupReveal(); }
+  componentDidUpdate() { this._applyAccent(); }
+  _applyAccent() {
+    const c = this.props.accentColor;
+    if (c) document.documentElement.style.setProperty('--accent', c);
+  }
+  _setupReveal() {
+    if (this.props.revealAnimations === false) return;
+    const els = Array.from(document.querySelectorAll('[data-reveal]'));
+    if (!els.length) return;
+    const show = (el) => { el.style.opacity = '1'; el.style.transform = 'none'; };
+    els.forEach((el) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(22px)';
+      el.style.transition = 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)';
+    });
+    const revealVisible = () => {
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      els.forEach((el) => {
+        if (el.style.opacity === '1') return;
+        const r = el.getBoundingClientRect();
+        if (r.top < vh * 0.92 && r.bottom > 0) show(el);
+      });
+    };
+    revealVisible();
+    let io = null;
+    if (typeof IntersectionObserver !== 'undefined') {
+      io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { show(e.target); io.unobserve(e.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      els.forEach((el) => { if (el.style.opacity !== '1') io.observe(el); });
+    }
+    this._onScroll = () => revealVisible();
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('resize', this._onScroll, { passive: true });
+    this._revealTimer = setTimeout(() => els.forEach(show), 1200);
+  }
+  componentWillUnmount() {
+    if (this._onScroll) {
+      window.removeEventListener('scroll', this._onScroll);
+      window.removeEventListener('resize', this._onScroll);
+    }
+    if (this._revealTimer) clearTimeout(this._revealTimer);
+  }
+}
+</script>
+</body>
+</html>
