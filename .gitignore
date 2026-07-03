@@ -1,5 +1,11 @@
 # macOS
 .DS_Store
 
+# Node
+node_modules/
+
+# Vercel
+.vercel/
+
 # 作業用スクラップ（本番配信しないファイル置き場）
 scraps/

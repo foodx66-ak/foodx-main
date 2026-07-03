@@ -1,0 +1,10 @@
+{
+  "name": "foodx-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "FooDX corporate site (static) with a Vercel serverless contact endpoint.",
+  "dependencies": {
+    "resend": "^6.16.0"
+  }
+}
