@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /AIkataDiagnosis.dc.html
 
-Sitemap: https://foodx.co.jp/sitemap.xml
+Sitemap: https://www.foodx.co.jp/sitemap.xml
