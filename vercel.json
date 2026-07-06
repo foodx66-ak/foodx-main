@@ -1,5 +1,18 @@
 {
+  "redirects": [
+    { "source": "/AIkata.dc.html", "destination": "/", "permanent": true },
+    { "source": "/About.dc.html", "destination": "/about", "permanent": true },
+    { "source": "/Contact.dc.html", "destination": "/contact", "permanent": true },
+    { "source": "/GoogleProfile.dc.html", "destination": "/google-profile", "permanent": true },
+    { "source": "/REO.dc.html", "destination": "/reo", "permanent": true },
+    { "source": "/GreaseOzonizer.dc.html", "destination": "/grease-ozonizer", "permanent": true }
+  ],
   "rewrites": [
-    { "source": "/", "destination": "/AIkata.dc.html" }
+    { "source": "/", "destination": "/AIkata.dc.html" },
+    { "source": "/about", "destination": "/About.dc.html" },
+    { "source": "/contact", "destination": "/Contact.dc.html" },
+    { "source": "/google-profile", "destination": "/GoogleProfile.dc.html" },
+    { "source": "/reo", "destination": "/REO.dc.html" },
+    { "source": "/grease-ozonizer", "destination": "/GreaseOzonizer.dc.html" }
   ]
 }
