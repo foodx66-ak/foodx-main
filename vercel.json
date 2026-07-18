@@ -1,18 +1,102 @@
 {
   "redirects": [
-    { "source": "/AIkata.dc.html", "destination": "/", "permanent": true },
-    { "source": "/About.dc.html", "destination": "/about", "permanent": true },
-    { "source": "/Contact.dc.html", "destination": "/contact", "permanent": true },
-    { "source": "/GoogleProfile.dc.html", "destination": "/google-profile", "permanent": true },
-    { "source": "/REO.dc.html", "destination": "/reo", "permanent": true },
-    { "source": "/GreaseOzonizer.dc.html", "destination": "/grease-ozonizer", "permanent": true }
+    {
+      "source": "/AIkata.dc.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/About.dc.html",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/Contact.dc.html",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/GoogleProfile.dc.html",
+      "destination": "/google-profile",
+      "permanent": true
+    },
+    {
+      "source": "/REO.dc.html",
+      "destination": "/reo",
+      "permanent": true
+    },
+    {
+      "source": "/GreaseOzonizer.dc.html",
+      "destination": "/grease-ozonizer",
+      "permanent": true
+    },
+    {
+      "source": "/lab",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/lab/author/:path*",
+      "destination": "/",
+      "permanent": true
+    }
   ],
   "rewrites": [
-    { "source": "/", "destination": "/AIkata.dc.html" },
-    { "source": "/about", "destination": "/About.dc.html" },
-    { "source": "/contact", "destination": "/Contact.dc.html" },
-    { "source": "/google-profile", "destination": "/GoogleProfile.dc.html" },
-    { "source": "/reo", "destination": "/REO.dc.html" },
-    { "source": "/grease-ozonizer", "destination": "/GreaseOzonizer.dc.html" }
+    {
+      "source": "/",
+      "destination": "/AIkata.dc.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/About.dc.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/Contact.dc.html"
+    },
+    {
+      "source": "/google-profile",
+      "destination": "/GoogleProfile.dc.html"
+    },
+    {
+      "source": "/reo",
+      "destination": "/REO.dc.html"
+    },
+    {
+      "source": "/grease-ozonizer",
+      "destination": "/GreaseOzonizer.dc.html"
+    },
+    {
+      "source": "/lab/googleマップと集客の関係性",
+      "destination": "/lab/googleマップと集客の関係性.html"
+    },
+    {
+      "source": "/lab/axとは-飲食店経営に必要なaiトランスフォーメーションをfoodxがわかりやすく解説",
+      "destination": "/lab/axとは-飲食店経営に必要なaiトランスフォーメーションをfoodxがわかりやすく解説.html"
+    },
+    {
+      "source": "/lab/飲食業界の未来を切り拓くdx最前線",
+      "destination": "/lab/飲食業界の未来を切り拓くdx最前線.html"
+    },
+    {
+      "source": "/lab/飲食店における生成aiを活用した働き方の変化",
+      "destination": "/lab/飲食店における生成aiを活用した働き方の変化.html"
+    },
+    {
+      "source": "/lab/テクノロジーと人間の融合身体化aiの未来",
+      "destination": "/lab/テクノロジーと人間の融合身体化aiの未来.html"
+    },
+    {
+      "source": "/lab/-グルメサイト時代-の終焉飲食店とユーザーのニーズが変化し-新たな時代が幕を開ける",
+      "destination": "/lab/-グルメサイト時代-の終焉飲食店とユーザーのニーズが変化し-新たな時代が幕を開ける.html"
+    },
+    {
+      "source": "/lab/-グルメサイト時代-の終焉飲食店とユーザーのニーズが変化し-新たな時代が幕を開ける-0",
+      "destination": "/lab/-グルメサイト時代-の終焉飲食店とユーザーのニーズが変化し-新たな時代が幕を開ける-0.html"
+    },
+    {
+      "source": "/lab/-saasの死-の正体-aiが-オンプレとsaasの良いとこ取りを始めた",
+      "destination": "/lab/-saasの死-の正体-aiが-オンプレとsaasの良いとこ取りを始めた.html"
+    }
   ]
 }

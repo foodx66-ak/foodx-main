@@ -9,3 +9,6 @@ node_modules/
 
 # 作業用スクラップ（本番配信しないファイル置き場）
 scraps/
+
+# HubSpotエクスポート（移行用の元データ・本番配信しない）
+hubspot-export/
