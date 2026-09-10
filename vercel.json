@@ -31,11 +31,6 @@
       "permanent": true
     },
     {
-      "source": "/lab",
-      "destination": "/",
-      "permanent": true
-    },
-    {
       "source": "/lab/author/:path*",
       "destination": "/",
       "permanent": true
