@@ -59,6 +59,15 @@ header.site nav a.cta-nav:hover{background:#ffea4d;color:#1A1A1A;}
 .article table{border-collapse:collapse;width:100%;margin:0 0 20px;font-size:14px;}
 .article th,.article td{border:1px solid #e2e2dc;padding:8px 12px;}
 .article th{background:#f5f5f0;}
+.related{margin:44px 0 0;border-top:1px solid #eee;padding-top:28px;}
+.related h2{font-size:18px;margin:0 0 16px;border:none;padding:0;}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.related-card{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:#1A1A1A;}
+.related-card img{width:100%;aspect-ratio:1.91/1;object-fit:cover;border-radius:10px;margin:0;display:block;}
+.related-date{font-family:'Inter',sans-serif;font-size:11.5px;color:#999;line-height:1.4;}
+.related-name{font-size:14px;font-weight:700;line-height:1.5;}
+.related-card .body{display:flex;flex-direction:column;gap:4px;min-width:0;}
+.related-card:hover .related-name{color:#BA7517;}
 .cta{margin:40px 0 8px;text-align:center;}
 .cta a{display:inline-flex;align-items:center;gap:10px;background:var(--accent,#FFE100);color:#1A1A1A;padding:16px 34px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;}
 .backlink{display:inline-block;margin:28px 0 0;font-size:14px;color:#666;text-decoration:none;}
@@ -68,7 +77,7 @@ footer.site a{color:#aaa;text-decoration:none;}
 footer.site a:hover{color:#FFE100;}
 .fcols{display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;border-bottom:1px solid #262626;padding-bottom:28px;}
 .fcols ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;font-size:13.5px;}
-@media (max-width:600px){.article{padding:32px 20px;}header.site .wrap{height:auto;padding-top:12px;padding-bottom:12px;flex-wrap:wrap;gap:10px 0;}header.site nav{gap:14px;}header.site nav a{font-size:13px;}.util-bar-inner{flex-wrap:wrap !important;height:auto !important;padding-top:8px !important;padding-bottom:8px !important;gap:6px 16px !important;}.util-bar-inner nav{flex-wrap:wrap;gap:4px 16px !important;}.util-drop-menu{left:0;right:auto;}}
+@media (max-width:600px){.article{padding:32px 20px;}header.site .wrap{height:auto;padding-top:12px;padding-bottom:12px;flex-wrap:wrap;gap:10px 0;}header.site nav{gap:14px;}header.site nav a{font-size:13px;}.util-bar-inner{flex-wrap:wrap !important;height:auto !important;padding-top:8px !important;padding-bottom:8px !important;gap:6px 16px !important;}.util-bar-inner nav{flex-wrap:wrap;gap:4px 16px !important;}.util-drop-menu{left:0;right:auto;}.related-grid{grid-template-columns:1fr;gap:14px;}.related-card{flex-direction:row;align-items:center;gap:12px;}.related-card img{width:104px;flex:0 0 104px;}}
 </style>
 </head>
 <body>
@@ -119,6 +128,24 @@ footer.site a:hover{color:#FFE100;}
 <h2>労働環境の改善</h2> <p>生成AIの導入により、飲食店の労働環境も改善されています。AIが従業員のストレスレベルをモニタリングし、適切なタイミングで休憩を促すことができるシステムが開発されています。具体的には、以下のような効果があります。<br/><br/><span style="font-weight: bold;">1. ストレスモニタリング</span><br/>   - AIが従業員の生体データをモニタリングし、ストレスレベルをリアルタイムで把握します。<br/>   - ストレスが高まった場合、AIが適切なタイミングで休憩を促すことで、従業員の健康を維持しながら働くことができます。<br/><br/><span style="font-weight: bold;">2. トレーニングプログラムの効率化</span><br/>   - AIを活用したトレーニングプログラムにより、新人スタッフの教育が効率的に行えます。<br/>   - AIが個々の従業員の習熟度を把握し、それに応じたトレーニング内容を提供することで、早期に戦力化することが可能です。<br/><br/><span style="font-weight: bold;">3. 作業効率の向上</span><br/>   - AIが従業員の作業効率を分析し、改善点を提案することで、業務の効率化が図られます。<br/>   - これにより、無駄な作業が減少し、従業員はより効率的に働くことができます。</p>
 <h2>具体的な導入事例</h2> <p>ここで、生成AIを活用した具体的な導入事例をご紹介します。<br/><br/><span style="font-weight: bold;">事例1: 都内の高級レストラン</span><br/><br/>東京都内の高級レストランでは、AI通訳アプリを導入することで、外国人観光客へのサービス向上を実現しました。多言語対応が求められる中、AI通訳アプリの導入により、スタッフは言語の壁を感じることなく接客に集中できるようになりました。この結果、外国人観光客からの評価が向上し、売上も増加しました。<br/><br/><span style="font-weight: bold;">事例2: 大手チェーン店</span><br/><br/>全国展開している大手チェーン店では、AIを活用したシフト管理システムを導入しました。これにより、従業員の出勤・退勤データをリアルタイムで収集・分析し、最適なシフトを提案することが可能となりました。この結果、シフト作成にかかる時間が大幅に削減され、管理者の負担が軽減されました。<br/><br/><span style="font-weight: bold;">事例3: 地方のファミリーレストラン</span><br/><br/>地方のファミリーレストランでは、AIを活用したストレスモニタリングシステムを導入しました。従業員のストレスレベルをリアルタイムでモニタリングし、適切なタイミングで休憩を促すことで、従業員の健康を維持しながら働くことができました。この結果、従業員の離職率が低下し、労働環境が改善されました。</p>
 <h2>まとめ</h2> <p>飲食店における生成AIの活用は、「通訳」、「人事労務」、「労働環境」の各分野で革新的な変化をもたらしています。これらの技術を導入することで、業務の効率化とサービスの質向上が期待できるだけでなく、従業員の働きやすさも向上します。今後も生成AIの進化に注目し、飲食業界全体での更なる発展を目指していきましょう。</p>
+    <section class="related">
+      <h2>関連記事</h2>
+      <div class="related-grid">
+        <a class="related-card" href="/lab/ax%E3%81%A8%E3%81%AF-%E9%A3%B2%E9%A3%9F%E5%BA%97%E7%B5%8C%E5%96%B6%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AAai%E3%83%88%E3%83%A9%E3%83%B3%E3%82%B9%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92foodx%E3%81%8C%E3%82%8F%E3%81%8B%E3%82%8A%E3%82%84%E3%81%99%E3%81%8F%E8%A7%A3%E8%AA%AC">
+          <img src="/assets/lab/203054c96eb9.png" alt="AXとは？ 飲食店経営に必要なAIトランスフォーメーションをFooDXがわかりやすく解説！" loading="lazy">
+          <span class="body"><span class="related-date">2026.03.22</span><span class="related-name">AXとは？ 飲食店経営に必要なAIトランスフォーメーションをFooDXがわかりやすく解説！</span></span>
+        </a>
+        <a class="related-card" href="/lab/%E3%83%86%E3%82%AF%E3%83%8E%E3%83%AD%E3%82%B8%E3%83%BC%E3%81%A8%E4%BA%BA%E9%96%93%E3%81%AE%E8%9E%8D%E5%90%88%E8%BA%AB%E4%BD%93%E5%8C%96ai%E3%81%AE%E6%9C%AA%E6%9D%A5">
+          <img src="/assets/lab/264529ccfd77.webp" alt="テクノロジーと人間の融合：身体化AIの未来" loading="lazy">
+          <span class="body"><span class="related-date">2024.02.27</span><span class="related-name">テクノロジーと人間の融合：身体化AIの未来</span></span>
+        </a>
+        <a class="related-card" href="/lab/flr%E3%81%A8%E3%81%AF-%E9%A3%B2%E9%A3%9F%E5%BA%97%E3%81%AE%E7%B5%8C%E5%96%B6%E6%8C%87%E6%A8%99%E3%81%ABai%E3%82%B3%E3%82%B9%E3%83%88a%E3%82%92%E8%B6%B3%E3%81%99flra%E3%81%AE%E6%8F%90%E8%A8%80">
+          <img src="/assets/lab/7198bd42cd90.jpg" alt="FLからFLRへ、そしてFLRAへ ── 飲食店の経営指標に「A」を足すとき" loading="lazy">
+          <span class="body"><span class="related-date">2026.09.10</span><span class="related-name">FLからFLRへ、そしてFLRAへ ── 飲食店の経営指標に「A」を足すとき</span></span>
+        </a>
+      </div>
+    </section>
+
     <div class="cta"><a href="/contact">飲食店のAI活用を相談する（無料）</a></div>
     <a class="backlink" href="/lab/">← Lab 記事一覧へ</a>
   </article>
