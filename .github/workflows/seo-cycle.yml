@@ -1,0 +1,62 @@
+# foodx.co.jp SEO自動サイクル
+#  - 毎月1日・15日 9:00(JST) に実行（ほぼ2週間おき）
+#  - 手動実行も可。手動のときは既定で DRY RUN（PRを作らずSlackに提案だけ送る）
+#  - Publicリポジトリのため、分析内容はログに出さない設計
+name: SEO auto cycle
+
+on:
+  schedule:
+    - cron: '0 0 1,15 * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'DRY RUN（PRを作らずSlackに提案だけ送る）'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write        # ブランチ作成・push
+  pull-requests: write   # PR作成
+  id-token: write        # Google Cloud へのキーレス認証（Workload Identity Federation）
+
+concurrency:
+  group: seo-auto-cycle
+  cancel-in-progress: false
+
+jobs:
+  cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Google Cloud 認証（キーレス）
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_SA_EMAIL }}
+
+      - name: 依存パッケージ
+        working-directory: automation/seo
+        run: npm install --no-audit --no-fund --silent
+
+      - name: git 設定
+        run: |
+          git config user.name  "foodx-seo-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: サイクル実行
+        working-directory: automation/seo
+        env:
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+          REPO_ROOT: ${{ github.workspace }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          LEDGER_SHEET_ID: ${{ secrets.LEDGER_SHEET_ID }}
+        run: node run.mjs

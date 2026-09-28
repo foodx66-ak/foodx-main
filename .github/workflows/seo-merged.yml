@@ -1,0 +1,35 @@
+# 自動PR（seo-auto/*）がマージ／クローズされたら施策ログを更新し、効果測定の予定を登録する
+name: SEO auto PR closed
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  record:
+    if: startsWith(github.head_ref, 'seo-auto/') && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_SA_EMAIL }}
+      - working-directory: automation/seo
+        run: npm install --no-audit --no-fund --silent
+      - working-directory: automation/seo
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_MERGED: ${{ github.event.pull_request.merged }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          LEDGER_SHEET_ID: ${{ secrets.LEDGER_SHEET_ID }}
+        run: node on-merge.mjs

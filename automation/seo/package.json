@@ -1,0 +1,15 @@
+{
+  "name": "foodx-seo-automation",
+  "private": true,
+  "type": "module",
+  "description": "foodx.co.jp SEO cycle automation (runs on GitHub Actions only; excluded from Vercel deploy)",
+  "scripts": {
+    "run": "node run.mjs",
+    "on-merge": "node on-merge.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "google-auth-library": "^9.15.0"
+  },
+  "engines": { "node": ">=20" }
+}
