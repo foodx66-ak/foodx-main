@@ -47,21 +47,34 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:#1A1A1A!import
 details summary::-webkit-details-marker{display:none;}
 /* ===== Responsive (tablet) ===== */
 @media (max-width: 900px){
-  div[style*="grid-template-columns:repeat(5"]{grid-template-columns:repeat(2,1fr) !important;}
-  div[style*="grid-template-columns:repeat(3"]{grid-template-columns:repeat(2,1fr) !important;}
+  div[style*="grid-template-columns:repeat(5"],
+  div[style*="grid-template-columns: repeat(5"]{grid-template-columns:repeat(2,1fr) !important;}
+  div[style*="grid-template-columns:repeat(3"],
+  div[style*="grid-template-columns: repeat(3"]{grid-template-columns:repeat(2,1fr) !important;}
   div[style*="grid-template-columns:1.05fr 0.95fr"],
+  div[style*="grid-template-columns: 1.05fr 0.95fr"],
   div[style*="grid-template-columns:0.85fr 1.15fr"],
+  div[style*="grid-template-columns: 0.85fr 1.15fr"],
   div[style*="grid-template-columns:0.8fr 1.2fr"],
-  div[style*="grid-template-columns:1.5fr 0.9fr"]{grid-template-columns:1fr !important;gap:36px !important;}
+  div[style*="grid-template-columns: 0.8fr 1.2fr"],
+  div[style*="grid-template-columns:1.5fr 0.9fr"],
+  div[style*="grid-template-columns: 1.5fr 0.9fr"],
+  div[style*="grid-template-columns:160px 1fr"],
+  div[style*="grid-template-columns: 160px 1fr"]{grid-template-columns:1fr !important;gap:36px !important;}
 }
 /* ===== Responsive (mobile) ===== */
 @media (max-width: 600px){
   section{padding-left:18px !important;padding-right:18px !important;padding-top:64px !important;padding-bottom:64px !important;}
   div[style*="grid-template-columns:repeat(2"],
+  div[style*="grid-template-columns: repeat(2"],
   div[style*="grid-template-columns:repeat(3"],
+  div[style*="grid-template-columns: repeat(3"],
   div[style*="grid-template-columns:repeat(4"],
+  div[style*="grid-template-columns: repeat(4"],
   div[style*="grid-template-columns:repeat(5"],
-  div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important;}
+  div[style*="grid-template-columns: repeat(5"],
+  div[style*="grid-template-columns:1fr 1fr"],
+  div[style*="grid-template-columns: 1fr 1fr"]{grid-template-columns:1fr !important;}
   header > div{height:auto !important;padding-top:12px !important;padding-bottom:12px !important;flex-wrap:wrap !important;gap:10px 0 !important;}
   header nav{gap:14px !important;flex-wrap:wrap !important;justify-content:flex-start !important;}
   header nav a{font-size:13px !important;}
