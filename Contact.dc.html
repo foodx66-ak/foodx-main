@@ -186,19 +186,36 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:#1A1A1A!import
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FFE100&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FFE100&quot;,&quot;#FFC400&quot;,&quot;#F5A623&quot;,&quot;#4CAF50&quot;]},&quot;revealAnimations&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
+  static TOPIC_LABELS = ['AIkata（経営OS）', '集客支援（MEO・AIO）', '予約体験最適化（REO）', 'グリストラップ自動化', 'その他'];
   state = { submitted: false, topic: 'AIkata（経営OS）' };
-  componentDidMount() { this._applyAccent(); this._setupReveal(); }
+  componentDidMount() {
+    this._applyAccent();
+    this._setupReveal();
+    this._applyTopicFromQuery();
+  }
   componentDidUpdate() { this._applyAccent(); }
   _applyAccent() {
     const c = this.props.accentColor;
     if (c) document.documentElement.style.setProperty('--accent', c);
+  }
+  _applyTopicFromQuery() {
+    try {
+      const params = new URLSearchParams(window.location.search || '');
+      const raw = (params.get('topic') || '').trim();
+      if (!raw) return;
+      const labels = Component.TOPIC_LABELS;
+      const hit = labels.find((l) => l === raw)
+        || labels.find((l) => l.startsWith(raw) || raw.startsWith(l))
+        || labels.find((l) => decodeURIComponent(raw) === l);
+      if (hit) this.setState({ topic: hit });
+    } catch (_) {}
   }
   renderVals() {
     const active = this.state.topic;
     const base = 'padding:9px 16px;border-radius:999px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;';
     const on = base + 'background:#1A1A1A;color:#FFE100;border:1.5px solid #1A1A1A;';
     const off = base + 'background:#fff;color:#555;border:1.5px solid #e2e2dc;';
-    const labels = ['AIkata（経営OS）', 'Googleプロフィール代行', '予約体験最適化（REO）', 'グリストラップ自動化', 'その他'];
+    const labels = Component.TOPIC_LABELS;
     return {
       submitted: this.state.submitted,
       notSubmitted: !this.state.submitted,
