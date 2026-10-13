@@ -369,23 +369,41 @@ class Component extends DCLogic {
 
   async _generate(top, scored) {
     this.setState({ loading: true });
-    // ---- lead POST (placeholder endpoint) ----
-    const LEAD_ENDPOINT = '{{LEAD_ENDPOINT}}';
-    const payload = {
-      answers: this.state.answers,
-      recommendedTheme: top.name,
-      summary: top.summary,
-      email: this.state.email,
-      timestamp: new Date().toISOString(),
-    };
-    try {
-      if (LEAD_ENDPOINT && LEAD_ENDPOINT.indexOf('{{') === -1) {
-        fetch(LEAD_ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) }).catch(()=>{});
-      }
-    } catch (_) {}
 
     const a = this.state.answers;
     const get = (k) => (a[k] || []).join('・') || '未回答';
+    const qs = this.QUESTIONS();
+    const qLabel = {
+      q1: '業態', q2: '店舗数', q3: 'スタッフ規模',
+      q4: '手間を奪う業務', q5: '最優先', q6: '利用システム', q7: 'AI・IT導入経験',
+    };
+    const answerLines = ['q1','q2','q3','q4','q5','q6','q7'].map((id) => {
+      const title = (qs.find((q) => q.id === id) || {}).title || qLabel[id];
+      return `${qLabel[id] || title}：${get(id)}`;
+    });
+    const message = [
+      `【30秒診断】推奨テーマ：${top.name}`,
+      `概要：${top.summary || ''}`,
+      ...answerLines,
+    ].join('\n');
+
+    // ---- lead POST → /api/contact (Resend → contact@foodx.co.jp) ----
+    try {
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          topic: '30秒診断',
+          name: '（30秒診断・お名前未入力）',
+          company: '',
+          email: this.state.email,
+          phone: '',
+          message,
+          company_hp: '',
+        }),
+      }).catch(() => {});
+    } catch (_) {}
+
     const userMsg = '以下は飲食店経営者の簡易診断の回答です。JSONで渡します。\n' + JSON.stringify({
       業態: get('q1'), 店舗数: get('q2'), スタッフ規模: get('q3'),
       手間を奪う業務: get('q4'), 最優先: get('q5'), データ環境: get('q6'), IT経験: get('q7'),
@@ -394,9 +412,11 @@ class Component extends DCLogic {
     const sys = 'あなたはAIkataの「相方」として、飲食店経営者に診断結果を伝えます。落ち着いた伴走者のトーンで、煽らず・誇張せず・断定しすぎず。回答内容を必ず本文に具体的に織り込み、(1)なぜこのテーマを最初の一手に推すか、(2)想定の進め方（約3ヶ月／提案→確認→修正のループ）、(3)期待できる変化、を日本語で200〜300字でまとめてください。最後は「まずは一緒に設計しましょう」と相談へ自然につなぐこと。見出しや箇条書きは使わず、自然な文章で。';
     let text = '';
     try {
-      text = await window.claude.complete({ messages: [
-        { role:'user', content: sys + '\n\n' + userMsg },
-      ]});
+      if (window.claude && typeof window.claude.complete === 'function') {
+        text = await window.claude.complete({ messages: [
+          { role:'user', content: sys + '\n\n' + userMsg },
+        ]});
+      }
     } catch (e) { text = ''; }
     if (!text || !text.trim()) {
       text = '「' + top.name + '」を最初の一手としておすすめします。' + top.summary + ' まずは現状を一緒に整理し、約3ヶ月かけて提案→確認→修正のループで無理なく定着させていきます。まずは一緒に設計しましょう。';
