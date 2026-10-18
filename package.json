@@ -3,5 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "FooDX corporate site (static) with a Vercel serverless contact endpoint (dependency-free, uses global fetch)."
+  "description": "FooDX corporate site (static) with a Vercel serverless contact endpoint (dependency-free, uses global fetch).",
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.131.0",
+    "@upstash/redis": "1.39.0",
+    "@vercel/functions": "3.9.11"
+  }
 }
