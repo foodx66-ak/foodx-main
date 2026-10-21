@@ -1,14 +1,41 @@
 // お問い合わせフォーム → Resend 送信（Vercel Serverless Function）
 // 環境変数:
-//   RESEND_API_KEY  … Resend の API キー（必須）
-//   CONTACT_TO      … 受信先メール（例: contact@foodx.co.jp）
-//   CONTACT_FROM    … 送信元（例: "FooDX お問い合わせ <contact@foodx.co.jp>"）※認証済みドメインのみ
+//   RESEND_API_KEY           … Resend の API キー（必須）
+//   CONTACT_TO               … 受信先メール（例: contact@foodx.co.jp）
+//   CONTACT_FROM             … 送信元（例: "FooDX お問い合わせ <contact@foodx.co.jp>"）※認証済みドメインのみ
+//   TURNSTILE_SITE_KEY       … Cloudflare Turnstile サイトキー（公開可・フロント表示用）
+//   TURNSTILE_SECRET_KEY     … Cloudflare Turnstile シークレット（サーバー検証用）
+//   ※ CF_TURNSTILE_* / CLOUDFLARE_TURNSTILE_* も同義で受け付けます
 
 const escapeHtml = (value) =>
   String(value == null ? "" : value).replace(
     /[<>&"]/g,
     (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c])
   );
+
+function env(...keys) {
+  for (const key of keys) {
+    const v = process.env[key];
+    if (v != null && String(v).trim()) return String(v).trim();
+  }
+  return "";
+}
+
+function turnstileSiteKey() {
+  return env(
+    "TURNSTILE_SITE_KEY",
+    "CF_TURNSTILE_SITE_KEY",
+    "CLOUDFLARE_TURNSTILE_SITE_KEY"
+  );
+}
+
+function turnstileSecretKey() {
+  return env(
+    "TURNSTILE_SECRET_KEY",
+    "CF_TURNSTILE_SECRET_KEY",
+    "CLOUDFLARE_TURNSTILE_SECRET_KEY"
+  );
+}
 
 function readRawBody(req) {
   return new Promise((resolve, reject) => {
@@ -22,9 +49,49 @@ function readRawBody(req) {
   });
 }
 
+function clientIp(req) {
+  const xf = (req.headers["x-forwarded-for"] || "").toString();
+  if (xf) return xf.split(",")[0].trim();
+  return (req.headers["x-real-ip"] || "").toString().trim() || undefined;
+}
+
+async function verifyTurnstile(token, ip) {
+  const secret = turnstileSecretKey();
+  if (!secret) return { ok: true, skipped: true };
+  if (!token) {
+    return { ok: false, error: "ボット確認を完了してください。" };
+  }
+  try {
+    const body = new URLSearchParams();
+    body.set("secret", secret);
+    body.set("response", token);
+    if (ip) body.set("remoteip", ip);
+
+    const resp = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body,
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (data && data.success) return { ok: true };
+    console.error("Turnstile verify failed", data && data["error-codes"]);
+    return { ok: false, error: "ボット確認に失敗しました。ページを再読み込みして再度お試しください。" };
+  } catch (err) {
+    console.error("Turnstile verify error", err);
+    return { ok: false, error: "ボット確認中にエラーが発生しました。しばらくして再度お試しください。" };
+  }
+}
+
 export default async function handler(req, res) {
+  if (req.method === "GET") {
+    return res.status(200).json({
+      turnstileSiteKey: turnstileSiteKey(),
+      turnstileEnabled: Boolean(turnstileSecretKey()),
+    });
+  }
+
   if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
+    res.setHeader("Allow", "GET, POST");
     return res.status(405).json({ ok: false, error: "Method Not Allowed" });
   }
 
@@ -45,9 +112,22 @@ export default async function handler(req, res) {
   const phone = (body.phone || "").toString().trim();
   const message = (body.message || "").toString().trim();
   const honeypot = (body.company_hp || "").toString().trim();
+  const turnstileToken = (
+    body.turnstileToken ||
+    body["cf-turnstile-response"] ||
+    body.cfTurnstileResponse ||
+    ""
+  )
+    .toString()
+    .trim();
 
   // ボット対策（ハニーポットに入力があれば静かに成功扱いで破棄）
   if (honeypot) return res.status(200).json({ ok: true });
+
+  const captcha = await verifyTurnstile(turnstileToken, clientIp(req));
+  if (!captcha.ok) {
+    return res.status(400).json({ ok: false, error: captcha.error });
+  }
 
   if (!name || !email || !message) {
     return res

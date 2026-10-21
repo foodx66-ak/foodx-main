@@ -21,6 +21,7 @@
 {"@context":"https://schema.org","@type":"ContactPage","url":"https://www.foodx.co.jp/contact","name":"お問い合わせ｜FooDX合同会社","inLanguage":"ja","about":{"@type":"Organization","@id":"https://www.foodx.co.jp/#org","name":"FooDX合同会社","url":"https://www.foodx.co.jp/"}}
 </script>
 <script src="./support.js"></script>
+<script src="/assets/turnstile.js"></script>
 </head>
 <body>
 <x-dc>
@@ -147,6 +148,8 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:#1A1A1A!import
               <span>個人情報の取り扱いに同意します。ご入力いただいた情報はお問い合わせ対応の目的にのみ利用します。</span>
             </label>
 
+            <div id="cf-turnstile" data-foodx-turnstile style="min-height:0;"></div>
+
             <button type="submit" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;background:#1A1A1A;color:var(--accent,#FFE100);border:none;padding:17px;border-radius:999px;font-weight:700;font-size:16px;cursor:pointer;font-family:inherit;box-shadow:0 8px 22px rgba(26,26,26,0.18);" style-hover="background:#333;">送信する<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#FFE100)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
           </div>
         </form>
@@ -192,8 +195,27 @@ class Component extends DCLogic {
     this._applyAccent();
     this._setupReveal();
     this._applyTopicFromQuery();
+    this._mountTurnstile();
   }
-  componentDidUpdate() { this._applyAccent(); }
+  componentDidUpdate() {
+    this._applyAccent();
+    if (!this.state.submitted) this._mountTurnstile();
+  }
+  async _mountTurnstile() {
+    if (this._turnstileMounting || this._turnstile || this._turnstileSkipped) return;
+    const el = document.querySelector('[data-foodx-turnstile]');
+    if (!el || !window.FooDXTurnstile) return;
+    this._turnstileMounting = true;
+    try {
+      this._turnstile = await window.FooDXTurnstile.mount(el, { theme: 'light' });
+      if (!this._turnstile) this._turnstileSkipped = true;
+    } catch (err) {
+      console.error('Turnstile mount failed', err);
+      this._turnstileSkipped = true;
+    } finally {
+      this._turnstileMounting = false;
+    }
+  }
   _applyAccent() {
     const c = this.props.accentColor;
     if (c) document.documentElement.style.setProperty('--accent', c);
@@ -231,6 +253,11 @@ class Component extends DCLogic {
         const btn = form.querySelector('button[type="submit"]');
         const fd = new FormData(form);
         const val = (k) => (fd.get(k) || '').toString().trim();
+        const turnstileToken = this._turnstile ? this._turnstile.getToken() : '';
+        if (this._turnstile && !turnstileToken) {
+          alert('ボット確認を完了してください。');
+          return;
+        }
         const payload = {
           topic: this.state.topic,
           name: val('name'),
@@ -239,6 +266,7 @@ class Component extends DCLogic {
           phone: val('phone'),
           message: val('message'),
           company_hp: (fd.get('company_hp') || '').toString(),
+          turnstileToken,
         };
         this._sending = true;
         const orig = btn ? btn.innerHTML : '';
@@ -251,19 +279,26 @@ class Component extends DCLogic {
           });
           const data = await r.json().catch(() => ({}));
           if (r.ok && data.ok) {
+            this._turnstile = null;
             this.setState({ submitted: true });
             try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (_) {}
           } else {
+            if (this._turnstile) this._turnstile.reset();
             alert(data.error || '送信に失敗しました。時間をおいて再度お試しください。');
           }
         } catch (_) {
+          if (this._turnstile) this._turnstile.reset();
           alert('通信エラーが発生しました。ネットワークをご確認のうえ再度お試しください。');
         } finally {
           this._sending = false;
           if (btn) { btn.disabled = false; btn.style.opacity = ''; btn.style.cursor = 'pointer'; btn.innerHTML = orig; }
         }
       },
-      reset: () => this.setState({ submitted: false }),
+      reset: () => {
+        this._turnstile = null;
+        this._turnstileSkipped = false;
+        this.setState({ submitted: false });
+      },
     };
   }
   _setupReveal() {
