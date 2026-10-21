@@ -12,9 +12,13 @@ const RETRY = "AIの返答に失敗しました。もう一度送信してくだ
 
 async function* claudeText(session) {
   const anthropic = new Anthropic({ apiKey: config.anthropicApiKey });
+  // Sonnet 5.5 は既定で adaptive thinking が入り、max_tokens を思考に使い切ると本文が空になる。
+  // 壁打ちは短い返答なので、事前の思考を止め（between_tools）、effort も低めにする。
   const stream = anthropic.messages.stream({
     model: config.model,
-    max_tokens: 1500,
+    max_tokens: 2048,
+    thinking: { type: "between_tools" },
+    output_config: { effort: "low" },
     system: [
       { type: "text", text: KNOWLEDGE, cache_control: { type: "ephemeral" } },
       { type: "text", text: RUNTIME_RULES },
