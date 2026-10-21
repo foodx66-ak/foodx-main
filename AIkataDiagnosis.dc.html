@@ -9,6 +9,7 @@
 <title>AIkata 無料診断</title>
 <meta name="robots" content="noindex, nofollow">
 <script src="./support.js"></script>
+<script src="/assets/turnstile.js"></script>
 </head>
 <body>
 <x-dc>
@@ -113,6 +114,7 @@ input:focus{outline:none;border-color:#1A1A1A!important;box-shadow:0 0 0 3px rgb
               <p style="font-size:12.5px;line-height:1.7;color:#aaa;margin:0 0 16px;">推奨理由・想定の進め方・期待できる変化を、あなたの回答に合わせてお届けします。</p>
               <input type="email" value="{{ email }}" onInput="{{ onEmail }}" placeholder="you@example.com" style="width:100%;padding:13px 15px;font-size:15px;border:1.5px solid #444;border-radius:12px;font-family:inherit;background:#262626;color:#fff;margin-bottom:12px;transition:border-color .15s,box-shadow .15s;">
               <label style="display:flex;gap:10px;align-items:flex-start;font-size:12px;line-height:1.6;color:#bbb;cursor:pointer;margin-bottom:16px;"><input type="checkbox" checked="{{ consent }}" onChange="{{ onConsent }}" style="margin-top:2px;width:16px;height:16px;flex-shrink:0;accent-color:var(--ak-accent,#FACC15);"><span>診断レポートの送付と、ご相談のご連絡に利用することに同意します。</span></label>
+              <div id="cf-turnstile-diagnosis" data-foodx-turnstile style="margin-bottom:14px;min-height:0;"></div>
               <button type="button" onClick="{{ requestReport }}" style="{{ reportBtnStyle }}">{{ reportBtnLabel }}</button>
             </div>
           </sc-if>
@@ -220,8 +222,31 @@ class Component extends DCLogic {
 
   themes() { return (typeof window !== 'undefined' && window.AIKATA_THEMES) || []; }
 
-  componentDidMount() { this._applyTheme(); }
-  componentDidUpdate() { this._applyTheme(); }
+  componentDidMount() {
+    this._applyTheme();
+    this._mountTurnstile();
+  }
+  componentDidUpdate() {
+    this._applyTheme();
+    if (this.state.step >= this.QUESTIONS().length && !this.state.gated) {
+      this._mountTurnstile();
+    }
+  }
+  async _mountTurnstile() {
+    if (this._turnstileMounting || this._turnstile || this._turnstileSkipped) return;
+    const el = document.querySelector('[data-foodx-turnstile]');
+    if (!el || !window.FooDXTurnstile) return;
+    this._turnstileMounting = true;
+    try {
+      this._turnstile = await window.FooDXTurnstile.mount(el, { theme: 'dark' });
+      if (!this._turnstile) this._turnstileSkipped = true;
+    } catch (err) {
+      console.error('Turnstile mount failed', err);
+      this._turnstileSkipped = true;
+    } finally {
+      this._turnstileMounting = false;
+    }
+  }
   _applyTheme() {
     if (typeof document === 'undefined') return;
     const root = document.documentElement;
@@ -274,7 +299,11 @@ class Component extends DCLogic {
       isResult: step >= N,
       showProgress: step >= 0 && step < N,
       start: () => this.setState({ step: 0 }),
-      restart: () => this.setState({ step: -1, answers: {}, email:'', consent:false, gated:false, reportText:'', loading:false }),
+      restart: () => {
+        this._turnstile = null;
+        this._turnstileSkipped = false;
+        this.setState({ step: -1, answers: {}, email:'', consent:false, gated:false, reportText:'', loading:false });
+      },
     };
 
     if (base.isQuestion) {
@@ -368,6 +397,12 @@ class Component extends DCLogic {
   }
 
   async _generate(top, scored) {
+    const turnstileToken = this._turnstile ? this._turnstile.getToken() : '';
+    if (this._turnstile && !turnstileToken) {
+      alert('ボット確認を完了してください。');
+      return;
+    }
+
     this.setState({ loading: true });
 
     const a = this.state.answers;
@@ -400,6 +435,7 @@ class Component extends DCLogic {
           phone: '',
           message,
           company_hp: '',
+          turnstileToken,
         }),
       }).catch(() => {});
     } catch (_) {}
