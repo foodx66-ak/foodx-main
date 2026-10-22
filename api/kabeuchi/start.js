@@ -70,10 +70,10 @@ export async function POST(request) {
 
   const token = newToken();
   try {
-    if (await hitLimit(`kb:rl:ip:${hashKey(ip)}`, 3600, 5)) {
+    if (await hitLimit(`kb:rl:ip:${hashKey(ip)}`, 3600, config.rlIpMax)) {
       return errorJson(429, "rate_limited", "短時間に何度も送信されています。時間をおいて再度お試しください。");
     }
-    if (await hitLimit(`kb:rl:mail:${hashKey(input.email)}`, 86400, 3)) {
+    if (await hitLimit(`kb:rl:mail:${hashKey(input.email)}`, 86400, config.rlMailMax)) {
       return errorJson(429, "rate_limited", "このメールアドレスでの本日の受付回数を超えました。明日以降にお試しください。");
     }
     const leadId = `kb_${jstDate()}_${crypto.randomBytes(6).toString("hex")}`;
