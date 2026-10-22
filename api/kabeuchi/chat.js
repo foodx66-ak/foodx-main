@@ -1,5 +1,5 @@
-import Anthropic from "@anthropic-ai/sdk";
 import { waitUntil } from "@vercel/functions";
+import { anthropicClient } from "../../lib/kabeuchi/anthropic.js";
 import { config } from "../../lib/kabeuchi/config.js";
 import { finalize } from "../../lib/kabeuchi/finalize.js";
 import { aiErrorCode, checkPostRequest, errorCode, errorDetail, errorJson, getCookie, logError, noStoreHeaders, readJson } from "../../lib/kabeuchi/http.js";
@@ -16,8 +16,7 @@ function needsLowThinking(model) {
 }
 
 async function* claudeText(session) {
-  if (!config.anthropicApiKey) throw Object.assign(new Error("no api key"), { code: "no_api_key" });
-  const anthropic = new Anthropic({ apiKey: config.anthropicApiKey });
+  const anthropic = anthropicClient();
   const model = config.model;
   // system は単純な文字列にまとめる（ブロック＋cache_control が 400 になる環境があるため）。
   const system = [KNOWLEDGE, RUNTIME_RULES, contextBlock(session.profile)].join("\n\n");

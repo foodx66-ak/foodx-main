@@ -12,6 +12,10 @@ export function GET() {
     anthropic: {
       configured: Boolean(key),
       looksLikeKey: /^sk-ant-/.test(key),
+      // 秘密は出さない。貼り付けミス切り分け用（先頭だけ）。
+      prefix: key ? key.slice(0, 7) : "",
+      length: key.length,
+      workspaceConfigured: Boolean(config.anthropicWorkspaceId),
       model: config.model,
     },
   });
