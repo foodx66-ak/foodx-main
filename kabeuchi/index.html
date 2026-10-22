@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<title>壁打ちバディ｜その悩み、AIで何とかなる？ 10分の壁打ちで確かめる｜FooDX合同会社</title>
+<meta name="description" content="飲食店の経営の悩みを話していただくと、AIが使えるかどうかと、具体的なやり方を一緒に整理します。10分の壁打ちで、まとめはメールでもお送りします。">
+<link rel="canonical" href="https://www.foodx.co.jp/kabeuchi/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AIkata｜FooDX合同会社">
+<meta property="og:title" content="その悩み、AIで何とかなる？ 10分の壁打ちで確かめる｜FooDX">
+<meta property="og:description" content="飲食店の経営の悩みを10分でAIと壁打ち。AIが使えるかどうかと、具体的なやり方を一緒に整理します。">
+<meta property="og:url" content="https://www.foodx.co.jp/kabeuchi/">
+<meta property="og:image" content="https://www.foodx.co.jp/assets/foodx-logo.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/kabeuchi/style.css">
+<script src="/kabeuchi/app.js" defer></script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a href="/" class="brand"><img src="/assets/foodx-logo.png" alt="FooDX"><span>つくる・食する人々に共通の笑顔を</span></a>
+    <nav>
+      <a href="/">AIkata</a>
+      <a href="/google-profile">集客支援</a>
+      <a href="/reo">REO</a>
+      <a href="/grease-ozonizer">グリストラップ</a>
+      <a href="/lab/">Lab</a>
+      <a href="/about">会社概要</a>
+    </nav>
+  </div>
+</header>
+
+<main class="kb">
+  <div id="kb-loading" class="kb-panel kb-center">
+    <p class="kb-muted">読み込んでいます…</p>
+  </div>
+
+  <section id="kb-form-view" hidden>
+    <div class="kb-hero">
+      <span class="eyebrow">壁打ちバディ</span>
+      <h1>その悩み、AIで何とかなる？<br>10分の壁打ちで確かめる</h1>
+      <p>飲食店の経営の悩みを話していただくと、AIが使えるかどうかと、具体的なやり方を一緒に整理します。まとめはメールでもお送りします。</p>
+    </div>
+    <form id="kb-form" class="kb-panel" novalidate>
+      <div class="field">
+        <label for="f-company">会社名 <span class="req">*</span></label>
+        <input id="f-company" name="company" type="text" maxlength="100" autocomplete="organization" required>
+      </div>
+      <div class="field">
+        <label for="f-name">担当者名 <span class="req">*</span></label>
+        <input id="f-name" name="name" type="text" maxlength="100" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="f-title">肩書き <span class="req">*</span></label>
+        <select id="f-title" name="title" required>
+          <option value="">選択してください</option>
+          <option>代表・オーナー</option>
+          <option>役員</option>
+          <option>本部の担当者</option>
+          <option>店長</option>
+          <option>その他</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-email">メールアドレス <span class="req">*</span></label>
+        <input id="f-email" name="email" type="email" maxlength="254" autocomplete="email" inputmode="email" required>
+        <p class="hint">開始のリンクと、会話のまとめをお送りします。</p>
+      </div>
+      <fieldset class="field">
+        <legend>店舗数 <span class="req">*</span></legend>
+        <div class="choices">
+          <label><input type="radio" name="stores" value="1〜2店舗" required><span>1〜2店舗</span></label>
+          <label><input type="radio" name="stores" value="3〜10店舗"><span>3〜10店舗</span></label>
+          <label><input type="radio" name="stores" value="11店舗以上"><span>11店舗以上</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="field">
+        <legend>普段のAIの使い方 <span class="req">*</span></legend>
+        <div class="choices">
+          <label><input type="radio" name="aiUsage" value="日常的に相談している" required><span>日常的に相談している</span></label>
+          <label><input type="radio" name="aiUsage" value="少し使ったことがある"><span>少し使ったことがある</span></label>
+          <label><input type="radio" name="aiUsage" value="使ったことがない"><span>使ったことがない</span></label>
+        </div>
+      </fieldset>
+      <div class="field consent">
+        <label class="check"><input type="checkbox" name="consentPrivacy" required><span><a href="/privacy/" target="_blank" rel="noopener">プライバシーポリシー</a>に同意します（会話の内容は、サービスの改善にも使わせていただきます） <span class="req">*</span></span></label>
+        <label class="check"><input type="checkbox" name="consentNewsletter"><span>FooDXから、飲食店の経営に役立つ情報や事例のお知らせを受け取る（任意）</span></label>
+      </div>
+      <div id="kb-turnstile" class="turnstile"></div>
+      <p id="kb-form-error" class="kb-error" role="alert" hidden></p>
+      <button id="kb-submit" type="submit" class="btn-primary">開始リンクをメールで受け取る</button>
+    </form>
+  </section>
+
+  <section id="kb-sent-view" class="kb-panel kb-center" hidden>
+    <h2>メールを送りました</h2>
+    <p><strong id="kb-sent-email"></strong> 宛に開始リンクを送りました。30分以内に開いてください。</p>
+    <p class="kb-muted">メールが届かないときは、迷惑メールのフォルダもご確認ください。</p>
+  </section>
+
+  <section id="kb-error-view" class="kb-panel kb-center" hidden>
+    <h2>壁打ちを開始できませんでした</h2>
+    <p id="kb-error-text"></p>
+    <a class="btn-primary" href="/kabeuchi/">申し込み画面へ戻る</a>
+  </section>
+
+  <section id="kb-chat-view" hidden>
+    <div class="kb-timer" aria-live="polite">
+      <div class="kb-timer-row">
+        <span class="kb-timer-label">残り時間</span>
+        <span id="kb-time" class="kb-time">10:00</span>
+        <span id="kb-status" class="kb-status"></span>
+      </div>
+      <div class="kb-bar"><div id="kb-bar-fill" class="kb-bar-fill"></div></div>
+    </div>
+    <div id="kb-messages" class="kb-messages" aria-live="polite"></div>
+    <p id="kb-chat-error" class="kb-error" role="alert" hidden></p>
+    <form id="kb-composer" class="kb-composer">
+      <textarea id="kb-input" maxlength="1000" rows="3" placeholder="ここに入力してください" aria-label="メッセージ"></textarea>
+      <div class="kb-composer-row">
+        <span id="kb-count" class="kb-muted">0 / 1000</span>
+        <span class="kb-muted kb-kbd">Ctrl/⌘ + Enter で送信</span>
+        <button id="kb-send" type="submit" class="btn-primary btn-small">送信</button>
+      </div>
+    </form>
+    <div id="kb-end" class="kb-panel kb-center kb-end" hidden>
+      <h2>壁打ちは終了しました</h2>
+      <p id="kb-end-mail"></p>
+      <p>まとめをもとに、具体的な進め方を一緒に決めませんか。</p>
+      <a id="kb-booking" class="btn-primary" href="/contact">無料の面談を予約する</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="fcols">
+      <div class="fabout"><img src="/assets/foodx-logo-white.png" alt="FooDX"><p>食業界のAX推進支援カンパニー。</p></div>
+      <div><ul>
+        <li><a href="/">AIkata（経営OS）</a></li>
+        <li><a href="/google-profile">集客支援（MEO・AIO）</a></li>
+        <li><a href="/reo">予約体験最適化（REO）</a></li>
+        <li><a href="/grease-ozonizer">グリストラップ自動化</a></li>
+      </ul></div>
+      <div><ul>
+        <li><a href="/lab/">Lab</a></li>
+        <li><a href="/about">会社概要</a></li>
+        <li><a href="/contact">お問い合わせ</a></li>
+        <li><a href="/privacy/">プライバシーポリシー</a></li>
+      </ul></div>
+    </div>
+    <p class="copy">©FooDX, LLC. All Rights Reserved.</p>
+  </div>
+</footer>
+</body>
+</html>
