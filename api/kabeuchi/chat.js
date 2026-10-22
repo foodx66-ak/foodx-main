@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { waitUntil } from "@vercel/functions";
 import { config } from "../../lib/kabeuchi/config.js";
 import { finalize } from "../../lib/kabeuchi/finalize.js";
-import { checkPostRequest, errorCode, errorJson, getCookie, logError, noStoreHeaders, readJson } from "../../lib/kabeuchi/http.js";
+import { aiErrorCode, checkPostRequest, errorCode, errorJson, getCookie, logError, noStoreHeaders, readJson } from "../../lib/kabeuchi/http.js";
 import { KNOWLEDGE, RUNTIME_RULES, START_SIGNAL, SUMMARY_MARK, contextBlock, formatRemaining } from "../../lib/kabeuchi/prompt.js";
 import { rollbackTurn } from "../../lib/kabeuchi/session.js";
 import { acquireAiLock, loadSession, releaseAiLock, saveSession } from "../../lib/kabeuchi/store.js";
@@ -10,24 +10,45 @@ import { acquireAiLock, loadSession, releaseAiLock, saveSession } from "../../li
 const MAX_MESSAGE_CHARS = 1000;
 const RETRY = "AIの返答に失敗しました。もう一度送信してください。";
 
+function needsLowThinking(model) {
+  // Claude 5.x 系は既定で adaptive thinking が入り、短い max_tokens だと本文が空になりやすい。
+  return /claude-(sonnet|opus|haiku)-5/.test(model || "");
+}
+
 async function* claudeText(session) {
+  if (!config.anthropicApiKey) throw Object.assign(new Error("no api key"), { code: "no_api_key" });
   const anthropic = new Anthropic({ apiKey: config.anthropicApiKey });
-  // Sonnet 5.5 は既定で adaptive thinking が入り、max_tokens を思考に使い切ると本文が空になる。
-  // 壁打ちは短い返答なので、事前の思考を止め（between_tools）、effort も低めにする。
-  const stream = anthropic.messages.stream({
-    model: config.model,
+  const model = config.model;
+  const params = {
+    model,
     max_tokens: 2048,
-    thinking: { type: "between_tools" },
-    output_config: { effort: "low" },
     system: [
       { type: "text", text: KNOWLEDGE, cache_control: { type: "ephemeral" } },
       { type: "text", text: RUNTIME_RULES },
       { type: "text", text: contextBlock(session.profile) },
     ],
     messages: session.history.map((h) => ({ role: h.role, content: h.content })),
-  });
+  };
+  if (needsLowThinking(model)) {
+    // 壁打ちは短い返答なので、事前の思考を止め（between_tools）、effort も低めにする。
+    params.thinking = { type: "between_tools" };
+    params.output_config = { effort: "low" };
+  }
+  const stream = anthropic.messages.stream(params);
+  let textLen = 0;
   for await (const event of stream) {
-    if (event.type === "content_block_delta" && event.delta.type === "text_delta") yield event.delta.text;
+    if (event.type === "content_block_delta" && event.delta?.type === "text_delta" && event.delta.text) {
+      textLen += event.delta.text.length;
+      yield event.delta.text;
+    }
+  }
+  if (textLen === 0) {
+    let stop = "";
+    try {
+      const final = await stream.finalMessage();
+      stop = final?.stop_reason || "";
+    } catch (_) {}
+    throw Object.assign(new Error("empty reply"), { code: stop ? `empty_reply_${stop}` : "empty_reply" });
   }
 }
 
@@ -151,7 +172,7 @@ export async function POST(request) {
     if (first.done) throw Object.assign(new Error("empty reply"), { code: "empty_reply" });
   } catch (err) {
     await fail("chat.ai", err);
-    return errorJson(502, "ai_failed", RETRY);
+    return errorJson(502, aiErrorCode(err), RETRY);
   }
 
   const encoder = new TextEncoder();
