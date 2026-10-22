@@ -14,6 +14,7 @@ header.site .brand span{font-size:10px;letter-spacing:0.02em;color:#999;line-hei
 header.site nav{display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
 header.site nav a{font-size:14px;font-weight:500;color:#444;text-decoration:none;}
 header.site nav a:hover{color:#1A1A1A;}
+header.site nav a.nav-current{font-weight:700;color:#1A1A1A;background:var(--accent,#FFE100);padding:8px 14px;border-radius:999px;}
 
 footer.site{background:#111;color:#888;padding:44px 24px 34px;margin-top:48px;}
 footer.site .wrap{padding:0;}
