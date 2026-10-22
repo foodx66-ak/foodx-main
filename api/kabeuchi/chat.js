@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { waitUntil } from "@vercel/functions";
 import { config } from "../../lib/kabeuchi/config.js";
 import { finalize } from "../../lib/kabeuchi/finalize.js";
-import { aiErrorCode, checkPostRequest, errorCode, errorJson, getCookie, logError, noStoreHeaders, readJson } from "../../lib/kabeuchi/http.js";
+import { aiErrorCode, checkPostRequest, errorCode, errorDetail, errorJson, getCookie, logError, noStoreHeaders, readJson } from "../../lib/kabeuchi/http.js";
 import { KNOWLEDGE, RUNTIME_RULES, START_SIGNAL, SUMMARY_MARK, contextBlock, formatRemaining } from "../../lib/kabeuchi/prompt.js";
 import { rollbackTurn } from "../../lib/kabeuchi/session.js";
 import { acquireAiLock, loadSession, releaseAiLock, saveSession } from "../../lib/kabeuchi/store.js";
@@ -19,20 +19,17 @@ async function* claudeText(session) {
   if (!config.anthropicApiKey) throw Object.assign(new Error("no api key"), { code: "no_api_key" });
   const anthropic = new Anthropic({ apiKey: config.anthropicApiKey });
   const model = config.model;
+  // system は単純な文字列にまとめる（ブロック＋cache_control が 400 になる環境があるため）。
+  const system = [KNOWLEDGE, RUNTIME_RULES, contextBlock(session.profile)].join("\n\n");
   const params = {
     model,
-    max_tokens: 2048,
-    system: [
-      { type: "text", text: KNOWLEDGE, cache_control: { type: "ephemeral" } },
-      { type: "text", text: RUNTIME_RULES },
-      { type: "text", text: contextBlock(session.profile) },
-    ],
+    max_tokens: needsLowThinking(model) ? 4096 : 1500,
+    system,
     messages: session.history.map((h) => ({ role: h.role, content: h.content })),
   };
   if (needsLowThinking(model)) {
-    // 壁打ちは短い返答なので、事前の思考を止め（between_tools）、effort も低めにする。
+    // 事前の思考を止める。effort 指定は SDK／モデル組み合わせで 400 になることがあるので付けない。
     params.thinking = { type: "between_tools" };
-    params.output_config = { effort: "low" };
   }
   const stream = anthropic.messages.stream(params);
   let textLen = 0;
@@ -172,7 +169,7 @@ export async function POST(request) {
     if (first.done) throw Object.assign(new Error("empty reply"), { code: "empty_reply" });
   } catch (err) {
     await fail("chat.ai", err);
-    return errorJson(502, aiErrorCode(err), RETRY);
+    return errorJson(502, aiErrorCode(err), RETRY, errorDetail(err));
   }
 
   const encoder = new TextEncoder();
