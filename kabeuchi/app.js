@@ -91,6 +91,24 @@
     return text.trimStart().startsWith(SUMMARY_MARK);
   }
 
+  /** Strip optional server replace-event trailer (see lib/kabeuchi/guard.js). */
+  function applyReplaceEvent(raw) {
+    const startMark = "\u001eKB_REPLACE:";
+    const endMark = "\u001e";
+    const start = raw.indexOf(startMark);
+    if (start === -1) return raw;
+    const jsonStart = start + startMark.length;
+    const end = raw.indexOf(endMark, jsonStart);
+    if (end === -1) return raw.slice(0, start);
+    try {
+      const payload = JSON.parse(raw.slice(jsonStart, end));
+      if (payload && payload.type === "replace" && typeof payload.text === "string") {
+        return payload.text;
+      }
+    } catch (_) {}
+    return raw.slice(0, start);
+  }
+
   function renderAssistant(el, text) {
     el.className = "msg assistant";
     if (isSummary(text)) {
@@ -245,9 +263,12 @@
           const { value, done } = await reader.read();
           if (done) break;
           text += decoder.decode(value, { stream: true });
-          renderAssistant(aiEl, text);
+          // Hide replace-event trailer while streaming if it arrives mid-chunk.
+          const visible = text.includes("\u001eKB_REPLACE:") ? text.slice(0, text.indexOf("\u001eKB_REPLACE:")) : text;
+          if (visible) renderAssistant(aiEl, visible);
         }
         text += decoder.decode();
+        text = applyReplaceEvent(text);
         ok = text.length > 0;
       }
     } catch (_) {
