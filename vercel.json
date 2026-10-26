@@ -81,6 +81,10 @@
     "api/kabeuchi/chat.js": {
       "maxDuration": 60,
       "includeFiles": "lib/kabeuchi/**"
+    },
+    "api/kabeuchi/sweep.js": {
+      "maxDuration": 60,
+      "includeFiles": "lib/kabeuchi/**"
     }
   },
   "headers": [

@@ -201,7 +201,7 @@ export async function POST(request) {
         session.state = full.trimStart().startsWith(SUMMARY_MARK) || forced ? "done" : "user";
         await saveSession(sid, session);
         await releaseAiLock(sid);
-        if (session.state === "done") waitUntil(finalize(session));
+        if (session.state === "done") waitUntil(finalize(sid, session));
       } catch (err) {
         logError("chat.save", errorCode(err));
       }

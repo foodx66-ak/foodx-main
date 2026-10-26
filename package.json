@@ -7,6 +7,9 @@
   "engines": {
     "node": "22.x"
   },
+  "scripts": {
+    "test": "node --test lib/kabeuchi/*.test.js"
+  },
   "dependencies": {
     "@anthropic-ai/sdk": "0.131.0",
     "@upstash/redis": "1.39.0",
