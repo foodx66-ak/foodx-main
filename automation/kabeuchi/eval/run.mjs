@@ -7,7 +7,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import Anthropic from "@anthropic-ai/sdk";
-import { KNOWLEDGE, RUNTIME_RULES, START_SIGNAL, contextBlock } from "../../../lib/kabeuchi/prompt.js";
+import { START_SIGNAL, buildSystemPrompt } from "../../../lib/kabeuchi/prompt.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const casesPath = path.join(__dirname, "cases.json");
@@ -20,18 +20,6 @@ function secret(name) {
   return v;
 }
 
-function loadOptionalNews() {
-  const newsPath = path.join(__dirname, "../../../lib/kabeuchi/industry_news.md");
-  try {
-    if (!fs.existsSync(newsPath)) return "";
-    const body = fs.readFileSync(newsPath, "utf8").trim();
-    if (!body) return "";
-    return `\n\n<参考情報>\n${body}\n</参考情報>`;
-  } catch (_) {
-    return "";
-  }
-}
-
 function buildSystem() {
   const profile = {
     company: "評価用株式会社",
@@ -40,7 +28,8 @@ function buildSystem() {
     band: "A（1〜2店舗）",
     aiType: "タイプ2：AIを少し使ったことがある",
   };
-  return [KNOWLEDGE, RUNTIME_RULES, contextBlock(profile)].join("\n\n") + loadOptionalNews();
+  // Eval uses the same builder as chat (may be blocks with cache_control).
+  return buildSystemPrompt(profile);
 }
 
 function needsLowThinking(model) {

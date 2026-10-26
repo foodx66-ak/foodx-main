@@ -8,7 +8,7 @@
     "node": "22.x"
   },
   "scripts": {
-    "test": "node --test lib/kabeuchi/*.test.js"
+    "test": "node --test lib/kabeuchi/*.test.js automation/kabeuchi/news-format.test.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.131.0",

@@ -1,0 +1,109 @@
+# 壁打ちバディ：業界参考情報の取り込み（回路2）
+# - 毎日起動し、最終更新から72時間以上なら実行
+# - 取り込み後に逸脱テスト。合格時のみ main へコミット（ルール例外）
+# - 不合格時は PR を作成して停止
+# - ログは件数・見出しのみ（本文は出さない）
+name: Kabeuchi industry news
+
+on:
+  schedule:
+    - cron: "0 1 * * *" # 毎日 01:00 UTC（JST 10:00）
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "72時間チェックをスキップして実行"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: kabeuchi-news
+  cancel-in-progress: false
+
+jobs:
+  news:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install root deps (SDK)
+        run: npm install --no-audit --no-fund --silent
+
+      - name: Install eval deps
+        working-directory: automation/kabeuchi/eval
+        run: npm install --no-audit --no-fund --silent
+
+      - name: Fetch industry news
+        id: fetch
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+          ANTHROPIC_WORKSPACE_ID: ${{ secrets.ANTHROPIC_WORKSPACE_ID }}
+          KABEUCHI_NEWS_FORCE: ${{ github.event_name == 'workflow_dispatch' && inputs.force && '1' || '' }}
+          KABEUCHI_NEWS_MAX_CHARS: ${{ vars.KABEUCHI_NEWS_MAX_CHARS }}
+        run: node automation/kabeuchi/news.mjs | tee /tmp/kabeuchi-news.jsonl
+
+      - name: Detect news file change
+        id: diff
+        run: |
+          if git diff --quiet -- lib/kabeuchi/industry_news.md; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "industry_news.md unchanged"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "industry_news.md changed"
+          fi
+
+      - name: Run deviation eval
+        id: eval
+        if: steps.diff.outputs.changed == 'true'
+        working-directory: automation/kabeuchi/eval
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+          ANTHROPIC_WORKSPACE_ID: ${{ secrets.ANTHROPIC_WORKSPACE_ID }}
+        run: node run.mjs | tee /tmp/kabeuchi-eval.jsonl
+        continue-on-error: true
+
+      - name: Commit to main when eval passed
+        if: steps.diff.outputs.changed == 'true' && steps.eval.outcome == 'success'
+        run: |
+          set -euo pipefail
+          git config user.name "foodx-kabeuchi-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lib/kabeuchi/industry_news.md
+          git commit -m "壁打ち：業界参考情報を更新"
+          git push origin HEAD:main
+          echo "committed_to_main=true"
+
+      - name: Open PR when eval failed
+        if: steps.diff.outputs.changed == 'true' && steps.eval.outcome != 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          BRANCH="cursor/kabeuchi-news-fail-$(date -u +%Y%m%d%H%M%S)-1086"
+          git config user.name "foodx-kabeuchi-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add lib/kabeuchi/industry_news.md
+          git commit -m "壁打ち：業界参考情報（逸脱テスト不合格・要確認）"
+          git push -u origin "$BRANCH"
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "壁打ち：業界参考情報の更新（逸脱テスト不合格）" \
+            --body "自動取り込み後の逸脱テストが不合格のため、main へはコミットしていません。内容を確認してからマージしてください。"
+          exit 1
