@@ -1,0 +1,85 @@
+# 壁打ちバディ：逸脱テスト（回路3）
+# knowledge / industry_news 変更の PR で自動実行。手動実行も可。
+# ログ・PRコメントには合否と短い理由のみ（会話全文は出さない）
+name: Kabeuchi deviation eval
+
+on:
+  pull_request:
+    paths:
+      - "lib/kabeuchi/knowledge.md"
+      - "lib/kabeuchi/industry_news.md"
+      - "lib/kabeuchi/prompt.js"
+      - "automation/kabeuchi/eval/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: kabeuchi-eval-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install eval deps
+        working-directory: automation/kabeuchi/eval
+        run: npm install --no-audit --no-fund --silent
+
+      - name: Run deviation eval
+        id: eval
+        working-directory: automation/kabeuchi/eval
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+          ANTHROPIC_WORKSPACE_ID: ${{ secrets.ANTHROPIC_WORKSPACE_ID }}
+        run: node run.mjs | tee /tmp/kabeuchi-eval.jsonl
+        continue-on-error: true
+
+      - name: Comment results on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let body = '## Kabeuchi deviation eval\n\n';
+            try {
+              const lines = fs.readFileSync('/tmp/kabeuchi-eval.jsonl', 'utf8').trim().split('\n').filter(Boolean);
+              const rows = [];
+              let summary = null;
+              for (const line of lines) {
+                try {
+                  const j = JSON.parse(line);
+                  if (j.scope === 'kabeuchi.eval.summary') summary = j;
+                  else if (j.id != null) rows.push(j);
+                } catch (_) {}
+              }
+              body += '| id | pass | reason |\n| --- | --- | --- |\n';
+              for (const r of rows) {
+                body += `| ${r.id} | ${r.pass ? 'pass' : 'FAIL'} | ${String(r.reason || '').replace(/\|/g, '/')} |\n`;
+              }
+              if (summary) {
+                body += `\npassed ${summary.passed} / ${summary.total} (failed ${summary.failed})\n`;
+              }
+            } catch (e) {
+              body += `result parse failed\n`;
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
+
+      - name: Fail if eval failed
+        if: steps.eval.outcome != 'success'
+        run: exit 1
