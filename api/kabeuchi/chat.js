@@ -4,7 +4,7 @@ import { config } from "../../lib/kabeuchi/config.js";
 import { finalize } from "../../lib/kabeuchi/finalize.js";
 import { GUARD_REPLACEMENT, checkAssistantReply, encodeReplaceEvent } from "../../lib/kabeuchi/guard.js";
 import { aiErrorCode, checkPostRequest, errorCode, errorDetail, errorJson, getCookie, logError, noStoreHeaders, readJson } from "../../lib/kabeuchi/http.js";
-import { KNOWLEDGE, RUNTIME_RULES, START_SIGNAL, SUMMARY_MARK, contextBlock, formatRemaining } from "../../lib/kabeuchi/prompt.js";
+import { KNOWLEDGE, START_SIGNAL, SUMMARY_MARK, buildSystemPrompt, formatRemaining } from "../../lib/kabeuchi/prompt.js";
 import { rollbackTurn } from "../../lib/kabeuchi/session.js";
 import { acquireAiLock, loadSession, releaseAiLock, saveSession } from "../../lib/kabeuchi/store.js";
 
@@ -19,8 +19,8 @@ function needsLowThinking(model) {
 async function* claudeText(session) {
   const anthropic = anthropicClient();
   const model = config.model;
-  // system は単純な文字列にまとめる（ブロック＋cache_control が 400 になる環境があるため）。
-  const system = [KNOWLEDGE, RUNTIME_RULES, contextBlock(session.profile)].join("\n\n");
+  // knowledge / 参考情報は cache_control 付きブロック。問題時は KABEUCHI_PROMPT_CACHE=0。
+  const system = buildSystemPrompt(session.profile);
   const params = {
     model,
     max_tokens: needsLowThinking(model) ? 4096 : 1500,
