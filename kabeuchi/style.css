@@ -86,6 +86,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#1A1A1A;box-sh
 .kb-composer textarea{resize:vertical;min-height:84px;line-height:1.7;}
 .kb-composer-row{display:flex;align-items:center;gap:12px;margin-top:8px;}
 .kb-composer-row .btn-small{margin-left:auto;}
+.kb-record-note{font-size:12.5px;line-height:1.7;color:#666;margin:0 0 10px;padding:10px 12px;background:#f5f5f0;border-radius:12px;}
 .kb-end{margin-top:16px;}
 
 @media (max-width:600px){

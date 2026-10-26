@@ -1,0 +1,57 @@
+# 壁打ちバディ：離脱セッションの定期送信
+# - 6時間ごと + 手動実行
+# - ログには件数のみ（会話本文は出さない）
+name: Kabeuchi abandoned sweep
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kabeuchi-sweep
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Call sweep endpoint
+        env:
+          KABEUCHI_SWEEP_URL: ${{ secrets.KABEUCHI_SWEEP_URL }}
+          KABEUCHI_SWEEP_SECRET: ${{ secrets.KABEUCHI_SWEEP_SECRET }}
+        run: |
+          set -euo pipefail
+          if [ -z "${KABEUCHI_SWEEP_URL}" ] || [ -z "${KABEUCHI_SWEEP_SECRET}" ]; then
+            echo "missing secrets: KABEUCHI_SWEEP_URL and/or KABEUCHI_SWEEP_SECRET"
+            exit 1
+          fi
+          # Body is empty JSON; auth is header-only.
+          resp="$(curl -sS -X POST \
+            -H "Content-Type: application/json" \
+            -H "x-kabeuchi-sweep-secret: ${KABEUCHI_SWEEP_SECRET}" \
+            -d '{}' \
+            "${KABEUCHI_SWEEP_URL}")"
+          # Print counts only (endpoint response has no transcript).
+          echo "$resp" | node -e '
+            let s=""; process.stdin.on("data",d=>s+=d); process.stdin.on("end",()=>{
+              try {
+                const j=JSON.parse(s);
+                console.log(JSON.stringify({
+                  ok:j.ok===true,
+                  candidates:j.candidates??null,
+                  sent:j.sent??null,
+                  skipped:j.skipped??null,
+                  failed:j.failed??null
+                }));
+                if (j.ok!==true) process.exit(1);
+              } catch (e) {
+                console.log(JSON.stringify({ ok:false, parse_error:true }));
+                process.exit(1);
+              }
+            });
+          '
