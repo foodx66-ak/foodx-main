@@ -11,7 +11,7 @@
     "test": "node --test lib/kabeuchi/*.test.js automation/kabeuchi/news-format.test.mjs"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "0.131.0",
+    "@anthropic-ai/sdk": "0.137.0",
     "@upstash/redis": "1.39.0",
     "@vercel/functions": "3.10.3"
   },
