@@ -2,6 +2,7 @@ import { waitUntil } from "@vercel/functions";
 import { anthropicClient } from "../../lib/kabeuchi/anthropic.js";
 import { config } from "../../lib/kabeuchi/config.js";
 import { finalize } from "../../lib/kabeuchi/finalize.js";
+import { GUARD_REPLACEMENT, checkAssistantReply, encodeReplaceEvent } from "../../lib/kabeuchi/guard.js";
 import { aiErrorCode, checkPostRequest, errorCode, errorDetail, errorJson, getCookie, logError, noStoreHeaders, readJson } from "../../lib/kabeuchi/http.js";
 import { KNOWLEDGE, RUNTIME_RULES, START_SIGNAL, SUMMARY_MARK, contextBlock, formatRemaining } from "../../lib/kabeuchi/prompt.js";
 import { rollbackTurn } from "../../lib/kabeuchi/session.js";
@@ -196,9 +197,18 @@ export async function POST(request) {
 
       try {
         delete session.pending;
-        session.history.push({ role: "assistant", content: full, display: full });
+        const wasDone = forced || full.trimStart().startsWith(SUMMARY_MARK);
+        let reply = full;
+        const reasons = checkAssistantReply(full, config.blockedNames);
+        if (reasons.length) {
+          reply = GUARD_REPLACEMENT;
+          // sid + reason codes only — never the reply body
+          console.log(JSON.stringify({ scope: "kabeuchi.guard", sid, reasons }));
+          push(encodeReplaceEvent(reasons, reply));
+        }
+        session.history.push({ role: "assistant", content: reply, display: reply });
         session.lastAiDoneAt = Date.now();
-        session.state = full.trimStart().startsWith(SUMMARY_MARK) || forced ? "done" : "user";
+        session.state = wasDone ? "done" : "user";
         await saveSession(sid, session);
         await releaseAiLock(sid);
         if (session.state === "done") waitUntil(finalize(sid, session));
