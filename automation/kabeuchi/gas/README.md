@@ -14,11 +14,13 @@
 
 1. リード用 Google スプレッドシートを開く → 拡張機能 → Apps Script  
 2. `Code.gs` の内容をエディタに貼る（既存の空 `コード.gs` を置き換えで可）  
-3. プロジェクトの設定 → スクリプトプロパティに `GAS_SHARED_SECRET` を追加（Vercel / GitHub と同じ値）  
-4. デプロイ → 新しいデプロイ → 種類「ウェブアプリ」  
+3. プロジェクトの設定 → スクリプトプロパティ  
+   - `GAS_SHARED_SECRET`（必須・Vercel と同じ値）  
+   - `SPREADSHEET_ID`（任意・スプレッドシートに紐づいていない場合のみ。URL の `/d/XXXX/` の XXXX）  
+4. **デプロイ → 新しいデプロイ**（コード変更のたびに「新バージョン」）→ 種類「ウェブアプリ」  
    - 実行ユーザー: **自分**  
    - アクセスできるユーザー: **全員**  
-5. デプロイ後の URL を Vercel の `GAS_WEBHOOK_URL` と GitHub Secrets の `GAS_WEBHOOK_URL` に設定  
-6. 同じ合言葉を `GAS_SHARED_SECRET` にも設定  
+5. デプロイ後の URL を Vercel / GitHub Secrets の `GAS_WEBHOOK_URL` に設定  
+6. Vercel の `GAS_SHARED_SECRET` がスクリプトプロパティと同じか確認 → 変更したら **Redeploy**  
 
 詳細はエージェント報告または `Code.gs` 先頭コメントを参照。

@@ -1,13 +1,18 @@
 /**
  * 壁打ちバディ — GAS 受信一式（貼り付け用・この1ファイルだけでよい）
  *
- * 前提: リード用スプレッドシートに紐づいたコンテナバインドスクリプト
- * （SpreadsheetApp.getActiveSpreadsheet() を使用）
+ * スプレッドシート:
+ * - コンテナバインドなら getActiveSpreadsheet()
+ * - 見つからない場合はスクリプトプロパティ SPREADSHEET_ID を使う
  *
- * 受信: POST JSON（送信側 lib/kabeuchi/gas.js は body に secret を載せる）
- * 合言葉: スクリプトプロパティ GAS_SHARED_SECRET と body.secret の完全一致
+ * スクリプトプロパティ:
+ * - GAS_SHARED_SECRET（必須）… 送信側と同じ合言葉
+ * - SPREADSHEET_ID（任意）… スプレッドシートの ID（URL の /d/XXXX/ の XXXX）
  *
+ * 受信: POST JSON（送信側は body.secret）
  * action: start | verified | complete | abandoned | export
+ *
+ * start 時: シート記録のあと、email + verifyUrl があれば開始リンクメールを送る
  */
 
 var SHEET_NAME = "壁打ちログ";
@@ -107,6 +112,7 @@ function handleStart_(body) {
         extra: extra,
       });
     }
+    sendStartMail_(body);
     return { ok: true };
   } finally {
     lock.releaseLock();
@@ -268,8 +274,18 @@ function handleExport_(body) {
 // sheet helpers
 // ---------------------------------------------------------------------------
 
-function getOrCreateSheet_() {
+function getSpreadsheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (ss) return ss;
+  var id = PropertiesService.getScriptProperties().getProperty("SPREADSHEET_ID") || "";
+  if (!id) {
+    throw new Error("spreadsheet_not_found");
+  }
+  return SpreadsheetApp.openById(id);
+}
+
+function getOrCreateSheet_() {
+  var ss = getSpreadsheet_();
   var sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
@@ -280,6 +296,26 @@ function getOrCreateSheet_() {
     sheet.setFrozenRows(1);
   }
   return sheet;
+}
+
+/** 開始リンクメール（本文に個人情報を Logger へは出さない） */
+function sendStartMail_(body) {
+  var to = String(body.email || "").trim();
+  var url = String(body.verifyUrl || "").trim();
+  if (!to || !url) return;
+  var name = String(body.name || "").trim();
+  var greeting = name ? name + " 様" : "ご担当者様";
+  MailApp.sendEmail({
+    to: to,
+    subject: "【FooDX】壁打ちバディの開始リンク",
+    body:
+      greeting +
+      "\n\n壁打ちバディのお申し込みありがとうございます。\n" +
+      "次のリンクから、30分以内に壁打ちを開始してください。\n\n" +
+      url +
+      "\n\n※このメールに心当たりがない場合は破棄してください。\n" +
+      "FooDX合同会社\n",
+  });
 }
 
 function findRowBySid_(sheet, sid) {
