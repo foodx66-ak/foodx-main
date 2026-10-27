@@ -1,0 +1,78 @@
+# 壁打ちバディ：隔週学習（回路1）
+# - 週次で起動し、前回から14日以上なら実行（手動 force 可）
+# - 公開リポジトリのため proposals は件数のみ。knowledge 自動改訂は行わない
+# - 会話本文はログに出さない（件数のみ）
+name: Kabeuchi learn
+
+on:
+  schedule:
+    - cron: "0 2 * * 1" # 毎週月曜 02:00 UTC（JST 11:00）
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "14日チェックをスキップして実行"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: kabeuchi-learn
+  cancel-in-progress: false
+
+jobs:
+  learn:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install root deps
+        run: npm install --no-audit --no-fund --silent
+
+      - name: Run learn
+        id: learn
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+          ANTHROPIC_WORKSPACE_ID: ${{ secrets.ANTHROPIC_WORKSPACE_ID }}
+          GAS_WEBHOOK_URL: ${{ secrets.GAS_WEBHOOK_URL }}
+          GAS_SHARED_SECRET: ${{ secrets.GAS_SHARED_SECRET }}
+          KABEUCHI_LEARN_FORCE: ${{ github.event_name == 'workflow_dispatch' && inputs.force && '1' || '' }}
+          KABEUCHI_LEARN_PUBLIC_SAFE: "1"
+        run: node automation/kabeuchi/learn.mjs | tee /tmp/kabeuchi-learn.jsonl
+
+      - name: Open count-only PR if files changed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- automation/kabeuchi/learn_state.json automation/kabeuchi/proposals/; then
+            echo "no learn artifacts to commit"
+            exit 0
+          fi
+          BRANCH="cursor/kabeuchi-learn-$(date -u +%Y%m%d)-1086"
+          git config user.name "foodx-kabeuchi-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add automation/kabeuchi/learn_state.json automation/kabeuchi/proposals/
+          git commit -m "壁打ち：隔週学習の件数メモを追加"
+          git push -u origin "$BRANCH"
+          # PR body: counts only (parse last summary line if present)
+          COUNT="$(node -e 'let s="";process.stdin.on("data",d=>s+=d);process.stdin.on("end",()=>{try{const lines=s.trim().split(/\n/).filter(Boolean);let n=null;for(const l of lines){const j=JSON.parse(l);if(j.scope==="kabeuchi.learn.done")n=j.count;} console.log(n??""); }catch{console.log("")}}')" < /tmp/kabeuchi-learn.jsonl || true)"
+          BODY="公開リポジトリのため、提案ファイルは件数のみです。knowledge の自動改訂は含めていません。
+          
+          - 対象会話件数: ${COUNT:-（ログ参照）}
+          
+          詳細な改訂案の扱いについては運用者確認が必要です。"
+          gh pr create --base main --head "$BRANCH" --title "壁打ち：隔週学習メモ（件数のみ）" --body "$BODY"
