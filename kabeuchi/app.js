@@ -37,7 +37,11 @@
   async function readError(resp, fallback) {
     try {
       const data = await resp.json();
-      if (data && typeof data.error === "string") return data.error;
+      if (data && typeof data.error === "string") {
+        // detail は gas_not_ok などの短いコードのみ（本文は含まない）
+        if (typeof data.detail === "string" && data.detail) return `${data.error}（${data.detail}）`;
+        return data.error;
+      }
     } catch (_) {}
     return fallback;
   }

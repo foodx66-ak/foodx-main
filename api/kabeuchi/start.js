@@ -97,8 +97,15 @@ export async function POST(request) {
       throw err;
     }
   } catch (err) {
-    logError("start", errorCode(err));
-    return errorJson(502, "start_failed", "受付に失敗しました。時間をおいて再度お試しください。");
+    const code = errorCode(err);
+    logError("start", code);
+    // code は gas_env / gas_http_* / gas_not_ok など（本文・秘密情報は含まない）
+    return errorJson(
+      502,
+      "start_failed",
+      "受付に失敗しました。時間をおいて再度お試しください。",
+      code
+    );
   }
   return json(200, { ok: true });
 }
