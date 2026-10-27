@@ -86,7 +86,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#1A1A1A;box-sh
 .kb-composer textarea{resize:vertical;min-height:84px;line-height:1.7;}
 .kb-composer-row{display:flex;align-items:center;gap:12px;margin-top:8px;}
 .kb-composer-row .btn-small{margin-left:auto;}
-.kb-record-note{font-size:12.5px;line-height:1.7;color:#666;margin:0 0 10px;padding:10px 12px;background:#f5f5f0;border-radius:12px;}
+/* 補足一文：警告帯に見えないよう背景なし。入力(16px)より約2px小さく。#666666 on #FAFAFA ≒ 5.5:1（WCAG AA） */
+.kb-record-note{font-size:12px;line-height:1.65;color:#666;margin:8px 0 0;padding:0;background:none;border:none;max-width:100%;overflow-wrap:anywhere;word-break:break-word;}
+/* 「詳しく」リンク：#8A5A12 on #FAFAFA ≒ 5.7:1（accent-deep 系を濃くして AA を満たす） */
+.kb-record-note a{color:#8A5A12;text-decoration:underline;text-underline-offset:2px;}
+.kb-record-note a:hover{color:#1A1A1A;}
 .kb-end{margin-top:16px;}
 
 @media (max-width:600px){
