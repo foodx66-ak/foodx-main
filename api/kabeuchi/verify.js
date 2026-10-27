@@ -79,7 +79,7 @@ export async function POST(request) {
   }
 
   waitUntil(
-    postToGas({ action: "verified", leadId: lead.leadId }).catch((err) => logError("verify.gas", errorCode(err)))
+    postToGas({ action: "verified", leadId: lead.leadId, sid }).catch((err) => logError("verify.gas", errorCode(err)))
   );
 
   return json(
