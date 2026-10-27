@@ -126,8 +126,16 @@ function handleStart_(body) {
         extra: extra,
       });
     }
-    sendStartMail_(body);
-    return { ok: true };
+    // メール失敗で受付全体を落とさない（シート記録は成功扱い）
+    var mailOk = true;
+    var mailError = "";
+    try {
+      sendStartMail_(body);
+    } catch (mailErr) {
+      mailOk = false;
+      mailError = String(mailErr && mailErr.message ? mailErr.message : mailErr).slice(0, 80);
+    }
+    return { ok: true, mailOk: mailOk, mailError: mailOk ? undefined : mailError };
   } finally {
     lock.releaseLock();
   }
