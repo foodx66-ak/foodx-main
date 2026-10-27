@@ -67,8 +67,22 @@ function doPost(e) {
   }
 }
 
+/**
+ * ブラウザでウェブアプリ URL を開くと、シート接続だけ確認できる。
+ * 例: { "ok": true, "health": "sheet_ok" }
+ * 失敗例: { "ok": false, "error": "health_failed", "code": "spreadsheet_not_found" }
+ */
 function doGet() {
-  return jsonOut_({ ok: false, error: "method_not_allowed" });
+  try {
+    getOrCreateSheet_();
+    return jsonOut_({ ok: true, health: "sheet_ok" });
+  } catch (err) {
+    return jsonOut_({
+      ok: false,
+      error: "health_failed",
+      code: String(err && err.message ? err.message : err).slice(0, 80),
+    });
+  }
 }
 
 // ---------------------------------------------------------------------------
