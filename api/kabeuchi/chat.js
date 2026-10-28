@@ -4,9 +4,10 @@ import { config } from "../../lib/kabeuchi/config.js";
 import { finalize } from "../../lib/kabeuchi/finalize.js";
 import { GUARD_REPLACEMENT, checkAssistantReply, encodeReplaceEvent } from "../../lib/kabeuchi/guard.js";
 import { aiErrorCode, checkPostRequest, errorCode, errorDetail, errorJson, getCookie, logError, noStoreHeaders, readJson } from "../../lib/kabeuchi/http.js";
-import { KNOWLEDGE, START_SIGNAL, SUMMARY_MARK, buildSystemPrompt, formatRemaining } from "../../lib/kabeuchi/prompt.js";
+import { KNOWLEDGE, SECURITY_CHECKLIST_MARK, SECURITY_KNOWLEDGE, SECURITY_START_SIGNAL, START_SIGNAL, SUMMARY_MARK, buildSystemPrompt, formatRemaining } from "../../lib/kabeuchi/prompt.js";
 import { rollbackTurn } from "../../lib/kabeuchi/session.js";
 import { acquireAiLock, loadSession, releaseAiLock, saveSession } from "../../lib/kabeuchi/store.js";
+import { cookieName, isSecurity, sessionVariant, variantFromRequest } from "../../lib/kabeuchi/variant.js";
 
 const MAX_MESSAGE_CHARS = 1000;
 const RETRY = "AIの返答に失敗しました。もう一度送信してください。";
@@ -20,7 +21,7 @@ async function* claudeText(session) {
   const anthropic = anthropicClient();
   const model = config.model;
   // knowledge / 参考情報は cache_control 付きブロック。問題時は KABEUCHI_PROMPT_CACHE=0。
-  const system = buildSystemPrompt(session.profile);
+  const system = buildSystemPrompt(session.profile, session.variant);
   const params = {
     model,
     max_tokens: needsLowThinking(model) ? 4096 : 1500,
@@ -62,9 +63,33 @@ const MOCK_SUMMARY = [
   "- まず試すこと：1週間分の売上と発注の記録を、AIに読ませてみる\n\n",
   "> 次の一歩は、面談で具体的な手順を一緒に決めることです。",
 ];
+const SECURITY_MOCK_QUESTION = [
+  "ご利用ありがとうございます（これは画面確認用の固定の返答です）。\n\n",
+  "いま、お店で困っていることはありますか？\n",
+  "- 身に覚えのないログインや、金の要求がある\n- 特に起きてはいないが、点検したい\n\n",
+  "近いものを**ひとつ**教えてください。パスワードや管理画面のURLは書かないでください。",
+];
+const SECURITY_MOCK_CHECKLIST = [
+  `${SECURITY_CHECKLIST_MARK}\n`,
+  "分かった範囲で整理しました（画面確認用の固定の返答です）。\n\n",
+  "- パスワードとアカウント：未確認\n",
+  "- メール：未確認\n",
+  "- 店舗のパソコンとスマホ：未確認\n",
+  "- 予約とお客様の情報：未確認\n",
+  "- 会計と決済：未確認\n",
+  "- 店のネット回線：未確認\n",
+  "- 何か起きたときの初動：未確認\n\n",
+  "FooDXは助言までです。設定の変更や復旧作業、その結果の責任はお店にあります。\n",
+  "画面の2つの選び方から、次を決めてください。\n",
+  "- この点検票をもとに、お店で進める\n",
+  "- 進め方をFooDXに相談する\n",
+];
 
 async function* mockText(session, forced) {
-  const parts = forced || session.userTurns >= 3 ? MOCK_SUMMARY : MOCK_QUESTION;
+  const security = isSecurity(session.variant);
+  const question = security ? SECURITY_MOCK_QUESTION : MOCK_QUESTION;
+  const closing = security ? SECURITY_MOCK_CHECKLIST : MOCK_SUMMARY;
+  const parts = forced || session.userTurns >= 3 ? closing : question;
   for (const part of parts) {
     for (let i = 0; i < part.length; i += 6) {
       await new Promise((r) => setTimeout(r, 30));
@@ -83,7 +108,11 @@ export async function POST(request) {
   const { body, error } = await readJson(request);
   if (error) return error;
 
-  const sid = getCookie(request, "kb_sid");
+  const requested = variantFromRequest(request, body);
+  if (requested.error) {
+    return errorJson(400, "variant_mismatch", "ページが一致しません。メールのリンクから開き直してください。");
+  }
+  const sid = getCookie(request, cookieName(requested.variant));
   let session;
   try {
     session = await loadSession(sid);
@@ -92,8 +121,12 @@ export async function POST(request) {
     return errorJson(502, "store_failed", RETRY);
   }
   if (!session) return errorJson(401, "no_session", "セッションが見つかりません。もう一度お申し込みください。");
+  if (sessionVariant(session) !== requested.variant) {
+    return errorJson(401, "no_session", "セッションが見つかりません。もう一度お申し込みください。");
+  }
   if (session.state === "done") return errorJson(410, "done", "この壁打ちは終了しています。");
-  if (!config.mock && KNOWLEDGE.includes("KNOWLEDGE_PLACEHOLDER")) {
+  const knowledgeText = isSecurity(session.variant) ? SECURITY_KNOWLEDGE : KNOWLEDGE;
+  if (!config.mock && knowledgeText.includes("KNOWLEDGE_PLACEHOLDER")) {
     logError("chat", "knowledge_missing");
     return errorJson(503, "not_ready", "現在準備中です。時間をおいて再度お試しください。");
   }
@@ -122,7 +155,8 @@ export async function POST(request) {
     const pending = { state: session.state, historyLen: session.history.length, userTurns: session.userTurns };
 
     if (session.state === "ready") {
-      session.history.push({ role: "user", content: START_SIGNAL, display: null, meta: "開始" });
+      const signal = isSecurity(session.variant) ? SECURITY_START_SIGNAL : START_SIGNAL;
+      session.history.push({ role: "user", content: signal, display: null, meta: "開始" });
     } else {
       session.remainingMs -= now - (session.lastAiDoneAt || now);
       const message = typeof body.message === "string" ? truncate(body.message) : "";
@@ -197,7 +231,8 @@ export async function POST(request) {
 
       try {
         delete session.pending;
-        const wasDone = forced || full.trimStart().startsWith(SUMMARY_MARK);
+        const endMark = isSecurity(session.variant) ? SECURITY_CHECKLIST_MARK : SUMMARY_MARK;
+        const wasDone = forced || full.trimStart().startsWith(endMark);
         let reply = full;
         const reasons = checkAssistantReply(full, config.blockedNames);
         if (reasons.length) {

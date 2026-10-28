@@ -3,6 +3,8 @@
 
   const API = "/api/kabeuchi";
   const SUMMARY_MARK = "【まとめ】";
+  const CHECKLIST_MARK = "【点検票】";
+  const VARIANT = document.documentElement.getAttribute("data-kb") === "security" ? "security" : "default";
   const MAX_CHARS = 1000;
   const $ = (id) => document.getElementById(id);
 
@@ -29,7 +31,13 @@
     if (init.body !== undefined) {
       init.method = init.method || "POST";
       init.headers = { "Content-Type": "application/json", ...(init.headers || {}) };
+      if (VARIANT === "security" && init.body && typeof init.body === "object") {
+        init.body = { ...init.body, variant: "security" };
+      }
       init.body = JSON.stringify(init.body);
+    }
+    if (VARIANT === "security") {
+      init.headers = { ...(init.headers || {}), "X-Kb-Variant": "security" };
     }
     return fetch(API + path, init);
   }
@@ -87,8 +95,12 @@
     }
   }
 
-  function isSummary(text) {
-    return text.trimStart().startsWith(SUMMARY_MARK);
+  function endMark() {
+    return VARIANT === "security" ? CHECKLIST_MARK : SUMMARY_MARK;
+  }
+
+  function isEndCard(text) {
+    return text.trimStart().startsWith(endMark());
   }
 
   /** Strip optional server replace-event trailer (see lib/kabeuchi/guard.js). */
@@ -111,13 +123,13 @@
 
   function renderAssistant(el, text) {
     el.className = "msg assistant";
-    if (isSummary(text)) {
+    if (isEndCard(text)) {
       el.classList.add("summary");
       el.textContent = "";
       const h = document.createElement("h3");
-      h.textContent = "まとめ";
+      h.textContent = VARIANT === "security" ? "点検票" : "まとめ";
       const body = document.createElement("div");
-      renderRich(body, text.trimStart().slice(SUMMARY_MARK.length).replace(/^\s*\n/, ""));
+      renderRich(body, text.trimStart().slice(endMark().length).replace(/^\s*\n/, ""));
       el.append(h, body);
     } else {
       renderRich(el, text);
@@ -204,9 +216,15 @@
     app.clockRunning = false;
     renderClock();
     $("kb-composer").hidden = true;
-    $("kb-end-mail").textContent = emailMasked
-      ? `まとめを ${emailMasked} 宛にもお送りします。`
-      : "まとめをご登録のメールアドレス宛にもお送りします。";
+    if (VARIANT === "security") {
+      $("kb-end-mail").textContent = emailMasked
+        ? `点検票を ${emailMasked} 宛にもお送りします。`
+        : "点検票をご登録のメールアドレス宛にもお送りします。";
+    } else {
+      $("kb-end-mail").textContent = emailMasked
+        ? `まとめを ${emailMasked} 宛にもお送りします。`
+        : "まとめをご登録のメールアドレス宛にもお送りします。";
+    }
     $("kb-end").hidden = false;
     scrollToBottom();
   }
@@ -278,7 +296,7 @@
     app.busy = false;
     if (ok) {
       renderAssistant(aiEl, text);
-      if (isSummary(text) || forced) {
+      if (isEndCard(text) || forced) {
         const data = await syncState();
         finish(data && data.emailMasked);
         return;
@@ -430,6 +448,7 @@
       app.turnstileSiteKey = data.turnstileSiteKey || "";
       app.bookingUrl = data.bookingUrl || "";
       app.limitMs = data.limitMs || app.limitMs;
+      if (VARIANT === "security" && data.securityBookingUrl) app.bookingUrl = data.securityBookingUrl;
       if (app.bookingUrl) $("kb-booking").href = app.bookingUrl;
     } catch (_) {}
   }
@@ -445,6 +464,14 @@
     $("kb-input").addEventListener("keydown", (e) => {
       if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); send(); }
     });
+    const selfBtn = $("kb-choice-self");
+    if (selfBtn) {
+      selfBtn.addEventListener("click", () => {
+        const note = $("kb-choice-note");
+        if (note) note.hidden = false;
+        selfBtn.setAttribute("aria-pressed", "true");
+      });
+    }
     app.timer = setInterval(tick, 250);
 
     await loadConfig();

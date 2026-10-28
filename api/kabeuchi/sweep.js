@@ -11,6 +11,7 @@ import {
   removeActive,
   tryMarkAbandonedSent,
 } from "../../lib/kabeuchi/store.js";
+import { withVariant, sessionVariant } from "../../lib/kabeuchi/variant.js";
 
 const BATCH_LIMIT = 40;
 
@@ -88,7 +89,7 @@ export async function POST(request) {
       }
 
       const transcript = maskPii(buildTranscript(session.history || []));
-      await postToGas({
+      await postToGas(withVariant({
         action: "abandoned",
         sid,
         leadId: session.leadId || "",
@@ -98,7 +99,7 @@ export async function POST(request) {
         band: session.profile?.band || "",
         title: session.profile?.title || "",
         transcript,
-      });
+      }, sessionVariant(session)));
       await removeActive(sid);
       sent += 1;
     } catch (err) {
