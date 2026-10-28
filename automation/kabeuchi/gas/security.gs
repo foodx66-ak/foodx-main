@@ -20,30 +20,27 @@
  */
 
 /**
- * 既存 doPost への足し方（action の分岐は増やさない）:
+ * 【必須】関数を貼っただけでは件名・本文は変わりません。
+ * サーバーは variant:"security" と /kabeuchi/security/?t= の URL を送っています。
+ * 件名が「壁打ちバディの開始リンク」のままなら、次の1行が入っていません。
  *
- * function doPost(e) {
- *   var body = JSON.parse(e.postData.contents);
- *   // …既存の secret 照合…
- *   if (body.action === "start") {
- *     return jsonOut_(handleStart_(body)); // handleStart_ の中だけ変える（下）
- *   }
- *   if (body.action === "verified") {
- *     return jsonOut_(handleVerified_(body)); // 関数の追加は不要。variant は「その他」に残る
- *   }
- *   if (body.action === "complete") {
- *     return jsonOut_(handleComplete_(body)); // 成功したあとに点検票メール（下）
- *   }
- *   // abandoned はメールを足さない
+ * --- Code.gs の sendStartMail_ の先頭（var to = ... の直前）に1行足す ---
+ *
+ * function sendStartMail_(body) {
+ *   if (String(body.variant || "") === "security") return sendSecurityStartMail_(body);
+ *   var to = String(body.email || "").trim();
+ *   ...
  * }
  *
- * --- handleStart_ のメール箇所を、次の if に変える ---
+ * これが最短です。security.gs を追加して再デプロイしただけでは、既存の
+ * sendStartMail_ がそのまま呼ばれ、URL だけが security になります。
+ *
+ * --- 別案: handleStart_ の呼び出し側を分ける ---
  *
  *   // 変更前: sendStartMail_(body);
  *   if (String(body.variant || "") === "security") sendSecurityStartMail_(body);
  *   else sendStartMail_(body);
  *
- * Code.gs の sendStartMail_ を呼んでいる行がそれです。
  * メール失敗で受付全体を落とさない try/catch は、既存のまま残してください。
  *
  * --- complete の成功後（upsertSessionRow_ が { ok:true } を返す直前） ---
@@ -129,17 +126,17 @@ function readSecurityExtra_(sheet, row) {
 /**
  * 【貼り付け手順】
  * 1. 既存の壁打ち用 Apps Script を開く（Code.gs があるプロジェクト）
- * 2. 新規ファイル security.gs を追加し、本ファイルの関数を貼る
- * 3. handleStart_ の sendStartMail_ 呼び出しを、上の if に変える
+ * 2. 新規ファイル security.gs を追加し、本ファイルの関数（コメント以外）を貼る
+ * 3. Code.gs の sendStartMail_ 先頭に、次の1行を足す（これがないと件名が既存のまま）:
+ *      if (String(body.variant || "") === "security") return sendSecurityStartMail_(body);
  * 4. complete が成功したあと、status が「完了」かつ variant が security のときだけ
  *    sendSecurityChecklistMail_ を呼ぶ（失敗しても ok:true のまま）
- * 5. doPost に新しい action は足さない。既存の start / verified の処理はそのまま
- * 6. テスト: variant なしの start は、いままでどおり「壁打ちバディの開始リンク」
- * 7. テスト: variant=security の start は、「セキュリティ壁打ちの開始リンク」で
- *    URL が /kabeuchi/security/?t= になる
- * 8. テスト: 同じ行の complete（variant=security）で点検票メールが届く。
- *    variant なしの complete では届かない
- * 9. Web アプリを新しいバージョンでデプロイする（URL が変わる場合は GAS_WEBHOOK_URL を更新）
+ * 5. doPost に新しい action は足さない
+ * 6. Web アプリを新しいバージョンでデプロイする
+ * 7. テスト: security の start → 件名「【FooDX】セキュリティ壁打ちの開始リンク」
+ *    ＋ URL が /kabeuchi/security/?t=
+ * 8. テスト: 既存 /kabeuchi/ の start → 件名はいままでどおり
+ * 9. テスト: security の complete → 点検票メール。既存の complete では届かない
  *
  * 既存コードに合わせて調整が必要です。列番号と、メールを呼ぶ位置は環境依存です。
  */
