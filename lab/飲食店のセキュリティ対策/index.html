@@ -59,7 +59,7 @@ a{color:#BA7517;}
 .article p{margin:0 0 18px;}
 .article ul,.article ol{margin:0 0 18px;padding-left:1.4em;}
 .article li{margin:6px 0;}
-.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 20px;}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 20px;max-width:100%;}
 .article table{border-collapse:collapse;width:100%;margin:0;font-size:14px;min-width:520px;}
 .article th,.article td{border:1px solid #e2e2dc;padding:8px 12px;}
 .article th{background:#f5f5f0;}
@@ -73,9 +73,10 @@ a{color:#BA7517;}
 .related-card .body{display:flex;flex-direction:column;gap:4px;min-width:0;}
 .related-card:hover .related-name{color:#BA7517;}
 .cta{margin:40px 0 8px;text-align:center;}
-.cta a{display:inline-flex;align-items:center;gap:10px;background:var(--accent,#FFE100);color:#1A1A1A;padding:16px 34px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;}
+.cta a{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--accent,#FFE100);color:#1A1A1A;padding:16px 34px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;max-width:100%;white-space:normal;text-align:center;box-sizing:border-box;}
 .backlink{display:inline-block;margin:28px 0 0;font-size:14px;color:#666;text-decoration:none;}
-.sources{font-size:14px;}
+.sources{font-size:14px;overflow-wrap:anywhere;}
+.sources a{overflow-wrap:anywhere;word-break:break-all;}
 .sources li{margin:8px 0;}
 .note{font-size:13.5px;color:#666;}
 footer.site{background:#111;color:#888;padding:44px 24px 34px;margin-top:20px;}
