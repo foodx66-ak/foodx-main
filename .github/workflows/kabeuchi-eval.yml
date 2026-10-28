@@ -42,7 +42,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
           ANTHROPIC_WORKSPACE_ID: ${{ secrets.ANTHROPIC_WORKSPACE_ID }}
-        run: node run.mjs | tee /tmp/kabeuchi-eval.jsonl
+        run: set -o pipefail; node run.mjs | tee /tmp/kabeuchi-eval.jsonl
         continue-on-error: true
 
       - name: Comment results on PR

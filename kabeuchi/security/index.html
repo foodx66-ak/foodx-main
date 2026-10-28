@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja" data-kb="security">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<title>セキュリティ壁打ちバディ｜お店のセキュリティ、どこから見る？｜FooDX合同会社</title>
+<meta name="description" content="飲食店向けの無料の壁打ちです。7つの観点でお店のセキュリティを整理し、点検票にします。設定の変更や復旧は行わず、FooDXは助言までです。">
+<link rel="canonical" href="https://www.foodx.co.jp/kabeuchi/security/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AIkata｜FooDX合同会社">
+<meta property="og:title" content="お店のセキュリティ、どこから見る？ 10分で点検票にする｜FooDX">
+<meta property="og:description" content="飲食店向けの無料の壁打ちです。7つの観点でお店のセキュリティを整理し、点検票にします。FooDXは助言までです。">
+<meta property="og:url" content="https://www.foodx.co.jp/kabeuchi/security/">
+<meta property="og:image" content="https://www.foodx.co.jp/assets/foodx-logo.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/kabeuchi/style.css">
+<script src="/kabeuchi/app.js" defer></script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a href="/" class="brand"><img src="/assets/foodx-logo.png" alt="FooDX"><span>つくる・食する人々に共通の笑顔を</span></a>
+    <nav>
+      <a href="/">AIkata</a>
+      <a href="/google-profile">集客支援</a>
+      <a href="/reo">REO</a>
+      <a href="/grease-ozonizer">グリストラップ</a>
+      <a href="/lab/">Lab</a>
+      <a href="/about">会社概要</a>
+      <a href="/kabeuchi/">AIに相談</a>
+    </nav>
+  </div>
+</header>
+
+<main class="kb">
+  <div id="kb-loading" class="kb-panel kb-center">
+    <p class="kb-muted">読み込んでいます…</p>
+  </div>
+
+  <section id="kb-form-view" hidden>
+    <div class="kb-hero">
+      <span class="eyebrow">セキュリティ壁打ちバディ</span>
+      <h1>お店のセキュリティ、どこから見る？<br>10分で点検票にする</h1>
+      <p>飲食店のアカウント、端末、予約、会計を、専門用語をなるべく使わずに一緒に整理します。点検票はメールでもお送りします。</p>
+      <p class="kb-stance">直す作業と、その結果の責任はお店にあります。FooDXは助言までです。設定の変更や復旧は行いません。</p>
+    </div>
+
+    <p class="kb-section-label">最近の状況</p>
+    <div class="kb-stats">
+      <article class="kb-stat">
+        <b>123件</b>
+        <span>2026年上半期の国内ランサムウェア被害。うち中小企業が79件（警察庁の発表）</span>
+      </article>
+      <article class="kb-stat">
+        <b>約153万件</b>
+        <span>飲食周辺の予約システムへの不正アクセスで影響が出た件数</span>
+      </article>
+      <article class="kb-stat">
+        <b>PC 1台</b>
+        <span>店舗PCの感染から古いメールのパスワードが盗まれ、不正ログインが続いた例</span>
+      </article>
+    </div>
+
+    <p class="kb-section-label">見る観点は7つ</p>
+    <ol class="kb-points">
+      <li><strong>パスワードとアカウント</strong><span>使い回し、共有、辞めた人のアカウントが残っていないか</span></li>
+      <li><strong>メール</strong><span>古いパスワードのままか、身に覚えのないログインがないか</span></li>
+      <li><strong>店舗のパソコンとスマホ</strong><span>更新されないまま、共有の場所に置かれていないか</span></li>
+      <li><strong>予約とお客様の情報</strong><span>予約の仕組みを、誰がどこまで見られるか</span></li>
+      <li><strong>会計と決済</strong><span>レジや決済の画面を、誰が触れるか</span></li>
+      <li><strong>店のネット回線</strong><span>お店用とお客様用の回線が分かれているか</span></li>
+      <li><strong>何か起きたときの初動</strong><span>おかしいと気づいたとき、誰が何を止めて、どこに連絡するか</span></li>
+    </ol>
+
+    <form id="kb-form" class="kb-panel" novalidate>
+      <div class="field">
+        <label for="f-company">会社名 <span class="req">*</span></label>
+        <input id="f-company" name="company" type="text" maxlength="100" autocomplete="organization" required>
+      </div>
+      <div class="field">
+        <label for="f-name">担当者名 <span class="req">*</span></label>
+        <input id="f-name" name="name" type="text" maxlength="100" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="f-title">肩書き <span class="req">*</span></label>
+        <select id="f-title" name="title" required>
+          <option value="">選択してください</option>
+          <option>代表・オーナー</option>
+          <option>役員</option>
+          <option>本部の担当者</option>
+          <option>店長</option>
+          <option>その他</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-email">メールアドレス <span class="req">*</span></label>
+        <input id="f-email" name="email" type="email" maxlength="254" autocomplete="email" inputmode="email" required>
+        <p class="hint">開始のリンクと、点検票をお送りします。</p>
+      </div>
+      <fieldset class="field">
+        <legend>店舗数 <span class="req">*</span></legend>
+        <div class="choices">
+          <label><input type="radio" name="stores" value="1〜2店舗" required><span>1〜2店舗</span></label>
+          <label><input type="radio" name="stores" value="3〜10店舗"><span>3〜10店舗</span></label>
+          <label><input type="radio" name="stores" value="11店舗以上"><span>11店舗以上</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="field">
+        <legend>普段のAIの使い方 <span class="req">*</span></legend>
+        <div class="choices">
+          <label><input type="radio" name="aiUsage" value="日常的に相談している" required><span>日常的に相談している</span></label>
+          <label><input type="radio" name="aiUsage" value="少し使ったことがある"><span>少し使ったことがある</span></label>
+          <label><input type="radio" name="aiUsage" value="使ったことがない"><span>使ったことがない</span></label>
+        </div>
+      </fieldset>
+      <div class="field consent">
+        <label class="check"><input type="checkbox" name="consentPrivacy" required><span><a href="/privacy/" target="_blank" rel="noopener">プライバシーポリシー</a>に同意します（会話の内容は、サービスの改善にも使わせていただきます） <span class="req">*</span></span></label>
+        <label class="check"><input type="checkbox" name="consentNewsletter"><span>FooDXから、飲食店の経営に役立つ情報や事例のお知らせを受け取る（任意）</span></label>
+      </div>
+      <div id="kb-turnstile" class="turnstile"></div>
+      <p id="kb-form-error" class="kb-error" role="alert" hidden></p>
+      <button id="kb-submit" type="submit" class="btn-primary">開始リンクをメールで受け取る</button>
+      <p class="kb-caution">パスワード、カード番号、管理画面のURLは、会話の中でも入力しないでください。</p>
+    </form>
+  </section>
+
+  <section id="kb-sent-view" class="kb-panel kb-center" hidden>
+    <h2>メールを送りました</h2>
+    <p><strong id="kb-sent-email"></strong> 宛に開始リンクを送りました。30分以内に開いてください。</p>
+    <p class="kb-muted">メールが届かないときは、迷惑メールのフォルダもご確認ください。</p>
+    <p class="kb-stance">FooDXは助言までです。設定の変更や復旧は行いません。</p>
+  </section>
+
+  <section id="kb-error-view" class="kb-panel kb-center" hidden>
+    <h2>壁打ちを開始できませんでした</h2>
+    <p id="kb-error-text"></p>
+    <a class="btn-primary" href="/kabeuchi/security/">申し込み画面へ戻る</a>
+  </section>
+
+  <section id="kb-chat-view" hidden>
+    <div class="kb-timer" aria-live="polite">
+      <div class="kb-timer-row">
+        <span class="kb-timer-label">残り時間</span>
+        <span id="kb-time" class="kb-time">10:00</span>
+        <span id="kb-status" class="kb-status"></span>
+      </div>
+      <div class="kb-bar"><div id="kb-bar-fill" class="kb-bar-fill"></div></div>
+    </div>
+    <div id="kb-messages" class="kb-messages" aria-live="polite"></div>
+    <p id="kb-chat-error" class="kb-error" role="alert" hidden></p>
+    <form id="kb-composer" class="kb-composer">
+      <p class="kb-record-note">パスワード、カード番号、管理画面のURLは入力しないでください。店名やスタッフの個人名も入力しないでください。会話は、サービス改善のために記録し、個人や店舗が特定できない形で分析に使います。</p>
+      <textarea id="kb-input" maxlength="1000" rows="3" placeholder="ここに入力してください" aria-label="メッセージ"></textarea>
+      <div class="kb-composer-row">
+        <span id="kb-count" class="kb-muted">0 / 1000</span>
+        <span class="kb-muted kb-kbd">Ctrl/⌘ + Enter で送信</span>
+        <button id="kb-send" type="submit" class="btn-primary btn-small">送信</button>
+      </div>
+    </form>
+    <div id="kb-end" class="kb-panel kb-center kb-end" hidden>
+      <h2>壁打ちは終了しました</h2>
+      <p id="kb-end-mail"></p>
+      <p>点検や設定の変更、その結果はお店の責任です。FooDXは助言までで、復旧や設定の代行はしません。</p>
+      <div class="kb-choice-row">
+        <button id="kb-choice-self" type="button" class="btn-secondary">この点検票をもとに、お店で進める</button>
+        <a id="kb-booking" class="btn-primary" href="/contact?topic=%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E5%A3%81%E6%89%93%E3%81%A1">進め方をFooDXに相談する</a>
+      </div>
+      <p id="kb-choice-note" class="kb-stance" hidden>点検票はこの画面に残っています。設定の変更は、お店の方で進めてください。</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="fcols">
+      <div class="fabout"><img src="/assets/foodx-logo-white.png" alt="FooDX"><p>食業界のAX推進支援カンパニー。</p></div>
+      <div><ul>
+        <li><a href="/">AIkata（経営OS）</a></li>
+        <li><a href="/google-profile">集客支援（MEO・AIO）</a></li>
+        <li><a href="/reo">予約体験最適化（REO）</a></li>
+        <li><a href="/grease-ozonizer">グリストラップ自動化</a></li>
+      </ul></div>
+      <div><ul>
+        <li><a href="/lab/">Lab</a></li>
+        <li><a href="/about">会社概要</a></li>
+        <li><a href="/contact">お問い合わせ</a></li>
+        <li><a href="/privacy/">プライバシーポリシー</a></li>
+      </ul></div>
+    </div>
+    <p class="copy">©FooDX, LLC. All Rights Reserved.</p>
+  </div>
+</footer>
+</body>
+</html>

@@ -5,5 +5,6 @@
 ## フェーズ1
 
 - `abandoned.gs` … `action: "abandoned"` / `complete` のシート反映と、同じ `sid` の上書き
+- `security.gs` … セキュリティ壁打ち（`variant: "security"`）の開始メールと点検票メール。action は増やさない
 
 手順の詳細は各ファイル末尾のコメントを参照してください。

@@ -7,6 +7,7 @@ export function GET() {
     ok: true,
     turnstileSiteKey: config.turnstileSiteKey,
     bookingUrl: config.bookingUrl,
+    securityBookingUrl: config.securityBookingUrl,
     limitMs: config.limitMs,
   });
 }

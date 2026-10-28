@@ -46,6 +46,11 @@
       "permanent": true
     },
     {
+      "source": "/kabeuchi/security",
+      "destination": "/kabeuchi/security/",
+      "permanent": true
+    },
+    {
       "source": "/privacy",
       "destination": "/privacy/",
       "permanent": true
