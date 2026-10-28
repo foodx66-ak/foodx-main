@@ -1,5 +1,5 @@
 /**
- * セキュリティ壁打ちバディ：メール文面の追加（貼り付け用）
+ * セキュリティAI壁打ちバディ：メール文面の追加（貼り付け用）
  *
  * 【重要】
  * - このファイルはリポジトリ上の「貼り付け用」です。Apps Script エディタへ手動で反映してください。
@@ -63,7 +63,7 @@
  * 列番号（下記は 12）を既存の列に合わせてください。
  */
 
-var SECURITY_BOOKING_FALLBACK = "https://www.foodx.co.jp/contact?topic=" + encodeURIComponent("セキュリティ壁打ち");
+var SECURITY_BOOKING_FALLBACK = "https://www.foodx.co.jp/contact?topic=" + encodeURIComponent("セキュリティAI壁打ちバディ");
 
 function sendSecurityStartMail_(body) {
   var to = String(body.email || "").trim();
@@ -73,10 +73,10 @@ function sendSecurityStartMail_(body) {
   var greeting = name ? name + " 様" : "ご担当者様";
   MailApp.sendEmail({
     to: to,
-    subject: "【FooDX】セキュリティ壁打ちの開始リンク",
+    subject: "【FooDX】セキュリティAI壁打ちバディの開始リンク",
     body:
       greeting + "\n\n" +
-      "セキュリティ壁打ちバディのお申し込みありがとうございます。\n" +
+      "セキュリティAI壁打ちバディのお申し込みありがとうございます。\n" +
       "FooDXは、お店のセキュリティについて助言します。設定の変更や復旧作業、その結果の責任は負いません。\n\n" +
       "次のリンクから、30分以内に壁打ちを開始してください。\n\n" +
       url + "\n\n" +
@@ -102,10 +102,10 @@ function sendSecurityChecklistMail_(sheet, row, body) {
   var booking = String(body.bookingUrl || SECURITY_BOOKING_FALLBACK).trim();
   MailApp.sendEmail({
     to: to,
-    subject: "【FooDX】セキュリティ壁打ちの点検票",
+    subject: "【FooDX】セキュリティAI壁打ちバディの点検票",
     body:
       greeting + "\n\n" +
-      "セキュリティ壁打ちの点検票をお送りします。\n" +
+      "セキュリティAI壁打ちバディの点検票をお送りします。\n" +
       "設定の変更や復旧は、FooDXでは行いません。作業とその結果は、お店の側でご判断ください。\n\n" +
       summary + "\n\n" +
       "進め方を相談したい場合は、次のページからご連絡ください。相談は助言までです。\n" +
@@ -135,7 +135,7 @@ function readSecurityExtra_(sheet, row) {
  *    sendSecurityChecklistMail_ を呼ぶ（失敗しても ok:true のまま）
  * 5. doPost に新しい action は足さない。既存の start / verified の処理はそのまま
  * 6. テスト: variant なしの start は、いままでどおり「壁打ちバディの開始リンク」
- * 7. テスト: variant=security の start は、「セキュリティ壁打ちの開始リンク」で
+ * 7. テスト: variant=security の start は、「セキュリティAI壁打ちバディの開始リンク」で
  *    URL が /kabeuchi/security/?t= になる
  * 8. テスト: 同じ行の complete（variant=security）で点検票メールが届く。
  *    variant なしの complete では届かない
