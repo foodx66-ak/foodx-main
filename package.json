@@ -13,7 +13,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "0.131.0",
     "@upstash/redis": "1.39.0",
-    "@vercel/functions": "3.10.3"
+    "@vercel/functions": "3.10.5"
   },
   "overrides": {
     "zod": "4.6.7"
