@@ -7,6 +7,8 @@
 //   TURNSTILE_SECRET_KEY     … Cloudflare Turnstile シークレット（サーバー検証用）
 //   ※ CF_TURNSTILE_* / CLOUDFLARE_TURNSTILE_* も同義で受け付けます
 
+import { normalizeLeadSource } from "../lib/kabeuchi/leadSource.js";
+
 const escapeHtml = (value) =>
   String(value == null ? "" : value).replace(
     /[<>&"]/g,
@@ -112,6 +114,8 @@ export default async function handler(req, res) {
   const phone = (body.phone || "").toString().trim();
   const message = (body.message || "").toString().trim();
   const honeypot = (body.company_hp || "").toString().trim();
+  const leadFrom = normalizeLeadSource(body.from);
+  const leadCta = normalizeLeadSource(body.cta);
   const turnstileToken = (
     body.turnstileToken ||
     body["cf-turnstile-response"] ||
@@ -146,8 +150,13 @@ export default async function handler(req, res) {
     return res.status(500).json({ ok: false, error: "サーバー設定エラーが発生しました。しばらくして再度お試しください。" });
   }
 
+  const leadSourceLabel =
+    leadFrom || leadCta
+      ? [leadFrom, leadCta].filter(Boolean).join(" / ")
+      : "（不明）";
   const rows = [
     ["お問い合わせ種別", topic || "（未選択）"],
+    ["流入元", leadSourceLabel],
     ["お名前", name],
     ["店舗・会社名", company || "（未入力）"],
     ["メールアドレス", email],

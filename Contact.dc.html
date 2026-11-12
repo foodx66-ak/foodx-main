@@ -197,7 +197,7 @@ input:focus,textarea:focus,select:focus{outline:none;border-color:#1A1A1A!import
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FFE100&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FFE100&quot;,&quot;#FFC400&quot;,&quot;#F5A623&quot;,&quot;#4CAF50&quot;]},&quot;revealAnimations&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
   static TOPIC_LABELS = ['AIkata（経営OS）', '集客支援（MEO・AIO）', '予約体験最適化（REO）', 'グリストラップ自動化', 'セキュリティAI壁打ちバディ', 'その他'];
-  state = { submitted: false, topic: 'AIkata（経営OS）' };
+  state = { submitted: false, topic: 'AIkata（経営OS）', from: '', cta: '' };
   componentDidMount() {
     this._applyAccent();
     this._setupReveal();
@@ -227,16 +227,28 @@ class Component extends DCLogic {
     const c = this.props.accentColor;
     if (c) document.documentElement.style.setProperty('--accent', c);
   }
+  _normalizeLeadSource(value) {
+    if (typeof value !== 'string') return '';
+    const trimmed = value.trim().toLowerCase();
+    return /^[a-z0-9-]{1,48}$/.test(trimmed) ? trimmed : '';
+  }
   _applyTopicFromQuery() {
     try {
       const params = new URLSearchParams(window.location.search || '');
+      const next = {};
+      const from = this._normalizeLeadSource(params.get('from') || '');
+      const cta = this._normalizeLeadSource(params.get('cta') || '');
+      if (from) next.from = from;
+      if (cta) next.cta = cta;
       const raw = (params.get('topic') || '').trim();
-      if (!raw) return;
-      const labels = Component.TOPIC_LABELS;
-      const hit = labels.find((l) => l === raw)
-        || labels.find((l) => l.startsWith(raw) || raw.startsWith(l))
-        || labels.find((l) => decodeURIComponent(raw) === l);
-      if (hit) this.setState({ topic: hit });
+      if (raw) {
+        const labels = Component.TOPIC_LABELS;
+        const hit = labels.find((l) => l === raw)
+          || labels.find((l) => l.startsWith(raw) || raw.startsWith(l))
+          || labels.find((l) => decodeURIComponent(raw) === l);
+        if (hit) next.topic = hit;
+      }
+      if (Object.keys(next).length) this.setState(next);
     } catch (_) {}
   }
   renderVals() {
@@ -275,6 +287,8 @@ class Component extends DCLogic {
           company_hp: (fd.get('company_hp') || '').toString(),
           turnstileToken,
         };
+        if (this.state.from) payload.from = this.state.from;
+        if (this.state.cta) payload.cta = this.state.cta;
         this._sending = true;
         const orig = btn ? btn.innerHTML : '';
         if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; btn.style.cursor = 'default'; btn.innerHTML = '送信中…'; }

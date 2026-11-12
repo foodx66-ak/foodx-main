@@ -3,6 +3,7 @@ import { config } from "../../lib/kabeuchi/config.js";
 import { postToGas } from "../../lib/kabeuchi/gas.js";
 import { checkPostRequest, clientIp, errorCode, errorJson, json, logError, readJson } from "../../lib/kabeuchi/http.js";
 import { deleteLead, hashKey, hitLimit, jstDate, newToken, saveLead } from "../../lib/kabeuchi/store.js";
+import { normalizeLeadSource } from "../../lib/kabeuchi/leadSource.js";
 import { isSecurity, normalizeVariant, verifyUrl } from "../../lib/kabeuchi/variant.js";
 
 const STORES = ["1〜2店舗", "3〜10店舗", "11店舗以上"];
@@ -78,6 +79,8 @@ export async function POST(request) {
       return errorJson(429, "rate_limited", "このメールアドレスでの本日の受付回数を超えました。明日以降にお試しください。");
     }
     const variant = normalizeVariant(body.variant);
+    const from = normalizeLeadSource(body.from);
+    const cta = normalizeLeadSource(body.cta);
     const leadId = `kb_${jstDate()}_${crypto.randomBytes(6).toString("hex")}`;
     const lead = {
       leadId,
@@ -90,6 +93,8 @@ export async function POST(request) {
       consentNewsletter: input.consentNewsletter,
       createdAt: Date.now(),
     };
+    if (from) lead.from = from;
+    if (cta) lead.cta = cta;
     if (isSecurity(variant)) lead.variant = "security";
     await saveLead(token, lead);
     try {
