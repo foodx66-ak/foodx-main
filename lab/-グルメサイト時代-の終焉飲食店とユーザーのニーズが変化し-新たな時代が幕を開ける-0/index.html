@@ -81,6 +81,7 @@ footer.site a:hover{color:#FFE100;}
 .fcols ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;font-size:13.5px;}
 @media (max-width:600px){.article{padding:32px 20px;}header.site .wrap{height:auto;padding-top:12px;padding-bottom:12px;flex-wrap:wrap;gap:10px 0;}header.site nav{gap:14px;}header.site nav a{font-size:13px;}.util-bar-inner{flex-wrap:wrap !important;height:auto !important;padding-top:8px !important;padding-bottom:8px !important;gap:6px 16px !important;}.util-bar-inner nav{flex-wrap:wrap;gap:4px 16px !important;}.util-drop-menu{left:0;right:auto;}.related-grid{grid-template-columns:1fr;gap:14px;}.related-card{flex-direction:row;align-items:center;gap:12px;}.related-card img{width:104px;flex:0 0 104px;}}
 </style>
+<link rel="stylesheet" href="/assets/lab-cta.css">
 </head>
 <body>
 <!-- ===== UTILITY BAR ===== -->
@@ -98,7 +99,7 @@ footer.site a:hover{color:#FFE100;}
       </div>
       <a href="/lab/" class="util-link current">Lab</a>
       <a href="/about" class="util-link">会社概要</a>
-      <a href="/kabeuchi/" class="util-link util-ai">AIに相談</a>
+      <a href="/kabeuchi/?from=lab-gourmet-0&amp;cta=util" class="util-link util-ai">AIに相談</a>
       <a href="/contact" class="util-link">お問い合わせ</a>
     </nav>
   </div>
@@ -116,7 +117,7 @@ footer.site a:hover{color:#FFE100;}
       <a href="/#pricing">料金</a>
       <a href="/contact">お問い合わせ</a>
       <a href="/#diagnosis">無料診断</a>
-      <a class="cta-nav" href="/kabeuchi/">AIに相談</a>
+      <a class="cta-nav" href="/kabeuchi/?from=lab-gourmet-0&amp;cta=header">AIに相談</a>
     </nav>
   </div>
 </header>
@@ -140,6 +141,35 @@ footer.site a:hover{color:#FFE100;}
 <li>Instagramを活用した集客法</li>
 <li>PayPayグルメを活用した集客法</li>
 </ol> <p style="font-size: 16px;">それぞれのツールは自店の特性や顧客のニーズに合わせて使い分けることが重要です。今日からでも始められる具体的な手法ですので、ぜひ貴殿の店舗でも試してみてください！<br/>より具体的に、貴店の状況や外部環境をもとに集客のご支援も可能ですので、興味がある方は、下記フォームよりご相談ください。</p>
+<div class="cta-dual" data-cta="dual-mid">
+  <p class="cta-dual-lead">次の一歩は、2つの進め方から選べます</p>
+  <p class="cta-dual-sub">どちらも無料です。迷ったら、まずAIで悩みを整理するのがおすすめです。</p>
+  <div class="cta-dual-grid">
+    <div class="cta-card cta-card--ai">
+      <span class="cta-badge">迷っている方はこちら</span>
+      <h3>AIに相談する</h3>
+      <p class="cta-meta">10分・その場で整理／無料</p>
+      <p class="cta-desc">お店の悩みを話すと、AIで何とかなるのか、何から始めるかをAIと一緒に整理します。</p>
+      <ul>
+        <li>メールで届く開始リンクから、10分の壁打ち</li>
+        <li>話した内容のまとめをメールでお届け</li>
+        <li>続きは、そのまとめをもとに無料面談で</li>
+      </ul>
+      <a class="cta-btn" href="/kabeuchi/?from=lab-gourmet-0&amp;cta=dual-mid">AIに相談してみる →</a>
+    </div>
+    <div class="cta-card cta-card--contact">
+      <h3>お問い合わせ</h3>
+      <p class="cta-meta">担当者から通常2営業日以内に返信</p>
+      <p class="cta-desc">依頼したい内容が決まっている方、お見積りや取材・協業のご相談はこちらから。</p>
+      <ul>
+        <li>FooDXの担当者が内容を確認して返信</li>
+        <li>サービス内容・料金・お見積りのご相談に</li>
+      </ul>
+      <a class="cta-btn" href="/contact?topic=%E9%9B%86%E5%AE%A2%E6%94%AF%E6%8F%B4&amp;from=lab-gourmet-0&amp;cta=dual-mid">お問い合わせする →</a>
+    </div>
+  </div>
+</div>
+
     <section class="related">
       <h2>関連記事</h2>
       <div class="related-grid">
@@ -158,7 +188,10 @@ footer.site a:hover{color:#FFE100;}
       </div>
     </section>
 
-    <div class="cta"><a href="/contact">飲食店のAI活用を相談する（無料）</a></div>
+    <div class="cta-compact" data-cta="dual-bottom">
+  <a class="is-ai" href="/kabeuchi/?from=lab-gourmet-0&amp;cta=dual-bottom">AIに相談する（10分・無料）</a>
+  <a class="is-contact" href="/contact?topic=%E9%9B%86%E5%AE%A2%E6%94%AF%E6%8F%B4&amp;from=lab-gourmet-0&amp;cta=dual-bottom">お問い合わせ</a>
+</div>
     <a class="backlink" href="/lab/">← Lab 記事一覧へ</a>
   </article>
 </main>
@@ -173,7 +206,7 @@ footer.site a:hover{color:#FFE100;}
         <li><a href="/grease-ozonizer">グリストラップ自動化</a></li>
       </ul></div>
       <div><ul>
-        <li><a href="/kabeuchi/">AIに相談</a></li>
+        <li><a href="/kabeuchi/?from=lab-gourmet-0&amp;cta=footer">AIに相談</a></li>
         <li><a href="/lab/">Lab</a></li>
         <li><a href="/about">会社概要</a></li>
         <li><a href="/contact">お問い合わせ</a></li>

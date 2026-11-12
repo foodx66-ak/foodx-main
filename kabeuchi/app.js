@@ -14,6 +14,13 @@
     window.scrollTo(0, 0);
   }
 
+  const LEAD_SOURCE_RE = /^[a-z0-9-]{1,48}$/;
+  function normalizeLeadSource(value) {
+    if (typeof value !== "string") return "";
+    const trimmed = value.trim().toLowerCase();
+    return LEAD_SOURCE_RE.test(trimmed) ? trimmed : "";
+  }
+
   const app = {
     limitMs: 600000,
     bookingUrl: "",
@@ -24,6 +31,8 @@
     busy: false,
     done: false,
     timer: null,
+    from: "",
+    cta: "",
   };
 
   async function api(path, options = {}) {
@@ -410,6 +419,8 @@
       consentNewsletter: fd.get("consentNewsletter") === "on",
       turnstileToken: String(fd.get("cf-turnstile-response") || ""),
     };
+    if (app.from) payload.from = app.from;
+    if (app.cta) payload.cta = app.cta;
     if (!payload.company || !payload.name || !payload.title || !payload.email || !payload.stores || !payload.aiUsage) {
       formError("未入力の項目があります。");
       return;
@@ -453,8 +464,22 @@
     } catch (_) {}
   }
 
+  function readLeadSource(params) {
+    let from = normalizeLeadSource(params.get("from") || "");
+    let cta = normalizeLeadSource(params.get("cta") || "");
+    try {
+      if (from) sessionStorage.setItem("kb_from", from);
+      else from = normalizeLeadSource(sessionStorage.getItem("kb_from") || "");
+      if (cta) sessionStorage.setItem("kb_cta", cta);
+      else cta = normalizeLeadSource(sessionStorage.getItem("kb_cta") || "");
+    } catch (_) {}
+    app.from = from;
+    app.cta = cta;
+  }
+
   async function boot() {
     const params = new URLSearchParams(location.search);
+    readLeadSource(params);
     const token = params.get("t");
     if (token) history.replaceState(null, "", location.pathname);
 
