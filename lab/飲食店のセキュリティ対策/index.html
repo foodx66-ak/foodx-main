@@ -40,13 +40,15 @@ body{margin:0;font-family:'Noto Sans JP',sans-serif;color:#1A1A1A;background:#FA
 .util-bar-inner nav a,.util-bar-inner .util-drop>span{white-space:nowrap;}
 .util-link{font-size:12.5px;font-weight:600;color:#e5e5e5;text-decoration:none;}
 .util-link:hover,.util-link.current{color:var(--accent,#FFE100);}
+.util-link.util-ai{color:#C4B5FD;}
+.util-link.util-ai:hover,.util-link.util-ai.current{color:#DDD6FE;}
 header.site{position:sticky;top:0;z-index:50;background:rgba(250,250,250,0.85);backdrop-filter:blur(12px);border-bottom:1px solid #eee;}
 header.site .wrap{max-width:1180px;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
 header.site nav{display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
 header.site nav a{font-size:14px;font-weight:500;color:#444;text-decoration:none;}
 header.site nav a:hover{color:#1A1A1A;}
-header.site nav a.cta-nav{display:inline-flex;align-items:center;gap:8px;background:var(--accent,#FFE100);color:#1A1A1A;padding:10px 20px;border-radius:999px;font-size:14px;font-weight:700;text-decoration:none;}
-header.site nav a.cta-nav:hover{background:#ffea4d;color:#1A1A1A;}
+header.site nav a.cta-nav{display:inline-flex;align-items:center;gap:8px;background:#6D28D9;color:#FFFFFF;padding:10px 20px;border-radius:999px;font-size:14px;font-weight:700;text-decoration:none;}
+header.site nav a.cta-nav:hover{background:#5B21B6;color:#FFFFFF;}
 a{color:#BA7517;}
 .wrap{max-width:760px;margin:0 auto;padding:0 24px;}
 .article{background:#fff;margin:32px auto 48px;border-radius:22px;box-shadow:0 4px 24px rgba(0,0,0,0.05);padding:48px 44px;}
@@ -104,6 +106,7 @@ footer.site a:hover{color:#FFE100;}
       </div>
       <a href="/lab/" class="util-link current">Lab</a>
       <a href="/about" class="util-link">会社概要</a>
+      <a href="/kabeuchi/" class="util-link util-ai">AIに相談</a>
       <a href="/contact" class="util-link">お問い合わせ</a>
     </nav>
   </div>
@@ -119,8 +122,9 @@ footer.site a:hover{color:#FFE100;}
       <a href="/#features">対応領域</a>
       <a href="/#process">導入の流れ</a>
       <a href="/#pricing">料金</a>
-      <a href="/contact">ご相談</a>
-      <a class="cta-nav" href="/#diagnosis">無料診断</a>
+      <a href="/contact">お問い合わせ</a>
+      <a href="/#diagnosis">無料診断</a>
+      <a class="cta-nav" href="/kabeuchi/">AIに相談</a>
     </nav>
   </div>
 </header>
@@ -242,7 +246,7 @@ footer.site a:hover{color:#FFE100;}
       <h2>関連記事</h2>
       <div class="related-grid">
         <a class="related-card" href="/lab/google%E3%83%9E%E3%83%83%E3%83%97%E3%81%A8%E9%9B%86%E5%AE%A2%E3%81%AE%E9%96%A2%E4%BF%82%E6%80%A7">
-          <img src="/assets/lab/9a250b160556.png" alt="Googleマップと集客の関係性" loading="lazy">
+          <img src="/assets/lab/144e516f0043.jpg" alt="Googleマップと集客の関係性" loading="lazy">
           <span class="body"><span class="related-date">2025.08.25</span><span class="related-name">Googleマップと集客の関係性</span></span>
         </a>
         <a class="related-card" href="/lab/flr%E3%81%A8%E3%81%AF-%E9%A3%B2%E9%A3%9F%E5%BA%97%E3%81%AE%E7%B5%8C%E5%96%B6%E6%8C%87%E6%A8%99%E3%81%ABai%E3%82%B3%E3%82%B9%E3%83%88a%E3%82%92%E8%B6%B3%E3%81%99flra%E3%81%AE%E6%8F%90%E8%A8%80">
@@ -270,6 +274,7 @@ footer.site a:hover{color:#FFE100;}
         <li><a href="/grease-ozonizer">グリストラップ自動化</a></li>
       </ul></div>
       <div><ul>
+        <li><a href="/kabeuchi/">AIに相談</a></li>
         <li><a href="/lab/">Lab</a></li>
         <li><a href="/about">会社概要</a></li>
         <li><a href="/contact">お問い合わせ</a></li>
