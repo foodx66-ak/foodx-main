@@ -49,18 +49,99 @@ body{margin:0;}
 
 /* ===== Responsive (tablet) ===== */
 @media (max-width: 900px){
-  div[style*="grid-template-columns:repeat(5"]{grid-template-columns:repeat(2,1fr) !important;}
-  div[style*="grid-template-columns:repeat(3"]{grid-template-columns:repeat(2,1fr) !important;}
-  div[style*="grid-template-columns:1.05fr 0.95fr"],
-  div[style*="grid-template-columns:0.85fr 1.15fr"],
-  div[style*="grid-template-columns:0.8fr 1.2fr"]{grid-template-columns:1fr !important;gap:36px !important;}
+  /* style属性はreveal処理で空白入りに正規化されるため、プロパティ名で拾う */
+  section:not(.hero) [style*="grid-template-columns"][style*="repeat(5"],
+  section:not(.hero) [style*="grid-template-columns"][style*="repeat(3"]{grid-template-columns:repeat(2,1fr) !important;}
+  section:not(.hero) [style*="grid-template-columns"][style*="1.05fr"],
+  section:not(.hero) [style*="grid-template-columns"][style*="0.85fr"],
+  section:not(.hero) [style*="grid-template-columns"][style*="0.8fr"]{grid-template-columns:1fr !important;gap:36px !important;}
 }
-/* ===== Responsive (mobile) ===== */
+/* ===== Responsive (mobile / narrow) ===== */
+@media (max-width: 760px){
+  /* ヒーロー以外：余白・1カラム・カード内余白を読みやすく */
+  section:not(.hero){
+    padding-left:20px !important;
+    padding-right:20px !important;
+    padding-top:48px !important;
+    padding-bottom:48px !important;
+  }
+  section:not(.hero) h2{
+    font-size:clamp(24px,6.8vw,32px) !important;
+    line-height:1.32 !important;
+  }
+  /* すべてのグリッドを1カラムに（900px側より詳細度を上げて確実に上書き） */
+  section:not(.hero) [style*="grid-template-columns"],
+  section:not(.hero) [style*="grid-template-columns"][style*="repeat(2"],
+  section:not(.hero) [style*="grid-template-columns"][style*="repeat(3"],
+  section:not(.hero) [style*="grid-template-columns"][style*="repeat(5"]{
+    grid-template-columns:1fr !important;
+    gap:16px !important;
+  }
+  /* カード類（角丸ボックス）の厚いpaddingを抑える */
+  section:not(.hero) [style*="border-radius: 16px"],
+  section:not(.hero) [style*="border-radius:16px"],
+  section:not(.hero) [style*="border-radius: 18px"],
+  section:not(.hero) [style*="border-radius:18px"],
+  section:not(.hero) [style*="border-radius: 20px"],
+  section:not(.hero) [style*="border-radius:20px"],
+  section:not(.hero) [style*="border-radius: 22px"],
+  section:not(.hero) [style*="border-radius:22px"]{
+    padding:20px 18px !important;
+  }
+  section:not(.hero) h3{font-size:17px !important;line-height:1.45 !important;}
+  section:not(.hero) h4{font-size:16px !important;line-height:1.45 !important;}
+  /* Features：右上バッジと見出しが重ならないように */
+  #features [style*="position: relative"] h3,
+  #features [style*="position:relative"] h3{padding-right:4.8em;}
+  /* Process：矢印を隠し、ピルを自然に折り返す */
+  #process [data-reveal][style*="flex-wrap"] > span[style*="color:#bbb"],
+  #process [data-reveal][style*="flex-wrap"] > span[style*="color: rgb(187"]{display:none !important;}
+  #process [data-reveal][style*="flex-wrap"]{gap:8px !important;}
+  /* Pricing：価格行の溢れを防ぐ */
+  #pricing [style*="font-size: 34px"],
+  #pricing [style*="font-size:34px"]{font-size:28px !important;}
+  #pricing [style*="Noto Sans JP"][style*="font-size: 28px"],
+  #pricing [style*="Noto Sans JP"][style*="font-size:28px"]{font-size:22px !important;}
+  #pricing [style*="align-items: baseline"],
+  #pricing [style*="align-items:baseline"]{flex-wrap:wrap;gap:2px 6px;}
+  /* FAQ：左インデント72pxはスマホで窮屈 */
+  details summary{
+    padding:16px 18px !important;
+    gap:12px !important;
+    font-size:15px !important;
+    align-items:flex-start !important;
+  }
+  details > p{padding:0 18px 18px 18px !important;}
+  /* 壁打ち・最終CTA：ボタンを全幅 */
+  #kabeuchi a[href="/kabeuchi/"],
+  #contact a{
+    width:100%;
+    max-width:100%;
+    justify-content:center;
+    box-sizing:border-box;
+    padding-left:18px !important;
+    padding-right:18px !important;
+    font-size:15px !important;
+  }
+  #kabeuchi p,
+  #diagnosis p,
+  #contact p{font-size:15px !important;line-height:1.85 !important;}
+  #contact [style*="display: flex"][style*="flex-wrap"],
+  #contact [style*="display:flex"][style*="flex-wrap"]{flex-direction:column !important;width:100%;}
+  #contact h2{font-size:clamp(28px,8vw,40px) !important;}
+  /* Lab誘導・テーマSTEPのチップ */
+  a[data-reveal][href*="flr"]{padding:18px !important;}
+  [data-screen-label="Theme System"] span[style*="padding: 8px"],
+  [data-screen-label="Theme System"] span[style*="padding:8px"]{font-size:12px !important;padding:7px 10px !important;line-height:1.4;}
+  .theme-step{flex-direction:column !important;align-items:flex-start !important;gap:8px !important;}
+  .theme-step > span:first-child{width:auto !important;padding-top:0 !important;}
+  blockquote{font-size:15px !important;line-height:1.7 !important;padding-left:16px !important;}
+  /* footer：固定幅による横溢れを防ぐ */
+  footer{padding:36px 20px 28px !important;}
+  footer p{width:auto !important;max-width:100% !important;height:auto !important;}
+  footer > div > div{flex-direction:column !important;gap:28px !important;}
+}
 @media (max-width: 600px){
-  section{padding-left:20px !important;padding-right:20px !important;padding-top:56px !important;padding-bottom:56px !important;}
-  div[style*="grid-template-columns:repeat(2"],
-  div[style*="grid-template-columns:repeat(3"],
-  div[style*="grid-template-columns:repeat(5"]{grid-template-columns:1fr !important;}
   /* header：上段はロゴ＋相談CTA、下段に主要リンク */
   header > div.site-header-inner{height:auto !important;padding:12px 20px !important;flex-wrap:wrap !important;gap:10px 12px !important;}
   header .header-cta{order:2;margin-left:auto !important;padding:9px 14px !important;font-size:13px !important;}
@@ -69,8 +150,6 @@ body{margin:0;}
   header nav a[href="#problems"],
   header nav a[href="#features"],
   header nav a[href="#process"]{display:none !important;}
-  /* footer columns stack */
-  footer > div > div{flex-direction:column !important;gap:28px !important;}
 }
 /* ===== Utility bar services dropdown ===== */
 .util-drop{position:relative;}
@@ -375,11 +454,11 @@ body{margin:0;}
 
         <div data-reveal="" style="background:#fff;border-radius:20px;padding:32px;box-shadow:0 4px 16px rgba(0,0,0,0.05);">
           <div style="display:flex;flex-direction:column;gap:22px;">
-            <div style="display:flex;align-items:center;gap:14px;"><span style="font-family:'Inter',sans-serif;font-weight:700;font-size:12px;color:#aaa;width:54px;flex-shrink:0;">STEP 1</span><div style="display:flex;flex-wrap:wrap;gap:8px;"><span style="background:#E8833A;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;">原価管理アプリ・実装中</span></div></div>
-            <div style="display:flex;align-items:center;gap:14px;"><span style="font-family:'Inter',sans-serif;font-weight:700;font-size:12px;color:#aaa;width:54px;flex-shrink:0;">STEP 2</span><div style="display:flex;flex-wrap:wrap;gap:8px;"><span style="background:#E8833A;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;">原価管理アプリ・実装中</span><span style="background:#2D7DD2;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;">集客アプリ・新規スタート</span></div></div>
-            <div style="display:flex;align-items:flex-start;gap:14px;"><span style="font-family:'Inter',sans-serif;font-weight:700;font-size:12px;color:#aaa;width:54px;flex-shrink:0;padding-top:8px;">STEP 3</span><div style="display:flex;flex-wrap:wrap;gap:8px;"><span style="background:#E8833A;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;">原価管理アプリ</span><span style="background:var(--accent,#FFE100);color:#1A1A1A;font-size:13px;font-weight:700;padding:8px 14px;border-radius:9px;">採用・定着アプリ・緊急スタート</span><span style="background:#fff;color:#999;border:1.5px dashed #bbb;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;">集客アプリ・保留・温存中</span></div></div>
+            <div class="theme-step" style="display:flex;align-items:center;gap:14px;"><span style="font-family:'Inter',sans-serif;font-weight:700;font-size:12px;color:#aaa;width:54px;flex-shrink:0;">STEP 1</span><div style="display:flex;flex-wrap:wrap;gap:8px;"><span style="background:#E8833A;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;">原価管理アプリ・実装中</span></div></div>
+            <div class="theme-step" style="display:flex;align-items:center;gap:14px;"><span style="font-family:'Inter',sans-serif;font-weight:700;font-size:12px;color:#aaa;width:54px;flex-shrink:0;">STEP 2</span><div style="display:flex;flex-wrap:wrap;gap:8px;"><span style="background:#E8833A;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;">原価管理アプリ・実装中</span><span style="background:#2D7DD2;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;">集客アプリ・新規スタート</span></div></div>
+            <div class="theme-step" style="display:flex;align-items:flex-start;gap:14px;"><span style="font-family:'Inter',sans-serif;font-weight:700;font-size:12px;color:#aaa;width:54px;flex-shrink:0;padding-top:8px;">STEP 3</span><div style="display:flex;flex-wrap:wrap;gap:8px;"><span style="background:#E8833A;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;">原価管理アプリ</span><span style="background:var(--accent,#FFE100);color:#1A1A1A;font-size:13px;font-weight:700;padding:8px 14px;border-radius:9px;">採用・定着アプリ・緊急スタート</span><span style="background:#fff;color:#999;border:1.5px dashed #bbb;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;">集客アプリ・保留・温存中</span></div></div>
             <div style="background:#FFF6E0;border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;"><svg width="18" height="18" viewBox="0 0 24 24" fill="var(--accent-deep,#BA7517)" stroke="none" style="flex-shrink:0;margin-top:1px;"><path d="M13 2 3 14h7l-1 8 10-12h-7z"></path></svg><p style="margin:0;font-size:13px;line-height:1.6;color:#7a5a14;">スタッフ急退職により優先テーマを切り替え。保留アプリは資産として温存。</p></div>
-            <div style="display:flex;align-items:center;gap:14px;"><span style="font-family:'Inter',sans-serif;font-weight:700;font-size:12px;color:#aaa;width:54px;flex-shrink:0;">STEP 4</span><div style="display:flex;flex-wrap:wrap;gap:8px;"><span style="background:#E8833A;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;">原価管理</span><span style="background:#3A9D5D;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;display:inline-flex;align-items:center;gap:6px;">採用・定着・完了 ✓</span><span style="background:#2D7DD2;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;">集客アプリ・再開</span></div></div>
+            <div class="theme-step" style="display:flex;align-items:center;gap:14px;"><span style="font-family:'Inter',sans-serif;font-weight:700;font-size:12px;color:#aaa;width:54px;flex-shrink:0;">STEP 4</span><div style="display:flex;flex-wrap:wrap;gap:8px;"><span style="background:#E8833A;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;">原価管理</span><span style="background:#3A9D5D;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;display:inline-flex;align-items:center;gap:6px;">採用・定着・完了 ✓</span><span style="background:#2D7DD2;color:#fff;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;">集客アプリ・再開</span></div></div>
           </div>
         </div>
       </div>
@@ -707,7 +786,7 @@ body{margin:0;}
       <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:40px;padding-bottom:32px;border-bottom:1px solid #262626;">
         <div style="max-width:300px;">
           <div style="display:flex;align-items:center;gap:9px;"><a href="#top" style="display:inline-flex;align-items:center;gap:9px;text-decoration:none;"><span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;background:var(--accent,#FFE100);border-radius:999px;font-family:'Inter',sans-serif;font-weight:700;font-size:11px;color:#1A1A1A;">AI</span><span style="font-weight:900;font-size:19px;color:#fff;letter-spacing:-0.01em;">AIkata</span></a><span style="font-size:12px;color:#666;">運営：FooDX, LLC.</span></div>
-          <p style="margin: 14px 0 0; font-size: 13px; line-height: 1.8; color: #777; width: 337px; height: 44px">飲食店経営をAIと共に運営する、経営OS型AXサービス。</p>
+          <p style="margin:14px 0 0;font-size:13px;line-height:1.8;color:#777;max-width:300px;">飲食店経営をAIと共に運営する、経営OS型AXサービス。</p>
         </div>
         <div style="display:flex;gap:56px;flex-wrap:wrap;">
           <div>
