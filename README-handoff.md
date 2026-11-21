@@ -11,7 +11,7 @@ Next.js 等へ移植する際の「見た目・コピー・構成・配色の正
 
 | ファイル | 役割 | 主なリンク先 |
 |---|---|---|
-| `AIkata.dc.html` | **トップ**（AIkata 経営OS）。Hero→課題→特長→料金→代表→**無料診断**→最終CTA | `#diagnosis`, `Contact.dc.html` |
+| `AIkata.dc.html` | **トップ**（AIkata 経営ダッシュボード）。Hero→課題→特長→料金→代表→**無料診断**→最終CTA | `#diagnosis`, `Contact.dc.html` |
 | `AIkataDiagnosis.dc.html` | 簡易診断コンポーネント（トップに `<dc-import>` で埋め込み） | `Contact.dc.html` |
 | `GoogleProfile.dc.html` | Googleビジネスプロフィール代行（完全成果報酬MEO） | `Contact.dc.html` |
 | `REO.dc.html` | 予約体験最適化 | `Contact.dc.html` |
