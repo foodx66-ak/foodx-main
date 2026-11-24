@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<title>【やってみた】決算までの仕訳が3週間→3時間に。小さな会社の決算をClaudeに任せてみた</title>
+<meta name="description" content="昨年は約3週間かかった決算までの仕訳が、Claudeに任せたら約3時間で終わりました。デビットカードの二重計上や前期の記録漏れなど、4種類のずれを拾った決算前の点検と、予定納税額の試算の実例です。">
+<link rel="canonical" href="https://www.foodx.co.jp/lab/%E6%B1%BA%E7%AE%97%E3%81%BE%E3%81%A7%E3%81%AE%E4%BB%95%E8%A8%B3%E3%82%92claude%E3%81%AB%E4%BB%BB%E3%81%9B%E3%81%A6%E3%81%BF%E3%81%9F">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AIkata｜FooDX合同会社">
+<meta property="og:title" content="【やってみた】決算までの仕訳が3週間→3時間に。小さな会社の決算をClaudeに任せてみた">
+<meta property="og:description" content="昨年は約3週間かかった決算までの仕訳が、Claudeに任せたら約3時間で終わりました。デビットカードの二重計上や前期の記録漏れなど、4種類のずれを拾った決算前の点検と、予定納税額の試算の実例です。">
+<meta property="og:url" content="https://www.foodx.co.jp/lab/%E6%B1%BA%E7%AE%97%E3%81%BE%E3%81%A7%E3%81%AE%E4%BB%95%E8%A8%B3%E3%82%92claude%E3%81%AB%E4%BB%BB%E3%81%9B%E3%81%A6%E3%81%BF%E3%81%9F">
+<meta property="og:image" content="https://www.foodx.co.jp/assets/lab/9a8c6676388c.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "【やってみた】決算までの仕訳が3週間→3時間に。小さな会社の決算をClaudeに任せてみた", "description": "昨年は約3週間かかった決算までの仕訳が、Claudeに任せたら約3時間で終わりました。デビットカードの二重計上や前期の記録漏れなど、4種類のずれを拾った決算前の点検と、予定納税額の試算の実例です。", "image": "https://www.foodx.co.jp/assets/lab/9a8c6676388c.png", "datePublished": "2026-11-24", "dateModified": "2026-11-24", "author": {"@type": "Organization", "name": "FooDX合同会社", "url": "https://www.foodx.co.jp/"}, "publisher": {"@type": "Organization", "name": "FooDX合同会社", "logo": {"@type": "ImageObject", "url": "https://www.foodx.co.jp/assets/foodx-logo.png"}}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.foodx.co.jp/lab/%E6%B1%BA%E7%AE%97%E3%81%BE%E3%81%A7%E3%81%AE%E4%BB%95%E8%A8%B3%E3%82%92claude%E3%81%AB%E4%BB%BB%E3%81%9B%E3%81%A6%E3%81%BF%E3%81%9F"}, "inLanguage": "ja"}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:'Noto Sans JP',sans-serif;color:#1A1A1A;background:#FAFAFA;-webkit-font-smoothing:antialiased;line-height:1.9;}
+:root{--accent:#FFE100;}
+.util-drop{position:relative;}
+.util-drop-menu{position:absolute;top:100%;right:0;margin-top:6px;background:#fff;border:1px solid #ececec;border-radius:14px;box-shadow:0 14px 38px rgba(0,0,0,0.12);padding:8px;min-width:266px;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .18s ease, transform .18s ease, visibility .18s;z-index:70;}
+.util-drop:hover .util-drop-menu,.util-drop:focus-within .util-drop-menu{opacity:1;visibility:visible;transform:translateY(0);}
+.util-drop-menu a{display:block;padding:10px 12px;border-radius:9px;font-size:13.5px;font-weight:600;color:#333;text-decoration:none;transition:background .15s ease;}
+.util-drop-menu a:hover{background:#FFFBE0;color:#1A1A1A;}
+.util-bar-inner nav a,.util-bar-inner .util-drop>span{white-space:nowrap;}
+.util-link{font-size:12.5px;font-weight:600;color:#e5e5e5;text-decoration:none;}
+.util-link:hover,.util-link.current{color:var(--accent,#FFE100);}
+.util-link.util-ai{color:#C4B5FD;}
+.util-link.util-ai:hover,.util-link.util-ai.current{color:#DDD6FE;}
+header.site{position:sticky;top:0;z-index:50;background:rgba(250,250,250,0.85);backdrop-filter:blur(12px);border-bottom:1px solid #eee;}
+header.site .wrap{max-width:1180px;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
+header.site nav{display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
+header.site nav a{font-size:14px;font-weight:500;color:#444;text-decoration:none;}
+header.site nav a:hover{color:#1A1A1A;}
+header.site nav a.cta-nav{display:inline-flex;align-items:center;gap:8px;background:#6D28D9;color:#FFFFFF;padding:10px 20px;border-radius:999px;font-size:14px;font-weight:700;text-decoration:none;}
+header.site nav a.cta-nav:hover{background:#5B21B6;color:#FFFFFF;}
+a{color:#BA7517;}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px;}
+.article{background:#fff;margin:32px auto 48px;border-radius:22px;box-shadow:0 4px 24px rgba(0,0,0,0.05);padding:48px 44px;}
+.article h1{font-size:clamp(26px,4vw,38px);line-height:1.35;letter-spacing:-0.02em;margin:0 0 14px;}
+.meta{font-size:13px;color:#999;margin-bottom:28px;}
+.feat{width:100%;height:auto;border-radius:14px;margin:0 0 32px;display:block;}
+.article img{max-width:100%;height:auto;border-radius:10px;}
+.article h2{font-size:24px;margin:40px 0 14px;border-top:2px solid #FFE100;padding-top:20px;}
+.article h3{font-size:19px;margin:28px 0 10px;}
+.article p{margin:0 0 18px;}
+.article ul,.article ol{margin:0 0 18px;padding-left:1.4em;}
+.article li{margin:6px 0;}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 20px;max-width:100%;}
+.article table{border-collapse:collapse;width:100%;margin:0;font-size:14px;min-width:520px;}
+.article th,.article td{border:1px solid #e2e2dc;padding:8px 12px;}
+.article th{background:#f5f5f0;}
+.related{margin:44px 0 0;border-top:1px solid #eee;padding-top:28px;}
+.related h2{font-size:18px;margin:0 0 16px;border:none;padding:0;}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.related-card{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:#1A1A1A;}
+.related-card img{width:100%;aspect-ratio:1.91/1;object-fit:cover;border-radius:10px;margin:0;display:block;}
+.related-date{font-family:'Inter',sans-serif;font-size:11.5px;color:#999;line-height:1.4;}
+.related-name{font-size:14px;font-weight:700;line-height:1.5;}
+.related-card .body{display:flex;flex-direction:column;gap:4px;min-width:0;}
+.related-card:hover .related-name{color:#BA7517;}
+.cta{margin:40px 0 8px;text-align:center;}
+.cta a{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--accent,#FFE100);color:#1A1A1A;padding:16px 34px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;max-width:100%;white-space:normal;text-align:center;box-sizing:border-box;}
+.backlink{display:inline-block;margin:28px 0 0;font-size:14px;color:#666;text-decoration:none;}
+.sources{font-size:14px;overflow-wrap:anywhere;}
+.sources a{overflow-wrap:anywhere;word-break:break-all;}
+.sources li{margin:8px 0;}
+.note{font-size:13.5px;color:#666;}
+footer.site{background:#111;color:#888;padding:44px 24px 34px;margin-top:20px;}
+footer.site .wrap{max-width:1180px;}
+footer.site a{color:#aaa;text-decoration:none;}
+footer.site a:hover{color:#FFE100;}
+.fcols{display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;border-bottom:1px solid #262626;padding-bottom:28px;}
+.fcols ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;font-size:13.5px;}
+@media (max-width:600px){.article{padding:32px 20px;}header.site .wrap{height:auto;padding-top:12px;padding-bottom:12px;flex-wrap:wrap;gap:10px 0;}header.site nav{gap:14px;}header.site nav a{font-size:13px;}.util-bar-inner{flex-wrap:wrap !important;height:auto !important;padding-top:8px !important;padding-bottom:8px !important;gap:6px 16px !important;}.util-bar-inner nav{flex-wrap:wrap;gap:4px 16px !important;}.util-drop-menu{left:0;right:auto;}.related-grid{grid-template-columns:1fr;gap:14px;}.related-card{flex-direction:row;align-items:center;gap:12px;}.related-card img{width:104px;flex:0 0 104px;}}
+.article figure{margin:28px 0;}
+.article figure img{display:block;width:100%;border:1px solid #eee;}
+.article figcaption{font-size:13px;color:#777;text-align:center;margin-top:10px;line-height:1.7;}
+</style>
+<link rel="stylesheet" href="/assets/lab-cta.css">
+</head>
+<body>
+<!-- ===== UTILITY BAR ===== -->
+<div style="background:#1A1A1A;color:#cfcfcf;">
+  <div class="util-bar-inner" style="max-width:1180px;margin:0 auto;padding:0 24px;height:38px;display:flex;align-items:center;justify-content:space-between;">
+    <span style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:0.02em;">運営：<a href="/about" style="color:var(--accent,#FFE100);font-weight:700;text-decoration:none;">FooDX, LLC.</a><span style="color:#666;">（フーディックス合同会社）</span></span>
+    <nav style="display:flex;align-items:center;gap:22px;">
+      <div class="util-drop" tabindex="0" style="outline:none;">
+        <span style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:#e5e5e5;cursor:pointer;">その他のサービス<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <div class="util-drop-menu">
+          <a href="/google-profile">集客支援</a>
+          <a href="/reo">予約体験最適化（REO）</a>
+          <a href="/grease-ozonizer">グリストラップ清掃自動化装置</a>
+        </div>
+      </div>
+      <a href="/lab/" class="util-link current">Lab</a>
+      <a href="/about" class="util-link">会社概要</a>
+      <a href="/kabeuchi/" class="util-link util-ai">AIに相談</a>
+      <a href="/contact" class="util-link">お問い合わせ</a>
+    </nav>
+  </div>
+</div>
+<header class="site">
+  <div class="wrap">
+    <a href="/" style="display:flex;align-items:center;gap:9px;text-decoration:none;color:#1A1A1A;">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--accent,#FFE100);border-radius:999px;font-family:'Inter',sans-serif;font-weight:700;font-size:12px;color:#1A1A1A;">AI</span>
+      <span style="font-weight:900;font-size:22px;letter-spacing:-0.02em;">AIkata</span>
+    </a>
+    <nav>
+      <a href="/#problems">課題</a>
+      <a href="/#features">対応領域</a>
+      <a href="/#process">導入の流れ</a>
+      <a href="/#pricing">料金</a>
+      <a href="/contact">お問い合わせ</a>
+      <a href="/#diagnosis">無料診断</a>
+      <a class="cta-nav" href="/kabeuchi/">AIに相談</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <article class="article">
+    <h1>【やってみた】決算までの仕訳が3週間→3時間に。小さな会社の決算をClaudeに任せてみた</h1>
+    <div class="meta">公開日：2026年11月24日　｜　FooDX合同会社</div>
+    <img class="feat" src="/assets/lab/9a8c6676388c.png" alt="【やってみた】決算までの仕訳が3週間→3時間に。小さな会社の決算をClaudeに任せてみた">
+
+    <p>決算までの仕訳をClaudeに任せてみたら、昨年は約3週間かかった作業が約3時間で終わりました。FooDX Labの「やってみた」シリーズ第2回として、日商簿記2級をもつ代表の鈴木が、自社の決算で試した中身をご紹介します。日々の仕訳の話は、<a href="/lab/%E9%A3%B2%E9%A3%9F%E5%BA%97%E3%81%AE%E6%97%A5%E3%80%85%E3%81%AE%E4%BB%95%E8%A8%B3%E3%82%92claude%E3%81%AB%E4%BB%BB%E3%81%9B%E3%81%A6%E3%81%BF%E3%81%9F">第1回</a>にまとめています。</p>
+
+    <h2>やったこと</h2>
+    <p>対象は、鈴木が代表を務めるFooDX合同会社です。10月に締めた期の決算を、Claudeとの会話で進めました。</p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>項目</th><th>内容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>会社</td><td>FooDX合同会社（ITコンサル）</td></tr>
+          <tr><td>会計期間</td><td>2025年11月1日〜2026年10月31日（10月決算）</td></tr>
+          <tr><td>期中の取引数</td><td>170件</td></tr>
+          <tr><td>会計ソフトとAI</td><td>freee会計とClaude（freee公式のMCP連携）</td></tr>
+          <tr><td>任せたこと</td><td>仕訳の整合チェック、自動仕訳、決算対策、予定納税額の試算</td></tr>
+          <tr><td>かかった期間</td><td>約3時間（昨年は約3週間）</td></tr>
+          <tr><td>最終確認</td><td>鈴木</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>昨年の約3週間は、レシートの登録から申告前の確定仕訳までの期間です。今回は、同じ範囲が約3時間で終わりました。</p>
+
+    <h2>進め方：入力より先に「ずれ」を見つける</h2>
+    <p>Claudeは仕訳を入れる前に、帳簿のずれを洗い出すところから始めてくれました。流れは次のとおりです。</p>
+    <ol>
+      <li>試算表、口座の残高、未決済の取引をfreeeから読み、今の状態をつかみます。</li>
+      <li>前期の申告書と帳簿を突き合わせます（未払の税金、消費税の精算など）。</li>
+      <li>通帳のCSVと帳簿の残高を、期首・入金・出金・期末で比べ、差額を分解します。</li>
+      <li>見つかったずれごとに、直し方の仕訳案と利益への影響額を出します。</li>
+      <li>決算仕訳の前に、納税額を試算します。</li>
+      <li>試算を確かめてから、決算仕訳（消費税の精算、法人税等の計上）を入れます。</li>
+    </ol>
+    <figure>
+      <img src="/assets/lab/1601fe90e045.png" alt="決算前の点検結果。期首の預金残高、デビットカードの残高、現金の残高、1期目の均等割について、実際と帳簿の差と原因を並べた表" loading="lazy">
+      <figcaption>入力より先に「ずれ」を洗い出す。実際と帳簿の差と、その原因まで出てきます</figcaption>
+    </figure>
+
+    <h2>正確だったところ：4種類のずれを拾った</h2>
+    <p>Claudeの指摘は、勘定科目の誤り、期ズレ、重複計上、納税額の試算の4つにおよびました。</p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>指摘の種類</th><th>実際の指摘と直し方</th><th>裏づけ</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>重複計上</td><td>前期のデビットカードの支払いが二重に計上されていた（80,429円）。今期の期首に「前期損益修正益」で取り消した</td><td>デビットは即時引落しなので、カードの残高は0が正しい。そこに残高が残っていた</td></tr>
+          <tr><td>期ズレ（前期の記録漏れ）</td><td>期首の預金残高が通帳より22,975円多かった。前期3〜10月の出金の記録漏れと推定し、「前期損益修正損」で合わせた</td><td>帳簿28,127円と通帳5,152円を突き合わせた</td></tr>
+          <tr><td>勘定科目の誤り</td><td>会社に手元の現金がないのに、帳簿の「現金」に55,312円が残っていた。役員借入金と相殺した</td><td>会社には現金がない。役員の財布から払った分が「現金」で計上されていた</td></tr>
+          <tr><td>納税額の試算</td><td>1期目の均等割が5,800円多く計上されていた。未払法人税等を取り崩した</td><td>計上64,100円と納付58,300円を突き合わせた</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure>
+      <img src="/assets/lab/6f710bababe0.png" alt="ずれの指摘と直し方の仕訳案。4つの直しごとに借方・貸方と利益への影響額を示した図" loading="lazy">
+      <figcaption>指摘ごとに、直し方の仕訳と利益への影響額が付きます。4つの直しで、利益は合計63,254円増えました</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/lab/b0c8d8f8e21a.png" alt="予定納税額の試算の流れ。課税所得から税目ごとの税額を出す図（金額は伏せています）" loading="lazy">
+      <figcaption>申告の前に納税額の見当がつくので、資金の準備ができます（金額は伏せています）</figcaption>
+    </figure>
+
+    <h2>任せなかったこと：最終確認は自分</h2>
+    <p>決算の数字を最後に確かめて決めたのは、日商簿記2級をもつ私です。Claudeは税理士ではありません。</p>
+    <ul>
+      <li><strong>取り返しにくい処理</strong>：取引の削除や前期の修正は、Claudeが根拠と影響額を示し、自分で決めてから入れました。</li>
+      <li><strong>判断が分かれるもの</strong>：税務の扱いが分かれるものは、選択肢とそれぞれの利益への影響を並べてもらい、自分で選びました。</li>
+    </ul>
+
+    <h2>小さな会社・個人の飲食店がまねするなら</h2>
+    <p>小さな会社の決算で時間を食うのは、入力よりも「どこがずれているか」を探す作業です。個人で回している飲食店でも、同じ流れで使えます。</p>
+    <ol>
+      <li>決算の1か月前までに、日々の仕訳を済ませておきます（<a href="/lab/%E9%A3%B2%E9%A3%9F%E5%BA%97%E3%81%AE%E6%97%A5%E3%80%85%E3%81%AE%E4%BB%95%E8%A8%B3%E3%82%92claude%E3%81%AB%E4%BB%BB%E3%81%9B%E3%81%A6%E3%81%BF%E3%81%9F">第1回</a>のやり方）。</li>
+      <li>前期の申告書（法人税・消費税）と、通帳のCSVを用意します。</li>
+      <li>「決算前の点検をして」と頼み、ずれの一覧を出してもらいます。</li>
+      <li>直し方の仕訳案を確かめ、分かれる判断は自分で決めます。</li>
+      <li>納税額の試算を見て、資金の準備をします。</li>
+      <li>決算仕訳を入れ、最後に自分で確かめます。</li>
+    </ol>
+
+    <h2>まとめ：決算は「探す」から「決める」仕事になる</h2>
+    <p>昨年約3週間かかった決算までの仕訳が、今回は約3時間で終わりました。ずれを探すのはClaudeで、私の仕事は直し方を決めることと最終確認になりました。</p>
+    <p>納税額の見当が申告の前につくのも、大きな安心材料でした。小さな会社や個人の飲食店では、納税の資金をいつ用意するかが、そのまま資金繰りに効いてきます。FooDXは、日々の仕訳から決算までのこの流れを、お店ごとに立ち上げるところから伴走します。</p>
+    <p class="note">この記事は2026年11月時点の情報にもとづく、実際に試した内容の紹介です。個別の税務判断ではありません。納税額の試算の税率は、中小法人・東京23区の目安です。</p>
+
+<div class="cta-dual" data-cta="dual-mid">
+  <p class="cta-dual-lead">次の一歩は、2つの進め方から選べます</p>
+  <p class="cta-dual-sub">どちらも無料です。迷ったら、まずAIで悩みを整理するのがおすすめです。</p>
+  <div class="cta-dual-grid">
+    <div class="cta-card cta-card--ai">
+      <span class="cta-badge">迷っている方はこちら</span>
+      <h3>AIに相談する</h3>
+      <p class="cta-meta">10分・その場で整理／無料</p>
+      <p class="cta-desc">自分のお店の決算で、どこに時間がかかっているのか。お店の状況を話すと、何から任せられるかをAIと一緒に整理します。</p>
+      <ul>
+        <li>メールで届く開始リンクから、10分の壁打ち</li>
+        <li>話した内容のまとめをメールでお届け</li>
+        <li>続きは、そのまとめをもとに無料面談で</li>
+      </ul>
+      <a class="cta-btn" href="/kabeuchi/?from=lab-freee-closing&amp;cta=dual-mid">AIに相談してみる →</a>
+    </div>
+    <div class="cta-card cta-card--contact">
+      <h3>お問い合わせ</h3>
+      <p class="cta-meta">担当者から通常2営業日以内に返信</p>
+      <p class="cta-desc">依頼したい内容が決まっている方、お見積りや取材・協業のご相談はこちらから。</p>
+      <ul>
+        <li>FooDXの担当者が内容を確認して返信</li>
+        <li>サービス内容・料金・お見積りのご相談に</li>
+      </ul>
+      <a class="cta-btn" href="/contact?from=lab-freee-closing&amp;cta=dual-mid">お問い合わせする →</a>
+    </div>
+  </div>
+</div>
+
+    <section class="related">
+      <h2>関連記事</h2>
+      <div class="related-grid">
+        <a class="related-card" href="/lab/%E9%A3%B2%E9%A3%9F%E5%BA%97%E3%81%AE%E6%97%A5%E3%80%85%E3%81%AE%E4%BB%95%E8%A8%B3%E3%82%92claude%E3%81%AB%E4%BB%BB%E3%81%9B%E3%81%A6%E3%81%BF%E3%81%9F">
+          <img src="/assets/lab/35a3c9d4efe9.png" alt="【やってみた】飲食店の日々の仕訳をClaudeに任せてみた" loading="lazy">
+          <span class="body"><span class="related-date">2026.11.24</span><span class="related-name">【やってみた】飲食店の日々の仕訳をClaudeに任せてみた</span></span>
+        </a>
+        <a class="related-card" href="/lab/flr%E3%81%A8%E3%81%AF-%E9%A3%B2%E9%A3%9F%E5%BA%97%E3%81%AE%E7%B5%8C%E5%96%B6%E6%8C%87%E6%A8%99%E3%81%ABai%E3%82%B3%E3%82%B9%E3%83%88a%E3%82%92%E8%B6%B3%E3%81%99flra%E3%81%AE%E6%8F%90%E8%A8%80">
+          <img src="/assets/lab/7198bd42cd90.jpg" alt="FLからFLRへ、そしてFLRAへ ── 飲食店の経営指標に「A」を足すとき" loading="lazy">
+          <span class="body"><span class="related-date">2026.09.10</span><span class="related-name">FLからFLRへ、そしてFLRAへ ── 飲食店の経営指標に「A」を足すとき</span></span>
+        </a>
+        <a class="related-card" href="/lab/%E9%A3%B2%E9%A3%9F%E5%BA%97%E3%81%AE%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E5%AF%BE%E7%AD%96">
+          <img src="/assets/lab/142835c6db4a.png" alt="飲食店のセキュリティ対策｜2026年の情報漏えい事例と、今週できる7つの点検" loading="lazy">
+          <span class="body"><span class="related-date">2026.10.29</span><span class="related-name">飲食店のセキュリティ対策｜2026年の情報漏えい事例と、今週できる7つの点検</span></span>
+        </a>
+      </div>
+    </section>
+
+    <div class="cta-compact" data-cta="dual-bottom">
+  <a class="is-ai" href="/kabeuchi/?from=lab-freee-closing&amp;cta=dual-bottom">AIに相談する（10分・無料）</a>
+  <a class="is-contact" href="/contact?from=lab-freee-closing&amp;cta=dual-bottom">お問い合わせ</a>
+</div>
+    <a class="backlink" href="/lab/">← Lab 記事一覧へ</a>
+  </article>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="fcols">
+      <div style="max-width:280px;"><img src="/assets/foodx-logo-white.png" alt="FooDX" style="height:26px;"><p style="font-size:13px;color:#777;line-height:1.8;margin:12px 0 0;">食業界のAX推進支援カンパニー。</p></div>
+      <div><ul>
+        <li><a href="/">AIkata（経営OS）</a></li>
+        <li><a href="/google-profile">集客支援（MEO・AIO）</a></li>
+        <li><a href="/reo">予約体験最適化（REO）</a></li>
+        <li><a href="/grease-ozonizer">グリストラップ自動化</a></li>
+      </ul></div>
+      <div><ul>
+        <li><a href="/kabeuchi/">AIに相談</a></li>
+        <li><a href="/lab/">Lab</a></li>
+        <li><a href="/about">会社概要</a></li>
+        <li><a href="/contact">お問い合わせ</a></li>
+      </ul></div>
+    </div>
+    <p style="margin:22px 0 0;font-size:12px;color:#555;">©FooDX, LLC. All Rights Reserved.</p>
+  </div>
+</footer>
+</body>
+</html>
