@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<title>【やってみた】飲食店の日々の仕訳をClaudeに任せてみた</title>
+<meta name="description" content="freee会計の未処理明細143件の仕訳をClaudeに任せてみました。61件はOKを押すだけで、自分で考えたのは35件。消費税区分の変更や、別の月で計上されていた給与まで見つけてくれた、飲食店の経理の実例です。">
+<link rel="canonical" href="https://www.foodx.co.jp/lab/%E9%A3%B2%E9%A3%9F%E5%BA%97%E3%81%AE%E6%97%A5%E3%80%85%E3%81%AE%E4%BB%95%E8%A8%B3%E3%82%92claude%E3%81%AB%E4%BB%BB%E3%81%9B%E3%81%A6%E3%81%BF%E3%81%9F">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AIkata｜FooDX合同会社">
+<meta property="og:title" content="【やってみた】飲食店の日々の仕訳をClaudeに任せてみた">
+<meta property="og:description" content="freee会計の未処理明細143件の仕訳をClaudeに任せてみました。61件はOKを押すだけで、自分で考えたのは35件。消費税区分の変更や、別の月で計上されていた給与まで見つけてくれた、飲食店の経理の実例です。">
+<meta property="og:url" content="https://www.foodx.co.jp/lab/%E9%A3%B2%E9%A3%9F%E5%BA%97%E3%81%AE%E6%97%A5%E3%80%85%E3%81%AE%E4%BB%95%E8%A8%B3%E3%82%92claude%E3%81%AB%E4%BB%BB%E3%81%9B%E3%81%A6%E3%81%BF%E3%81%9F">
+<meta property="og:image" content="https://www.foodx.co.jp/assets/lab/c33c1dcafb34.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "【やってみた】飲食店の日々の仕訳をClaudeに任せてみた", "description": "freee会計の未処理明細143件の仕訳をClaudeに任せてみました。61件はOKを押すだけで、自分で考えたのは35件。消費税区分の変更や、別の月で計上されていた給与まで見つけてくれた、飲食店の経理の実例です。", "image": "https://www.foodx.co.jp/assets/lab/c33c1dcafb34.png", "datePublished": "2026-11-24", "dateModified": "2026-11-24", "author": {"@type": "Organization", "name": "FooDX合同会社", "url": "https://www.foodx.co.jp/"}, "publisher": {"@type": "Organization", "name": "FooDX合同会社", "logo": {"@type": "ImageObject", "url": "https://www.foodx.co.jp/assets/foodx-logo.png"}}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.foodx.co.jp/lab/%E9%A3%B2%E9%A3%9F%E5%BA%97%E3%81%AE%E6%97%A5%E3%80%85%E3%81%AE%E4%BB%95%E8%A8%B3%E3%82%92claude%E3%81%AB%E4%BB%BB%E3%81%9B%E3%81%A6%E3%81%BF%E3%81%9F"}, "inLanguage": "ja"}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:'Noto Sans JP',sans-serif;color:#1A1A1A;background:#FAFAFA;-webkit-font-smoothing:antialiased;line-height:1.9;}
+:root{--accent:#FFE100;}
+.util-drop{position:relative;}
+.util-drop-menu{position:absolute;top:100%;right:0;margin-top:6px;background:#fff;border:1px solid #ececec;border-radius:14px;box-shadow:0 14px 38px rgba(0,0,0,0.12);padding:8px;min-width:266px;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .18s ease, transform .18s ease, visibility .18s;z-index:70;}
+.util-drop:hover .util-drop-menu,.util-drop:focus-within .util-drop-menu{opacity:1;visibility:visible;transform:translateY(0);}
+.util-drop-menu a{display:block;padding:10px 12px;border-radius:9px;font-size:13.5px;font-weight:600;color:#333;text-decoration:none;transition:background .15s ease;}
+.util-drop-menu a:hover{background:#FFFBE0;color:#1A1A1A;}
+.util-bar-inner nav a,.util-bar-inner .util-drop>span{white-space:nowrap;}
+.util-link{font-size:12.5px;font-weight:600;color:#e5e5e5;text-decoration:none;}
+.util-link:hover,.util-link.current{color:var(--accent,#FFE100);}
+.util-link.util-ai{color:#C4B5FD;}
+.util-link.util-ai:hover,.util-link.util-ai.current{color:#DDD6FE;}
+header.site{position:sticky;top:0;z-index:50;background:rgba(250,250,250,0.85);backdrop-filter:blur(12px);border-bottom:1px solid #eee;}
+header.site .wrap{max-width:1180px;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
+header.site nav{display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
+header.site nav a{font-size:14px;font-weight:500;color:#444;text-decoration:none;}
+header.site nav a:hover{color:#1A1A1A;}
+header.site nav a.cta-nav{display:inline-flex;align-items:center;gap:8px;background:#6D28D9;color:#FFFFFF;padding:10px 20px;border-radius:999px;font-size:14px;font-weight:700;text-decoration:none;}
+header.site nav a.cta-nav:hover{background:#5B21B6;color:#FFFFFF;}
+a{color:#BA7517;}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px;}
+.article{background:#fff;margin:32px auto 48px;border-radius:22px;box-shadow:0 4px 24px rgba(0,0,0,0.05);padding:48px 44px;}
+.article h1{font-size:clamp(26px,4vw,38px);line-height:1.35;letter-spacing:-0.02em;margin:0 0 14px;}
+.meta{font-size:13px;color:#999;margin-bottom:28px;}
+.feat{width:100%;height:auto;border-radius:14px;margin:0 0 32px;display:block;}
+.article img{max-width:100%;height:auto;border-radius:10px;}
+.article h2{font-size:24px;margin:40px 0 14px;border-top:2px solid #FFE100;padding-top:20px;}
+.article h3{font-size:19px;margin:28px 0 10px;}
+.article p{margin:0 0 18px;}
+.article ul,.article ol{margin:0 0 18px;padding-left:1.4em;}
+.article li{margin:6px 0;}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 20px;max-width:100%;}
+.article table{border-collapse:collapse;width:100%;margin:0;font-size:14px;min-width:520px;}
+.article th,.article td{border:1px solid #e2e2dc;padding:8px 12px;}
+.article th{background:#f5f5f0;}
+.related{margin:44px 0 0;border-top:1px solid #eee;padding-top:28px;}
+.related h2{font-size:18px;margin:0 0 16px;border:none;padding:0;}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.related-card{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:#1A1A1A;}
+.related-card img{width:100%;aspect-ratio:1.91/1;object-fit:cover;border-radius:10px;margin:0;display:block;}
+.related-date{font-family:'Inter',sans-serif;font-size:11.5px;color:#999;line-height:1.4;}
+.related-name{font-size:14px;font-weight:700;line-height:1.5;}
+.related-card .body{display:flex;flex-direction:column;gap:4px;min-width:0;}
+.related-card:hover .related-name{color:#BA7517;}
+.cta{margin:40px 0 8px;text-align:center;}
+.cta a{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--accent,#FFE100);color:#1A1A1A;padding:16px 34px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;max-width:100%;white-space:normal;text-align:center;box-sizing:border-box;}
+.backlink{display:inline-block;margin:28px 0 0;font-size:14px;color:#666;text-decoration:none;}
+.sources{font-size:14px;overflow-wrap:anywhere;}
+.sources a{overflow-wrap:anywhere;word-break:break-all;}
+.sources li{margin:8px 0;}
+.note{font-size:13.5px;color:#666;}
+footer.site{background:#111;color:#888;padding:44px 24px 34px;margin-top:20px;}
+footer.site .wrap{max-width:1180px;}
+footer.site a{color:#aaa;text-decoration:none;}
+footer.site a:hover{color:#FFE100;}
+.fcols{display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;border-bottom:1px solid #262626;padding-bottom:28px;}
+.fcols ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;font-size:13.5px;}
+@media (max-width:600px){.article{padding:32px 20px;}header.site .wrap{height:auto;padding-top:12px;padding-bottom:12px;flex-wrap:wrap;gap:10px 0;}header.site nav{gap:14px;}header.site nav a{font-size:13px;}.util-bar-inner{flex-wrap:wrap !important;height:auto !important;padding-top:8px !important;padding-bottom:8px !important;gap:6px 16px !important;}.util-bar-inner nav{flex-wrap:wrap;gap:4px 16px !important;}.util-drop-menu{left:0;right:auto;}.related-grid{grid-template-columns:1fr;gap:14px;}.related-card{flex-direction:row;align-items:center;gap:12px;}.related-card img{width:104px;flex:0 0 104px;}}
+.article figure{margin:28px 0;}
+.article figure img{display:block;width:100%;border:1px solid #eee;}
+.article figcaption{font-size:13px;color:#777;text-align:center;margin-top:10px;line-height:1.7;}
+</style>
+</head>
+<body>
+<!-- ===== UTILITY BAR ===== -->
+<div style="background:#1A1A1A;color:#cfcfcf;">
+  <div class="util-bar-inner" style="max-width:1180px;margin:0 auto;padding:0 24px;height:38px;display:flex;align-items:center;justify-content:space-between;">
+    <span style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:0.02em;">運営：<a href="/about" style="color:var(--accent,#FFE100);font-weight:700;text-decoration:none;">FooDX, LLC.</a><span style="color:#666;">（フーディックス合同会社）</span></span>
+    <nav style="display:flex;align-items:center;gap:22px;">
+      <div class="util-drop" tabindex="0" style="outline:none;">
+        <span style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:#e5e5e5;cursor:pointer;">その他のサービス<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <div class="util-drop-menu">
+          <a href="/google-profile">集客支援</a>
+          <a href="/reo">予約体験最適化（REO）</a>
+          <a href="/grease-ozonizer">グリストラップ清掃自動化装置</a>
+        </div>
+      </div>
+      <a href="/lab/" class="util-link current">Lab</a>
+      <a href="/about" class="util-link">会社概要</a>
+      <a href="/kabeuchi/" class="util-link util-ai">AIに相談</a>
+      <a href="/contact" class="util-link">お問い合わせ</a>
+    </nav>
+  </div>
+</div>
+<header class="site">
+  <div class="wrap">
+    <a href="/" style="display:flex;align-items:center;gap:9px;text-decoration:none;color:#1A1A1A;">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--accent,#FFE100);border-radius:999px;font-family:'Inter',sans-serif;font-weight:700;font-size:12px;color:#1A1A1A;">AI</span>
+      <span style="font-weight:900;font-size:22px;letter-spacing:-0.02em;">AIkata</span>
+    </a>
+    <nav>
+      <a href="/#problems">課題</a>
+      <a href="/#features">対応領域</a>
+      <a href="/#process">導入の流れ</a>
+      <a href="/#pricing">料金</a>
+      <a href="/contact">お問い合わせ</a>
+      <a href="/#diagnosis">無料診断</a>
+      <a class="cta-nav" href="/kabeuchi/">AIに相談</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <article class="article">
+    <h1>【やってみた】飲食店の日々の仕訳をClaudeに任せてみた</h1>
+    <div class="meta">公開日：2026年11月24日　｜　FooDX合同会社</div>
+    <img class="feat" src="/assets/lab/c33c1dcafb34.png" alt="【やってみた】飲食店の日々の仕訳をClaudeに任せてみた">
+
+    <p>freeeの日々の仕訳をClaudeに任せてみたら、拍子抜けするほど楽で、しかも指摘が正確でした。FooDX Labの「やってみた」シリーズ第1回として、代表の鈴木が、経理を担当している飲食店で実際に試した中身と効果をご紹介します。決算までの話は、第2回でお届けします。</p>
+    <p>経理は飲食店経営者にとって「やらなければいけないが、売上は生まない」仕事の代表格ではないでしょうか。その経理をどこまで手放せるのか、実際のお店で確かめてみました。</p>
+
+    <h2>やったこと</h2>
+    <p>Claudeをfreee会計にAPIでつなぎ、会話だけで日々の仕訳を進めました。対象は経理を担当している飲食店の合同会社（飲食業・12月決算）です。</p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>項目</th><th>内容</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>会計ソフト</td><td>freee会計</td></tr>
+          <tr><td>AI</td><td>Claude（freee公式のMCP連携でAPIを操作）</td></tr>
+          <tr><td>対象期</td><td>2026年度（2026年1月1日〜12月31日）</td></tr>
+          <tr><td>2026年度の取引数</td><td>4,359件（2026年11月23日時点）</td></tr>
+          <tr><td>今回任せた明細</td><td>未処理の明細143件（2026年8月11日〜11月9日分）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>進め方：未処理の明細を、1枚の確認ページにする</h2>
+    <p>11月9日時点で、freeeには未処理の明細が143件たまっていました（8月11日〜11月9日分）。Claudeには「仕訳案を作って」と頼むだけ。あとは次の流れで進みました。</p>
+    <ol>
+      <li>Claudeがfreeeから未処理の明細、未決済の取引、過去の仕訳を読みます。この段階では、freeeにはまだ何も登録しません。</li>
+      <li>明細1件ごとに、勘定科目・税区分・取引先・品目の案と、その根拠を出します。根拠は「10月の同じ口座振替と同じ」のように、過去の処理や運用ルールを示してくれます。</li>
+      <li>案を1枚の確認ページにまとめます。確信度（高・中・要確認）で並べ、明細ごとに「OK」「訂正」「保留」のボタンを付けます。</li>
+      <li>私はページを見て、ボタンを押すか、訂正内容を書くだけです。</li>
+      <li>「登録して」と伝えると、ClaudeがページのOKと訂正を読み、訂正を優先して登録します。保留と未確認の明細は登録しません。</li>
+    </ol>
+    <figure>
+      <img src="/assets/lab/e697721a81c8.png" alt="Claudeとの会話画面。未処理の明細143件の仕訳案を確認ページにまとめた" loading="lazy">
+      <figcaption>頼むのはこの一言だけ。Claudeがfreeeの未処理明細と過去の仕訳を読みにいきます</figcaption>
+    </figure>
+    <p>入力するのはClaudeで、私の仕事は確認と判断だけになりました。</p>
+
+    <h2>楽だったところ：143件のうち4割は押すだけで終わる</h2>
+    <p>143件のうち、61件は確信度「高」で、中身を見てOKを押すだけでした。自分で考える必要があったのは、「要確認」の35件と、書類待ちの19件だけです。</p>
+    <p>Claudeは明細を次の5つに分けて出してくれました。</p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>分け方</th><th>件数</th><th>Claudeが出したもの</th><th>自分がやること</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>新規の取引</td><td>60</td><td>科目・税区分・取引先の案と、参考にした過去の処理</td><td>OKを押す。違うときだけ訂正</td></tr>
+          <tr><td>要確認</td><td>35</td><td>候補の科目と、判断に足りない情報</td><td>相手・目的・内訳を答える</td></tr>
+          <tr><td>消込</td><td>20</td><td>金額が一致する未決済の取引</td><td>OKを押す</td></tr>
+          <tr><td>書類待ち</td><td>19</td><td>足りない書類の名前（入金明細の画面など）</td><td>書類をファイルボックスに入れる</td></tr>
+          <tr><td>口座の振替</td><td>9</td><td>どの口座からどの口座へか</td><td>OKを押す</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure>
+      <img src="/assets/lab/bd44d3f56301.png" alt="確認ページの全体。確信度ごとの件数と、明細ごとのOK・訂正・保留のボタン" loading="lazy">
+      <figcaption>143件の仕訳案を1枚に。確信度の高いものから順にOKを押していきます</figcaption>
+    </figure>
+    <p>楽だと感じた理由は、3つあります。</p>
+    <ul>
+      <li><strong>理由が書いてある</strong>：「前回と同じ処理」「金額と取引先が一致」と根拠が並ぶので、確かめるのに時間がかかりません。</li>
+      <li><strong>わからないものを決めつけない</strong>：飲食代など、明細だけでは科目が決まらないものは「要確認」に回し、何がわかれば決まるかを書いてくれます。</li>
+      <li><strong>画面を行き来しない</strong>：freeeの「自動で経理」を開いて1件ずつ開く代わりに、確認ページ1枚を上から見ていくだけで済みます。</li>
+    </ul>
+
+    <h2>正確だったところ：数字の裏づけがある指摘</h2>
+    <p>Claudeの指摘は、消費税区分や、計上する月のずれにまでおよびました。どれも金額の一致や過去の処理といった裏づけつきです。実際に出てきた指摘の一部をご紹介します。</p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>明細</th><th>Claudeの指摘</th><th>裏づけ</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Airペイの入金（777,147円）</td><td>未決済の売上と手数料13件をまとめて消込</td><td>13件の合計が入金額と1円まで一致</td></tr>
+          <tr><td>免税事業者からのAmazonの購入</td><td>10月以降の購入は控除80%ではなく70%の税区分にする</td><td>2026年10月1日から経過措置の控除割合が70%に変わった（出典1）</td></tr>
+          <tr><td>食品なのに明細の税区分が「非課税」</td><td>軽減税率8%の仕入が妥当と思われる。確認を</td><td>品目が食材、出品者は免税事業者</td></tr>
+          <tr><td>預金の利息（手取り168円）</td><td>受取利息198円と源泉所得税30円に分ける</td><td>手取りから15.315%を逆算。前月の利息と同じ形</td></tr>
+          <tr><td>融資の引落し</td><td>元金と支払利息に分ける</td><td>前月の引落しと同じ形（元金は毎月同額）</td></tr>
+          <tr><td>家賃の振込</td><td>翌月分の前払いと推定。何月分か確認を</td><td>前月分は別の日に支払い済み</td></tr>
+          <tr><td>8月分の給与振込（7件）</td><td>8月に対応する給与の取引が見当たらない。調べると別の月で計上されていたので、正しい月に直した</td><td>9月分は未決済の取引があり一致している</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure>
+      <img src="/assets/lab/495f8cc7e643.png" alt="明細1件の根拠。銀行の入金777,147円と、未決済の取引13件の合計が一致" loading="lazy">
+      <figcaption>案ごとに「なぜそう判断したか」が付くので、確かめるのが速くなります</figcaption>
+    </figure>
+    <p>いちばん効いたのは最後の指摘でした。調べてみると、8月分の給与は別の月で計上されていました。このままだと月ごとの人件費がずれて、月次の数字を正しく判断できません。入力作業だけを任せていたら、気づくのはずっと先だったはずです。</p>
+
+    <h2>任せなかったこと：登録の合図と、分かれる判断</h2>
+    <p>とはいえ、全部を任せたわけではありません。次の3つは、自分の手元に残しました。</p>
+    <ul>
+      <li><strong>登録の合図</strong>：仕訳案を作るあいだ、Claudeはfreeeを読むだけです。登録するのは「登録して」と伝えたあとで、対象はOKと訂正を付けた明細だけです。</li>
+      <li><strong>税務の判断が分かれるもの、取り返しにくいもの</strong>：取引の削除、前期の修正、利益が大きく動く精算は、Claudeが根拠と利益への影響額を示し、自分で決めます。</li>
+      <li><strong>最終確認</strong>：Claudeは税理士ではありません。最後に確かめて決めたのは私です。判断の根拠は確認ページに残るので、あとから見返せます。</li>
+    </ul>
+    <p>もう1つ、気をつけたいのがデータの扱いです。freeeの明細には従業員の名前や給与の振込も含まれます。AIに会計データを渡す前に、契約プランでデータがどう扱われるかを確かめておくと安心です。</p>
+
+    <h2>飲食店がまねするなら</h2>
+    <p>まずは1か月分の未処理明細で試してみるのがおすすめです。手順は次のとおりです。</p>
+    <ol>
+      <li>freee会計とClaudeをつなぎます（freee公式のMCP連携）。</li>
+      <li>自店の処理ルールをメモにして渡します。例：「割引は収入側で同じ科目に戻す」「自店のレシートの飲食代は交際費」。</li>
+      <li>「未処理の明細の仕訳案を、確認ページにして」と頼みます。</li>
+      <li>確信度の高いものからOKを押し、「要確認」には相手や目的を答えます。</li>
+      <li>「登録して」と伝えます。</li>
+      <li>毎月これを回します。決算前の点検は、第2回でご紹介します。</li>
+    </ol>
+    <p>2のメモは、訂正するたびに書き足していきましょう。メモが育つほど、確信度「高」の明細が増えていきます。</p>
+
+    <h2>まとめ：経理は「入力」から「確認」の仕事になる</h2>
+    <p>143件の仕訳で、私が考えたのは要確認の35件だけでした。残りは、根拠を読んでOKを押すか、書類を入れるだけです。しかも、別の月で計上されていた給与のように、入力しているだけでは気づきにくいずれまで拾ってくれました。</p>
+    <p>仕訳を入れる作業そのものは、これからAIが引き受けていくはずです。お店に残るのは、自店の処理ルールを決めることと、分かれる判断を下すこと。FooDXは、この仕組みをお店に合わせて立ち上げ、毎月回るようになるまで伴走します。経理が早く締まれば、月次の数字も早く見られるようになります。</p>
+    <p>次回は、決算までの仕訳が約3週間から約3時間になった話をお届けします。</p>
+
+    <h2>自分のお店でも試してみたい方へ</h2>
+    <p>FooDXでは、freee会計とClaudeをつなぐところから、自店の処理ルールづくり、毎月回る仕組みづくりまでをお手伝いしています。</p>
+    <div class="cta"><a href="/contact?topic=AIkata%EF%BC%88%E7%B5%8C%E5%96%B6OS%EF%BC%89">経理の自動化を相談する</a></div>
+
+    <h2>出典</h2>
+    <ol class="sources">
+      <li>freeeヘルプセンター「インボイス制度の経過措置（免税事業者からの仕入税額控除率）の変更」 <a href="https://support.freee.co.jp/hc/ja/articles/22921113014425" target="_blank" rel="noopener">https://support.freee.co.jp/hc/ja/articles/22921113014425</a></li>
+      <li>山田&amp;パートナーズ「免税事業者からの課税仕入れに係る税額控除に関する経過措置の見直し」 <a href="https://www.yamada-partners.jp/reform/r8/c01-2-revision-of-transitional-tax-credit-measures-for-taxable-purchases-from-tax-exempt-businesses" target="_blank" rel="noopener">https://www.yamada-partners.jp/reform/r8/c01-2-revision-of-transitional-tax-credit-measures-for-taxable-purchases-from-tax-exempt-businesses</a></li>
+    </ol>
+    <p class="note">この記事は2026年11月時点の情報にもとづく、実際に試した内容の紹介です。個別の税務判断ではありません。画像は実際の画面と明細をもとにした再現イメージです。</p>
+
+    <section class="related">
+      <h2>関連記事</h2>
+      <div class="related-grid">
+        <a class="related-card" href="/lab/%E9%A3%B2%E9%A3%9F%E5%BA%97%E3%81%AE%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E5%AF%BE%E7%AD%96">
+          <img src="/assets/lab/142835c6db4a.png" alt="飲食店のセキュリティ対策｜2026年の情報漏えい事例と、今週できる7つの点検" loading="lazy">
+          <span class="body"><span class="related-date">2026.10.29</span><span class="related-name">飲食店のセキュリティ対策｜2026年の情報漏えい事例と、今週できる7つの点検</span></span>
+        </a>
+        <a class="related-card" href="/lab/flr%E3%81%A8%E3%81%AF-%E9%A3%B2%E9%A3%9F%E5%BA%97%E3%81%AE%E7%B5%8C%E5%96%B6%E6%8C%87%E6%A8%99%E3%81%ABai%E3%82%B3%E3%82%B9%E3%83%88a%E3%82%92%E8%B6%B3%E3%81%99flra%E3%81%AE%E6%8F%90%E8%A8%80">
+          <img src="/assets/lab/7198bd42cd90.jpg" alt="FLからFLRへ、そしてFLRAへ ── 飲食店の経営指標に「A」を足すとき" loading="lazy">
+          <span class="body"><span class="related-date">2026.09.10</span><span class="related-name">FLからFLRへ、そしてFLRAへ ── 飲食店の経営指標に「A」を足すとき</span></span>
+        </a>
+        <a class="related-card" href="/lab/ax%E3%81%A8%E3%81%AF-%E9%A3%B2%E9%A3%9F%E5%BA%97%E7%B5%8C%E5%96%B6%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AAai%E3%83%88%E3%83%A9%E3%83%B3%E3%82%B9%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92foodx%E3%81%8C%E3%82%8F%E3%81%8B%E3%82%8A%E3%82%84%E3%81%99%E3%81%8F%E8%A7%A3%E8%AA%AC">
+          <img src="/assets/lab/203054c96eb9.png" alt="AXとは？ 飲食店経営に必要なAIトランスフォーメーションをFooDXがわかりやすく解説！" loading="lazy">
+          <span class="body"><span class="related-date">2026.03.22</span><span class="related-name">AXとは？ 飲食店経営に必要なAIトランスフォーメーションをFooDXがわかりやすく解説！</span></span>
+        </a>
+      </div>
+    </section>
+
+    <a class="backlink" href="/lab/">← Lab 記事一覧へ</a>
+  </article>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="fcols">
+      <div style="max-width:280px;"><img src="/assets/foodx-logo-white.png" alt="FooDX" style="height:26px;"><p style="font-size:13px;color:#777;line-height:1.8;margin:12px 0 0;">食業界のAX推進支援カンパニー。</p></div>
+      <div><ul>
+        <li><a href="/">AIkata（経営OS）</a></li>
+        <li><a href="/google-profile">集客支援（MEO・AIO）</a></li>
+        <li><a href="/reo">予約体験最適化（REO）</a></li>
+        <li><a href="/grease-ozonizer">グリストラップ自動化</a></li>
+      </ul></div>
+      <div><ul>
+        <li><a href="/kabeuchi/">AIに相談</a></li>
+        <li><a href="/lab/">Lab</a></li>
+        <li><a href="/about">会社概要</a></li>
+        <li><a href="/contact">お問い合わせ</a></li>
+      </ul></div>
+    </div>
+    <p style="margin:22px 0 0;font-size:12px;color:#555;">©FooDX, LLC. All Rights Reserved.</p>
+  </div>
+</footer>
+</body>
+</html>
