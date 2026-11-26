@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<title>自店がAIに出るか、5分で確かめる方法（質問テンプレートつき）</title>
+<meta name="description" content="客と同じように「エリア＋利用シーン＋業態」でAIに聞くと、自店が候補に入っているかがわかります。ChatGPT・Gemini・GoogleのAIモードに聞く5つの質問テンプレートと記録表、結果の読み方をまとめました。">
+<link rel="canonical" href="https://www.foodx.co.jp/lab/%E8%87%AA%E5%BA%97%E3%81%8Cai%E3%81%AB%E5%87%BA%E3%82%8B%E3%81%8B5%E5%88%86%E3%81%A7%E7%A2%BA%E3%81%8B%E3%82%81%E3%82%8B%E6%96%B9%E6%B3%95">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AIkata｜FooDX合同会社">
+<meta property="og:title" content="自店がAIに出るか、5分で確かめる方法（質問テンプレートつき）">
+<meta property="og:description" content="客と同じように「エリア＋利用シーン＋業態」でAIに聞くと、自店が候補に入っているかがわかります。ChatGPT・Gemini・GoogleのAIモードに聞く5つの質問テンプレートと記録表、結果の読み方をまとめました。">
+<meta property="og:url" content="https://www.foodx.co.jp/lab/%E8%87%AA%E5%BA%97%E3%81%8Cai%E3%81%AB%E5%87%BA%E3%82%8B%E3%81%8B5%E5%88%86%E3%81%A7%E7%A2%BA%E3%81%8B%E3%82%81%E3%82%8B%E6%96%B9%E6%B3%95">
+<meta property="og:image" content="https://www.foodx.co.jp/assets/lab/03e3abec87fb.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "自店がAIに出るか、5分で確かめる方法（質問テンプレートつき）", "description": "客と同じように「エリア＋利用シーン＋業態」でAIに聞くと、自店が候補に入っているかがわかります。ChatGPT・Gemini・GoogleのAIモードに聞く5つの質問テンプレートと記録表、結果の読み方をまとめました。", "image": "https://www.foodx.co.jp/assets/lab/03e3abec87fb.png", "datePublished": "2026-12-04", "dateModified": "2026-12-04", "author": {"@type": "Organization", "name": "FooDX合同会社", "url": "https://www.foodx.co.jp/"}, "publisher": {"@type": "Organization", "name": "FooDX合同会社", "logo": {"@type": "ImageObject", "url": "https://www.foodx.co.jp/assets/foodx-logo.png"}}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.foodx.co.jp/lab/%E8%87%AA%E5%BA%97%E3%81%8Cai%E3%81%AB%E5%87%BA%E3%82%8B%E3%81%8B5%E5%88%86%E3%81%A7%E7%A2%BA%E3%81%8B%E3%82%81%E3%82%8B%E6%96%B9%E6%B3%95"}, "inLanguage": "ja"}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:'Noto Sans JP',sans-serif;color:#1A1A1A;background:#FAFAFA;-webkit-font-smoothing:antialiased;line-height:1.9;}
+:root{--accent:#FFE100;}
+.util-drop{position:relative;}
+.util-drop-menu{position:absolute;top:100%;right:0;margin-top:6px;background:#fff;border:1px solid #ececec;border-radius:14px;box-shadow:0 14px 38px rgba(0,0,0,0.12);padding:8px;min-width:266px;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .18s ease, transform .18s ease, visibility .18s;z-index:70;}
+.util-drop:hover .util-drop-menu,.util-drop:focus-within .util-drop-menu{opacity:1;visibility:visible;transform:translateY(0);}
+.util-drop-menu a{display:block;padding:10px 12px;border-radius:9px;font-size:13.5px;font-weight:600;color:#333;text-decoration:none;transition:background .15s ease;}
+.util-drop-menu a:hover{background:#FFFBE0;color:#1A1A1A;}
+.util-bar-inner nav a,.util-bar-inner .util-drop>span{white-space:nowrap;}
+.util-link{font-size:12.5px;font-weight:600;color:#e5e5e5;text-decoration:none;}
+.util-link:hover,.util-link.current{color:var(--accent,#FFE100);}
+.util-link.util-ai{color:#C4B5FD;}
+.util-link.util-ai:hover,.util-link.util-ai.current{color:#DDD6FE;}
+header.site{position:sticky;top:0;z-index:50;background:rgba(250,250,250,0.85);backdrop-filter:blur(12px);border-bottom:1px solid #eee;}
+header.site .wrap{max-width:1180px;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
+header.site nav{display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
+header.site nav a{font-size:14px;font-weight:500;color:#444;text-decoration:none;}
+header.site nav a:hover{color:#1A1A1A;}
+header.site nav a.cta-nav{display:inline-flex;align-items:center;gap:8px;background:#6D28D9;color:#FFFFFF;padding:10px 20px;border-radius:999px;font-size:14px;font-weight:700;text-decoration:none;}
+header.site nav a.cta-nav:hover{background:#5B21B6;color:#FFFFFF;}
+a{color:#BA7517;}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px;}
+.article{background:#fff;margin:32px auto 48px;border-radius:22px;box-shadow:0 4px 24px rgba(0,0,0,0.05);padding:48px 44px;}
+.article h1{font-size:clamp(26px,4vw,38px);line-height:1.35;letter-spacing:-0.02em;margin:0 0 14px;}
+.meta{font-size:13px;color:#999;margin-bottom:28px;}
+.feat{width:100%;height:auto;border-radius:14px;margin:0 0 32px;display:block;}
+.article img{max-width:100%;height:auto;border-radius:10px;}
+.article h2{font-size:24px;margin:40px 0 14px;border-top:2px solid #FFE100;padding-top:20px;}
+.article h3{font-size:19px;margin:28px 0 10px;}
+.article p{margin:0 0 18px;}
+.article ul,.article ol{margin:0 0 18px;padding-left:1.4em;}
+.article li{margin:6px 0;}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 20px;max-width:100%;}
+.article table{border-collapse:collapse;width:100%;margin:0;font-size:14px;min-width:520px;}
+.article th,.article td{border:1px solid #e2e2dc;padding:8px 12px;}
+.article th{background:#f5f5f0;}
+.related{margin:44px 0 0;border-top:1px solid #eee;padding-top:28px;}
+.related h2{font-size:18px;margin:0 0 16px;border:none;padding:0;}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.related-card{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:#1A1A1A;}
+.related-card img{width:100%;aspect-ratio:1.91/1;object-fit:cover;border-radius:10px;margin:0;display:block;}
+.related-date{font-family:'Inter',sans-serif;font-size:11.5px;color:#999;line-height:1.4;}
+.related-name{font-size:14px;font-weight:700;line-height:1.5;}
+.related-card .body{display:flex;flex-direction:column;gap:4px;min-width:0;}
+.related-card:hover .related-name{color:#BA7517;}
+.cta{margin:40px 0 8px;text-align:center;}
+.cta a{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--accent,#FFE100);color:#1A1A1A;padding:16px 34px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;max-width:100%;white-space:normal;text-align:center;box-sizing:border-box;}
+.backlink{display:inline-block;margin:28px 0 0;font-size:14px;color:#666;text-decoration:none;}
+.sources{font-size:14px;overflow-wrap:anywhere;}
+.sources a{overflow-wrap:anywhere;word-break:break-all;}
+.sources li{margin:8px 0;}
+.note{font-size:13.5px;color:#666;}
+footer.site{background:#111;color:#888;padding:44px 24px 34px;margin-top:20px;}
+footer.site .wrap{max-width:1180px;}
+footer.site a{color:#aaa;text-decoration:none;}
+footer.site a:hover{color:#FFE100;}
+.fcols{display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;border-bottom:1px solid #262626;padding-bottom:28px;}
+.fcols ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;font-size:13.5px;}
+@media (max-width:600px){.article{padding:32px 20px;}header.site .wrap{height:auto;padding-top:12px;padding-bottom:12px;flex-wrap:wrap;gap:10px 0;}header.site nav{gap:14px;}header.site nav a{font-size:13px;}.util-bar-inner{flex-wrap:wrap !important;height:auto !important;padding-top:8px !important;padding-bottom:8px !important;gap:6px 16px !important;}.util-bar-inner nav{flex-wrap:wrap;gap:4px 16px !important;}.util-drop-menu{left:0;right:auto;}.related-grid{grid-template-columns:1fr;gap:14px;}.related-card{flex-direction:row;align-items:center;gap:12px;}.related-card img{width:104px;flex:0 0 104px;}}
+.article figure{margin:28px 0;}
+.article figure img{display:block;width:100%;border:1px solid #eee;}
+.article figcaption{font-size:13px;color:#777;text-align:center;margin-top:10px;line-height:1.7;}
+.summary{background:#FFFBE0;border:1px solid #F0E3A0;border-radius:14px;padding:20px 24px 8px;margin:0 0 28px;}
+.summary-head{font-weight:700;margin:0 0 6px !important;}
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 14px;}
+.flow .step{border:1px solid #e2e2dc;border-radius:14px;padding:14px 14px 10px;background:#fff;}
+.flow .no{display:inline-flex;width:26px;height:26px;border-radius:999px;background:#FFE100;font-weight:900;font-size:13px;align-items:center;justify-content:center;}
+.flow p{font-size:13.5px;line-height:1.7;margin:6px 0 !important;}
+.flow .name{font-weight:900;font-size:16px !important;}
+.flow .num{font-weight:700;color:#8F5A0F;border-top:1px solid #eee;padding-top:8px;}
+pre.code{background:#1A1A1A;color:#f3f3ef;border-radius:12px;padding:16px 18px;overflow-x:auto;font-size:13px;line-height:1.6;margin:0 0 10px;}
+table.check td:first-child{text-align:center;width:3em;font-size:18px;}
+@media (max-width:600px){.flow{grid-template-columns:1fr 1fr;}}
+.tool{background:#F1F1ED;border:1px solid #e2e2dc;border-radius:16px;padding:22px 22px 10px;margin:8px 0 28px;}
+.tool-head{font-weight:900;font-size:17px;margin:0 0 4px !important;}
+.tool-note{font-size:13px;color:#666;margin:0 0 14px !important;}
+.tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 12px;margin:0 0 16px;}
+.tool-grid label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:700;color:#444;}
+.tool-grid input{font:inherit;font-size:16px;font-weight:400;padding:9px 11px;border:1px solid #d6d6cf;border-radius:10px;background:#fff;width:100%;}
+.tool-grid input:focus{outline:2px solid #FFE100;border-color:#1A1A1A;}
+.tool-out{margin:0 0 12px !important;padding-left:0 !important;list-style:none;}
+.tool-out .qn{color:#1A1A1A;}
+.tool-out li{background:#fff;border:1px solid #e2e2dc;border-radius:12px;padding:10px 12px;margin:0 0 10px !important;display:flex;gap:10px;align-items:flex-start;justify-content:space-between;}
+.tool-out .q{font-size:14.5px;line-height:1.7;}
+.tool-out .copy{flex:0 0 auto;font:inherit;font-size:12.5px;font-weight:700;background:#1A1A1A;color:#FFE100;border:none;border-radius:999px;padding:6px 14px;cursor:pointer;white-space:nowrap;}
+table.rec td{height:2.6em;}
+table.rec td:first-child{text-align:center;width:3em;}
+@media (max-width:600px){.tool-grid{grid-template-columns:1fr 1fr;}.tool-out li{flex-direction:column;}}
+</style>
+<link rel="stylesheet" href="/assets/lab-cta.css">
+</head>
+<body>
+<!-- ===== UTILITY BAR ===== -->
+<div style="background:#1A1A1A;color:#cfcfcf;">
+  <div class="util-bar-inner" style="max-width:1180px;margin:0 auto;padding:0 24px;height:38px;display:flex;align-items:center;justify-content:space-between;">
+    <span style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:0.02em;">運営：<a href="/about" style="color:var(--accent,#FFE100);font-weight:700;text-decoration:none;">FooDX, LLC.</a><span style="color:#666;">（フーディックス合同会社）</span></span>
+    <nav style="display:flex;align-items:center;gap:22px;">
+      <div class="util-drop" tabindex="0" style="outline:none;">
+        <span style="display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:#e5e5e5;cursor:pointer;">その他のサービス<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></span>
+        <div class="util-drop-menu">
+          <a href="/google-profile">集客支援</a>
+          <a href="/reo">予約体験最適化（REO）</a>
+          <a href="/grease-ozonizer">グリストラップ清掃自動化装置</a>
+        </div>
+      </div>
+      <a href="/lab/" class="util-link current">Lab</a>
+      <a href="/about" class="util-link">会社概要</a>
+      <a href="/kabeuchi/" class="util-link util-ai">AIに相談</a>
+      <a href="/contact" class="util-link">お問い合わせ</a>
+    </nav>
+  </div>
+</div>
+<header class="site">
+  <div class="wrap">
+    <a href="/" style="display:flex;align-items:center;gap:9px;text-decoration:none;color:#1A1A1A;">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--accent,#FFE100);border-radius:999px;font-family:'Inter',sans-serif;font-weight:700;font-size:12px;color:#1A1A1A;">AI</span>
+      <span style="font-weight:900;font-size:22px;letter-spacing:-0.02em;">AIkata</span>
+    </a>
+    <nav>
+      <a href="/#problems">課題</a>
+      <a href="/#features">対応領域</a>
+      <a href="/#process">導入の流れ</a>
+      <a href="/#pricing">料金</a>
+      <a href="/contact">お問い合わせ</a>
+      <a href="/#diagnosis">無料診断</a>
+      <a class="cta-nav" href="/kabeuchi/">AIに相談</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <article class="article">
+    <h1>自店がAIに出るか、5分で確かめる方法（質問テンプレートつき）</h1>
+    <div class="meta">公開日：2026年12月4日　｜　FooDX合同会社</div>
+    <img class="feat" src="/assets/lab/03e3abec87fb.png" alt="自店がAIに出るか、5分で確かめる">
+    <p>「この駅の近くで、接待に使える和食の店を教えて」。こうした聞き方で、AIに店を探してもらう人が増えています。では、同じ質問をしたとき、AIは自分の店を挙げてくれるでしょうか。挙げてくれたとして、営業時間や価格は正しく伝わっているでしょうか。</p>
+    <p>この記事では、お店の方が自分で、5分ほどで確かめられる方法をまとめました。そのまま使える質問のテンプレートと、結果を書き込む記録表、結果の読み方を付けています。エリアや業態を入れると、自店用の質問ができあがるツールも用意しました。</p>
+
+    <div class="summary">
+      <p class="summary-head">この記事の要点</p>
+      <ol>
+        <li>店名ではなく、客と同じように「エリア＋利用シーン＋業態」で聞く。これで、AIの候補に入っているかがわかります。</li>
+        <li>次に店名で聞いて、営業時間・価格・料理が正しく伝わっているかを確かめる。</li>
+        <li>結果は記録表に残し、月1回、同じ質問・同じ条件で聞き直す。1回の結果で判断しないことが大切です。</li>
+      </ol>
+    </div>
+
+    <h2>なぜ、自分で確かめる必要があるのか</h2>
+    <p>AIは、店を探す人の条件を聞いて、候補を3〜5店に絞ります。位置情報マーケティングの事業者Uberallの調査では、Google上に情報がある飲食店が86%あるのに対して、AIの推薦に出てくる店は17%にとどまりました（Uberall、2026年5月）。Googleマップに載っていても、AIの候補に入っているとは限らない、ということです。</p>
+    <p>候補に入ったあとも、客は別の場所で確かめてから店を決めます。情報の不備で店を候補から外した経験がある人は、AIを店探しに使う人で8割以上いました（訪日ラボ、2026年9月）。AIの答えが古い営業時間や価格のままだと、確かめた客が離れていきます。</p>
+    <p>困るのは、こうして候補に入らなかった客や、確かめる途中で去った客が、Googleビジネスプロフィールやグルメサイトの管理画面には数字として出てこないことです。だからこそ、客と同じようにAIに聞いて、自分の目で確かめる必要があります。</p>
+
+    <h2>聞き方は2種類：「シーンで聞く」と「店名で聞く」</h2>
+    <p>点検の質問は、目的の違う2種類に分けます。</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>聞き方</th><th>例</th><th>わかること</th></tr></thead>
+        <tbody>
+          <tr><td><strong>シーンで聞く</strong></td><td>「〇〇駅の近くで、接待に向いている和食の店を5軒教えて」</td><td>AIの候補に入っているか（AIに見つけられるか）</td></tr>
+          <tr><td><strong>店名で聞く</strong></td><td>「〇〇駅の△△について、営業時間と価格帯を教えて」</td><td>店の情報が正しく伝わっているか（確かめても崩れないか）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>お店の方がよくやるのは、店名で聞くほうだけです。けれども、客は店名を知らない段階でAIに聞きます。AIモードに寄せられる質問は、従来の検索の2〜3倍の長さがあるとGoogleは説明しています（Google、2025年9月）。客は「駅名＋目的＋人数＋予算」のように、条件を文章で伝えて聞いているということです。点検も、その聞き方に合わせます。</p>
+
+    <h2>準備（1分）：決めるのは4つだけ</h2>
+    <ol>
+      <li><strong>エリア</strong>：客が実際に使う言い方で。駅名がいちばん無難です（例：「恵比寿駅」「天神」）。</li>
+      <li><strong>業態</strong>：客が探すときの言葉で（例：「焼き鳥」「和食」「イタリアン」）。</li>
+      <li><strong>利用シーンを2つ</strong>：自店が選ばれたい場面（例：「接待」「一人飲み」「誕生日」「子連れランチ」「10人の歓送迎会」）。</li>
+      <li><strong>予算</strong>：客1人あたりの目安（例：「5,000円」）。</li>
+    </ol>
+    <p>聞くAIは、ChatGPT、Gemini、GoogleのAIモードの3つです。どれも無料で使える範囲で試せます。まずは、お客さまが使っていそうなものを1つ選んで5問を聞けば、5分ほどで終わります。3つすべてで聞いても15分ほどです。</p>
+
+    <h3>答えを偏らせないための3つの工夫</h3>
+    <ul>
+      <li><strong>過去の会話を使わない状態で聞く</strong>：AIは、過去のやりとりを覚えて答えを変えることがあります。お店の方がふだん自店のことをAIに聞いていると、そのぶん自店が出やすくなりかねません。ChatGPTとGeminiは「一時チャット」で聞きます。GoogleのAIモードは、検索履歴の影響を減らすために、ブラウザのシークレットウィンドウで開くのがおすすめです。</li>
+      <li><strong>エリアは質問の中に書く</strong>：店の中や店の近くで聞くと、位置情報で答えが変わることがあります。客がどこから聞いても同じになるように、エリアを質問の文章に入れます。テンプレートはそうなっています。</li>
+      <li><strong>同じ質問を、同じ条件で続ける</strong>：AIの答えは、同じ質問でも毎回少しずつ変わります。言い回しを変えずに、毎月同じ質問で聞くことで、変化が見えるようになります。</li>
+    </ul>
+
+    <h2>質問テンプレート（5問）</h2>
+    <p>{ }の部分を自店に合わせて書き換えて使います。下のツールに入力すると、書き換えた質問ができあがり、そのままコピーできます。</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>問</th><th>種類</th><th>質問文</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>シーンで聞く</td><td>{エリア}で、{シーン1}に向いている{業態}の店を5軒教えてください。それぞれ選んだ理由も教えてください。</td></tr>
+          <tr><td>2</td><td>シーンで聞く</td><td>{エリア}で、{シーン2}に向いている{業態}の店を5軒教えてください。それぞれ選んだ理由も教えてください。</td></tr>
+          <tr><td>3</td><td>条件で聞く</td><td>{エリア}で、1人{予算}くらいで、ネットで予約して行ける{業態}の店を5軒教えてください。予約の方法も教えてください。</td></tr>
+          <tr><td>4</td><td>店名で聞く</td><td>{エリア}の「{店名}」について、営業時間、定休日、価格帯、おすすめの料理を教えてください。どの情報をもとにしたかも教えてください。</td></tr>
+          <tr><td>5</td><td>店名で聞く</td><td>{エリア}の「{店名}」は、{シーン1}に向いていますか。向いている点と、気になる点を教えてください。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>問1〜3では、店名を出しません。客と同じ立場で、自店が候補に挙がるかを見ます。問3は、AIが予約の方法まで案内できるかも確かめる質問です。問4・問5は、問1〜3で出なかった場合も聞いてください。店名で聞いても情報が出てこないなら、AIに届いている情報そのものが少ないということです。</p>
+
+    <div class="tool" id="aiCheckTool">
+      <p class="tool-head">自店用の質問をつくる</p>
+      <p class="tool-note">入力した内容は、このページの中だけで使います。どこにも送信されません。</p>
+      <div class="tool-grid">
+        <label>エリア<input type="text" id="tArea" placeholder="例：恵比寿駅"></label>
+        <label>業態<input type="text" id="tGenre" placeholder="例：焼き鳥"></label>
+        <label>シーン1<input type="text" id="tScene1" placeholder="例：接待" list="sceneList"></label>
+        <label>シーン2<input type="text" id="tScene2" placeholder="例：一人飲み" list="sceneList"></label>
+        <label>予算（1人あたり）<input type="text" id="tBudget" placeholder="例：5,000円"></label>
+        <label>店名<input type="text" id="tName" placeholder="例：自店の名前"></label>
+      </div>
+      <datalist id="sceneList">
+        <option value="接待"><option value="一人飲み"><option value="デート"><option value="誕生日"><option value="子連れランチ"><option value="10人の歓送迎会"><option value="女子会"><option value="家族での食事"><option value="深夜の二軒目">
+      </datalist>
+      <ol class="tool-out" id="tOut"></ol>
+    </div>
+
+    <h2>記録表：結果を書き込む</h2>
+    <p>聞いた日と、使ったAIごとに結果を書きます。問1〜3は「出た（何番目か）」か「出ない」、問4は「正しい」か「違う（どこが）」、問5は気になる点として挙がったことを短くメモします。</p>
+    <div class="table-scroll">
+      <table class="rec">
+        <thead><tr><th>問</th><th>見ること</th><th>ChatGPT</th><th>Gemini</th><th>AIモード</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>自店が出たか（何番目か）</td><td></td><td></td><td></td></tr>
+          <tr><td>2</td><td>自店が出たか（何番目か）</td><td></td><td></td><td></td></tr>
+          <tr><td>3</td><td>自店が出たか／予約の方法は正しいか</td><td></td><td></td><td></td></tr>
+          <tr><td>4</td><td>営業時間・定休日・価格帯・料理は正しいか</td><td></td><td></td><td></td></tr>
+          <tr><td>5</td><td>気になる点として挙がったこと</td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">聞いた日：　　年　　月　　日　／　聞いた場所（端末・ログインの有無）：</p>
+    <p>AIが挙げた店の顔ぶれもメモしておくと、どんな店が候補に入りやすいかの参考になります。ただし、他店の情報は自店の点検のためだけに使ってください。</p>
+
+    <h2>結果の読み方：最初にやること</h2>
+    <p>結果は、次の表に当てはめて読みます。右の列は、FooDXが集客を考えるときに使っている4つの層（AIに見つけられる・確かめても崩れない・そのまま予約できる・AIを通らない関係）のどこに当たるかです。</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>結果</th><th>考えられること</th><th>最初にやること</th><th>層</th></tr></thead>
+        <tbody>
+          <tr><td>問1〜3で、どのAIにも出ない</td><td>そのシーンに合う根拠が、AIに届いていない</td><td>Googleビジネスプロフィールと公式サイトに、シーンの根拠（個室・席数・コース・予算・料理名）を文字で書く</td><td>見つけられる</td></tr>
+          <tr><td>一部のAIにだけ出る</td><td>AIごとに、参考にしている情報が違う</td><td>出なかったAIに、挙げた店をどの情報から選んだかを聞き、その種類の情報を自店でも整える</td><td>見つけられる</td></tr>
+          <tr><td>問4で、営業時間や価格が違う</td><td>古い情報がどこかに残っている</td><td>どの情報をもとにしたかを聞き返し、出どころを直す。そのうえで全媒体をそろえる</td><td>崩れない</td></tr>
+          <tr><td>問4で、店が見つからない・別の店と混ざる</td><td>店名や住所の書き方が媒体ごとに違う</td><td>店名・住所・電話番号を、すべての媒体で同じ書き方にする</td><td>崩れない</td></tr>
+          <tr><td>問5の「気になる点」が事実と違う</td><td>古い口コミや情報の影響</td><td>正しい情報を公式サイトとプロフィールに書く。口コミには返信で補足する</td><td>崩れない</td></tr>
+          <tr><td>問3で、予約の方法が出ない・違う</td><td>ネット予約の入口が、AIから見えていない</td><td>Googleマップの予約ボタンと公式サイトに、予約先をはっきり載せる</td><td>予約できる</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>出なかったからといって、すぐに大きな手を打つ必要はありません。まずは、情報の食い違いを直すことから始めてください。年末年始の営業時間をそろえる手順は、<a href="/lab/%E5%B9%B4%E6%9C%AB%E5%B9%B4%E5%A7%8B%E3%81%AE%E5%96%B6%E6%A5%AD%E6%99%82%E9%96%93%E3%82%92ai%E3%81%A8google%E3%83%9E%E3%83%83%E3%83%97%E3%81%AB%E4%BC%9D%E3%81%88%E3%82%8B">年末年始の営業時間を、AIとGoogleマップに正しく伝える手順</a>にまとめています。</p>
+
+    <h2>FooDXの見立て：1回より、毎月の変化を見る</h2>
+    <p>AIの答えは、日によっても、聞く人によっても変わります。1回の点検で「出た」「出なかった」と一喜一憂するより、同じ質問を月に1回聞いて、記録表を並べて変化を見るほうが役に立ちます。情報を直してから答えに反映されるまでには時間がかかることもあるので、直した日も記録表に書いておくと、何が効いたのかを振り返れます。</p>
+    <p>店を探す手段としてAIを使う人は、まだ約15%です（COLLINS、2026年3月報道）。一方で、生成AIを使う人は1年で大きく増えています（ビデオリサーチ、12〜69歳の直近1か月の生成AI利用率が38%から60%〈速報値〉、2025年4〜6月から2026年4〜6月）。来店の中心は当面Googleマップのままですが、AIに聞く客が増えてからあわてるより、いまのうちに自店の出方を知っておくほうが、打ち手を落ち着いて選べます。</p>
+    <p>このテンプレートは、FooDXがお店の情報を点検するときの考え方（シーンで聞く・店名で聞く）を、お店の方が自分で使える形にしたものです。このシリーズ「AIに聞いてみた」では、FooDXが同じ型の質問をAI3社に投げて調べた結果も、順に公開していきます。</p>
+
+    <h2>まとめ</h2>
+    <ul>
+      <li>客と同じように「エリア＋シーン＋業態」で聞くと、AIの候補に入っているかがわかります。</li>
+      <li>店名で聞くと、営業時間や価格が正しく伝わっているかがわかります。</li>
+      <li>過去の会話を使わない状態で聞き、記録表に残して、毎月同じ質問で変化を見ます。</li>
+      <li>出なかったときは、まず情報の食い違いを直し、シーンの根拠を文字で載せることから始めます。</li>
+    </ul>
+    <p>AIで飲食店探しがどう変わったかは、<a href="/lab/%E9%A3%B2%E9%A3%9F%E5%BA%97%E6%8E%A2%E3%81%97%E3%81%AFai%E3%81%A7%E3%81%A9%E3%81%86%E5%A4%89%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%8B">飲食店探しはAIでどう変わったか</a>で整理しています。</p>
+
+    <h2>出典</h2>
+    <ol class="sources">
+      <li>Uberall調査（Bloom Intelligence） <a href="https://bloomintelligence.com/blog/ai-restaurant-discovery/" target="_blank" rel="noopener">https://bloomintelligence.com/blog/ai-restaurant-discovery/</a></li>
+      <li>訪日ラボ 飲食店検索とAI活用 <a href="https://honichi.com/news/2026/09/24/202609_survey_gourmet_search/" target="_blank" rel="noopener">https://honichi.com/news/2026/09/24/202609_survey_gourmet_search/</a></li>
+      <li>Google「Google 検索における『AI モード』を日本語で提供開始」 <a href="https://blog.google/intl/ja-jp/products/explore-get-answers/ai-mode-search/" target="_blank" rel="noopener">https://blog.google/intl/ja-jp/products/explore-get-answers/ai-mode-search/</a></li>
+      <li>COLLINS 飲食店の選び方（Forbes JAPAN） <a href="https://forbesjapan.com/articles/detail/92799" target="_blank" rel="noopener">https://forbesjapan.com/articles/detail/92799</a></li>
+      <li>ビデオリサーチ 生成AI利用率6割（北海道新聞） <a href="https://www.hokkaido-np.co.jp/article/1368394/" target="_blank" rel="noopener">https://www.hokkaido-np.co.jp/article/1368394/</a></li>
+      <li>OpenAI ヘルプ「一時チャット」 <a href="https://help.openai.com/ja-jp/articles/8914046-temporary-chat-faq" target="_blank" rel="noopener">https://help.openai.com/ja-jp/articles/8914046-temporary-chat-faq</a></li>
+    </ol>
+    <p class="note">この記事は2026年11月時点の情報をもとにしています。各サービスの画面や機能の名前は変わることがあります。Uberallと訪日ラボの数字は、集客支援の事業者による調査です。</p>
+
+<div class="cta-dual" data-cta="dual-mid">
+  <p class="cta-dual-lead">次の一歩は、2つの進め方から選べます</p>
+  <p class="cta-dual-sub">どちらも無料です。迷ったら、まずAIで悩みを整理するのがおすすめです。</p>
+  <div class="cta-dual-grid">
+    <div class="cta-card cta-card--ai">
+      <span class="cta-badge">迷っている方はこちら</span>
+      <h3>AIに相談する</h3>
+      <p class="cta-meta">10分・その場で整理／無料</p>
+      <p class="cta-desc">点検してみたら、出なかった。情報が違っていた。結果を話すと、どこから直すかをAIと一緒に整理します。</p>
+      <ul>
+        <li>メールで届く開始リンクから、10分の壁打ち</li>
+        <li>話した内容のまとめをメールでお届け</li>
+        <li>続きは、そのまとめをもとに無料面談で</li>
+      </ul>
+      <a class="cta-btn" href="/kabeuchi/?from=lab-ai-check-5min&amp;cta=dual-mid">AIに相談してみる →</a>
+    </div>
+    <div class="cta-card cta-card--contact">
+      <h3>お問い合わせ</h3>
+      <p class="cta-meta">担当者から通常2営業日以内に返信</p>
+      <p class="cta-desc">依頼したい内容が決まっている方、お見積りや取材・協業のご相談はこちらから。</p>
+      <ul>
+        <li>FooDXの担当者が内容を確認して返信</li>
+        <li>サービス内容・料金・お見積りのご相談に</li>
+      </ul>
+      <a class="cta-btn" href="/contact?from=lab-ai-check-5min&amp;cta=dual-mid">お問い合わせする →</a>
+    </div>
+  </div>
+</div>
+
+    <section class="related">
+      <h2>関連記事</h2>
+      <div class="related-grid">
+        <a class="related-card" href="/lab/%E5%B9%B4%E6%9C%AB%E5%B9%B4%E5%A7%8B%E3%81%AE%E5%96%B6%E6%A5%AD%E6%99%82%E9%96%93%E3%82%92ai%E3%81%A8google%E3%83%9E%E3%83%83%E3%83%97%E3%81%AB%E4%BC%9D%E3%81%88%E3%82%8B">
+          <img src="/assets/lab/fc72b56eea54.png" alt="年末年始の営業時間を、AIとGoogleマップに正しく伝える手順" loading="lazy">
+          <span class="body"><span class="related-date">2026.12.02</span><span class="related-name">年末年始の営業時間を、AIとGoogleマップに正しく伝える手順</span></span>
+        </a>
+        <a class="related-card" href="/lab/%E9%A3%B2%E9%A3%9F%E5%BA%97%E6%8E%A2%E3%81%97%E3%81%AFai%E3%81%A7%E3%81%A9%E3%81%86%E5%A4%89%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%8B">
+          <img src="/assets/lab/b14d6574e0af.png" alt="飲食店探しはAIでどう変わったか ── 2026年の調査を1枚に整理" loading="lazy">
+          <span class="body"><span class="related-date">2026.11.30</span><span class="related-name">飲食店探しはAIでどう変わったか ── 2026年の調査を1枚に整理</span></span>
+        </a>
+        <a class="related-card" href="/lab/google%E3%83%9E%E3%83%83%E3%83%97%E3%81%A8%E9%9B%86%E5%AE%A2%E3%81%AE%E9%96%A2%E4%BF%82%E6%80%A7">
+          <img src="/assets/lab/144e516f0043.jpg" alt="Googleマップで飲食店の売上は変わる？集客から予約・来店までを経営数字で考える" loading="lazy">
+          <span class="body"><span class="related-date">2026.11.12</span><span class="related-name">Googleマップで飲食店の売上は変わる？集客から予約・来店までを経営数字で考える</span></span>
+        </a>
+      </div>
+    </section>
+
+    <div class="cta-compact" data-cta="dual-bottom">
+  <a class="is-ai" href="/kabeuchi/?from=lab-ai-check-5min&amp;cta=dual-bottom">AIに相談する（10分・無料）</a>
+  <a class="is-contact" href="/contact?from=lab-ai-check-5min&amp;cta=dual-bottom">お問い合わせ</a>
+</div>
+    <a class="backlink" href="/lab/">← Lab 記事一覧へ</a>
+<script>
+(function(){
+  var f={area:'tArea',genre:'tGenre',s1:'tScene1',s2:'tScene2',budget:'tBudget',name:'tName'};
+  var ph={area:'{エリア}',genre:'{業態}',s1:'{シーン1}',s2:'{シーン2}',budget:'{予算}',name:'{店名}'};
+  function v(k){var el=document.getElementById(f[k]);var t=el&&el.value.trim();return t?t:ph[k];}
+  function qs(){
+    return [
+      v('area')+'で、'+v('s1')+'に向いている'+v('genre')+'の店を5軒教えてください。それぞれ選んだ理由も教えてください。',
+      v('area')+'で、'+v('s2')+'に向いている'+v('genre')+'の店を5軒教えてください。それぞれ選んだ理由も教えてください。',
+      v('area')+'で、1人'+v('budget')+'くらいで、ネットで予約して行ける'+v('genre')+'の店を5軒教えてください。予約の方法も教えてください。',
+      v('area')+'の「'+v('name')+'」について、営業時間、定休日、価格帯、おすすめの料理を教えてください。どの情報をもとにしたかも教えてください。',
+      v('area')+'の「'+v('name')+'」は、'+v('s1')+'に向いていますか。向いている点と、気になる点を教えてください。'
+    ];
+  }
+  function copy(text,btn){
+    function done(){btn.textContent='コピーしました';setTimeout(function(){btn.textContent='コピー';},1600);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,function(){fallback(text);done();});}
+    else{fallback(text);done();}
+  }
+  function fallback(text){var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);}
+  function render(){
+    var out=document.getElementById('tOut');if(!out)return;out.innerHTML='';
+    qs().forEach(function(q,i){
+      var li=document.createElement('li');var p=document.createElement('span');p.className='q';var n=document.createElement('strong');n.className='qn';n.textContent='問'+(i+1)+'　';p.appendChild(n);p.appendChild(document.createTextNode(q));
+      var b=document.createElement('button');b.type='button';b.className='copy';b.textContent='コピー';
+      b.addEventListener('click',function(){copy(q,b);});li.appendChild(p);li.appendChild(b);out.appendChild(li);
+    });
+  }
+  Object.keys(f).forEach(function(k){var el=document.getElementById(f[k]);if(el)el.addEventListener('input',render);});
+  render();
+})();
+</script>
+  </article>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="fcols">
+      <div style="max-width:280px;"><img src="/assets/foodx-logo-white.png" alt="FooDX" style="height:26px;"><p style="font-size:13px;color:#777;line-height:1.8;margin:12px 0 0;">食業界のAX推進支援カンパニー。</p></div>
+      <div><ul>
+        <li><a href="/">AIkata（経営OS）</a></li>
+        <li><a href="/google-profile">集客支援（MEO・AIO）</a></li>
+        <li><a href="/reo">予約体験最適化（REO）</a></li>
+        <li><a href="/grease-ozonizer">グリストラップ自動化</a></li>
+      </ul></div>
+      <div><ul>
+        <li><a href="/kabeuchi/">AIに相談</a></li>
+        <li><a href="/lab/">Lab</a></li>
+        <li><a href="/about">会社概要</a></li>
+        <li><a href="/contact">お問い合わせ</a></li>
+      </ul></div>
+    </div>
+    <p style="margin:22px 0 0;font-size:12px;color:#555;">©FooDX, LLC. All Rights Reserved.</p>
+  </div>
+</footer>
+</body>
+</html>
