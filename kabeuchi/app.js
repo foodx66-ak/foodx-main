@@ -437,7 +437,12 @@
     try {
       const resp = await api("/start", { body: payload });
       if (resp.ok) {
-        if (typeof window.oaiq === "function" && !app.oaiLeadMeasured) {
+        if (
+          VARIANT !== "security" &&
+          !location.pathname.startsWith("/kabeuchi/security") &&
+          typeof window.oaiq === "function" &&
+          !app.oaiLeadMeasured
+        ) {
           app.oaiLeadMeasured = true;
           try {
             window.oaiq("measure", "lead_created", { type: "customer_action" }, { event_id: "kabeuchi_" + Date.now() });
