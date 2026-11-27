@@ -33,6 +33,7 @@
     timer: null,
     from: "",
     cta: "",
+    oaiLeadMeasured: false,
   };
 
   async function api(path, options = {}) {
@@ -436,6 +437,12 @@
     try {
       const resp = await api("/start", { body: payload });
       if (resp.ok) {
+        if (typeof oaiq === "function" && !app.oaiLeadMeasured) {
+          app.oaiLeadMeasured = true;
+          try {
+            oaiq("measure", "lead_created", { type: "customer_action" }, { event_id: "kabeuchi_" + Date.now() });
+          } catch (_) {}
+        }
         $("kb-sent-email").textContent = payload.email;
         show("kb-sent-view");
         return;
